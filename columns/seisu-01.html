@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>クルクル回る!? ダイヤル数「142857」の秘密｜数学コラム</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#10233d; --panel:#17335a; --grid-line:rgba(140,178,224,0.14);
+    --paper:#eef2f7; --paper-dim:#dbe3ee;
+    --orange:#ff7a3d; --orange-dim:#c85f2c; --yellow:#ffcc33;
+    --ink-text:#16233a; --paper-sub:#55637c;
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    background:
+      linear-gradient(var(--grid-line) 1px, transparent 1px) 0 0/40px 40px,
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px) 0 0/40px 40px,
+      var(--ink);
+    color:var(--paper); font-family:'Noto Sans JP', sans-serif; line-height:1.9;
+  }
+  a{ color:var(--orange); }
+
+  .topbar{
+    position:sticky; top:0; z-index:10;
+    background:rgba(16,35,61,.96); backdrop-filter:blur(4px);
+    border-bottom:1px solid #2c4f7c; padding:12px 20px;
+  }
+  .topbar-inner{ max-width:760px; margin:0 auto; font-family:'JetBrains Mono', monospace; font-size:.8rem; }
+  .topbar a{ color:#9fb6d6; text-decoration:none; }
+  .topbar a:hover{ color:#fff; }
+
+  .article{ max-width:760px; margin:0 auto; padding:0 20px 100px; }
+
+  .eyecatch-wrap{
+    margin:28px 0 0; border-radius:6px; overflow:hidden;
+    border:1px solid #2c4f7c; aspect-ratio:16/9; background:var(--panel);
+  }
+  .eyecatch-wrap img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+  .article-meta{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:22px 0 10px; }
+  .pill{
+    font-family:'JetBrains Mono', monospace; font-size:.7rem; letter-spacing:.06em;
+    text-transform:uppercase; color:var(--orange);
+    border:1px solid var(--orange-dim); border-radius:20px; padding:4px 12px;
+  }
+  .article-date{ font-family:'JetBrains Mono', monospace; font-size:.78rem; color:#7f96b8; }
+
+  h1.article-title{
+    font-family:'Zen Kaku Gothic New', sans-serif; font-weight:900;
+    font-size:clamp(1.6rem,4vw,2.3rem); color:#fff; margin:0 0 8px; letter-spacing:.01em;
+  }
+  p.article-lead{ color:#c3d2e6; font-size:1rem; margin:0 0 8px; max-width:60ch; }
+
+  .article-body{ margin-top:36px; }
+  .article-body h2{
+    font-family:'Zen Kaku Gothic New', sans-serif; font-weight:700; font-size:1.3rem;
+    color:#fff; margin:44px 0 16px; padding-left:14px; border-left:4px solid var(--orange);
+  }
+  .article-body p{ color:#dbe6f4; font-size:.98rem; margin:0 0 18px; }
+  .article-body strong{ color:#fff; }
+
+  figure.inline-figure{ margin:28px 0; padding:0; }
+  figure.inline-figure img{
+    width:100%; border-radius:6px; border:1px solid #2c4f7c; display:block; background:var(--paper);
+  }
+  figure.inline-figure figcaption{ font-size:.8rem; color:#7f96b8; margin-top:8px; text-align:center; }
+
+  .try-box{
+    background:var(--paper); color:var(--ink-text); border-radius:6px;
+    padding:20px 22px; margin:28px 0; box-shadow:0 3px 0 rgba(0,0,0,.18); border:1px solid var(--paper-dim);
+  }
+  .try-box .try-label{
+    font-family:'JetBrains Mono', monospace; font-size:.7rem; letter-spacing:.06em;
+    color:var(--orange-dim); text-transform:uppercase; display:block; margin-bottom:8px;
+  }
+  .try-box p{ color:var(--ink-text); margin:0 0 10px; font-size:.92rem; }
+  .try-box p:last-child{ margin-bottom:0; }
+
+  /* 計算過程を見せる表（このコラム特有：かけ算の並びを見せる） */
+  .calc-table{
+    width:100%; border-collapse:collapse; margin:20px 0 0;
+    font-family:'JetBrains Mono', monospace; font-size:.92rem;
+  }
+  .calc-table td{ padding:6px 10px; border-bottom:1px solid var(--paper-dim); }
+  .calc-table td:first-child{ color:var(--paper-sub); white-space:nowrap; }
+  .calc-table td:last-child{ text-align:right; font-weight:600; }
+  .calc-table tr.highlight td{ color:var(--orange-dim); font-weight:700; }
+
+  .next-step{
+    margin-top:44px; padding:20px 22px; border-radius:6px; border:1px dashed #4b6a95;
+    background:repeating-linear-gradient(135deg, rgba(255,204,51,.06) 0 14px, rgba(255,204,51,0) 14px 28px);
+  }
+  .next-step .stamp{
+    display:inline-block; font-family:'JetBrains Mono', monospace; font-weight:600;
+    font-size:.72rem; letter-spacing:.08em; color:var(--ink);
+    background:var(--yellow); padding:3px 9px; border-radius:2px; margin-bottom:10px;
+  }
+  .next-step p{ color:#c3d2e6; font-size:.9rem; margin:0; }
+
+  .series-nav{
+    margin-top:44px; padding-top:20px; border-top:1px solid #2c4f7c;
+    display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  }
+  .series-nav a{
+    font-family:'Zen Kaku Gothic New', sans-serif; font-weight:700; font-size:.86rem;
+    text-decoration:none; color:#9fb6d6; border:1px solid #2c4f7c; border-radius:20px; padding:8px 16px;
+  }
+  .series-nav a:hover{ color:#fff; border-color:var(--orange); }
+
+  .article-footer{
+    margin-top:32px; padding-top:24px; border-top:1px solid #2c4f7c;
+    display:flex; justify-content:center;
+  }
+  .back-link{
+    font-family:'Zen Kaku Gothic New', sans-serif; font-weight:700; font-size:.9rem;
+    text-decoration:none; color:#9fb6d6; border:1px solid #2c4f7c; border-radius:20px; padding:8px 18px;
+  }
+  .back-link:hover{ color:#fff; border-color:var(--orange); }
+
+  @media (max-width:640px){
+    .article{ padding:0 16px 72px; }
+    h1.article-title{ font-size:1.5rem; }
+    .article-body h2{ font-size:1.15rem; margin:36px 0 12px; }
+    .calc-table{ font-size:.82rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="genre-seisu.html">&larr; 整数のふしぎ 一覧に戻る</a>
+  </div>
+</div>
+
+<article class="article">
+
+  <div class="eyecatch-wrap">
+    <img src="../images/columns/seisu-01-eyecatch.webp" alt="くるくる回るダイヤル数142857のイメージ">
+  </div>
+
+  <div class="article-meta">
+    <span class="pill">整数のふしぎ</span>
+    <span class="article-date">第1回</span>
+  </div>
+
+  <h1 class="article-title">クルクル回る!? ダイヤル数「142857」の秘密</h1>
+  <p class="article-lead">
+    「142857」という6桁の数字を知っていますか？ この数字には、まるでダイヤルが回るかのような不思議な性質があります。
+  </p>
+
+  <div class="article-body">
+
+    <h2>まずは計算してみる</h2>
+    <p>142857に1から6までの数をかけて、答えを並べてみよう。</p>
+
+    <table class="calc-table">
+      <tr><td>142857 × 1 =</td><td>142857</td></tr>
+      <tr><td>142857 × 2 =</td><td>285714</td></tr>
+      <tr><td>142857 × 3 =</td><td>428571</td></tr>
+      <tr><td>142857 × 4 =</td><td>571428</td></tr>
+      <tr><td>142857 × 5 =</td><td>714285</td></tr>
+      <tr><td>142857 × 6 =</td><td>857142</td></tr>
+    </table>
+
+    <p>答えを見て気づいただろうか。どの答えも「1・4・2・8・5・7」の6つの数字でできていて、数字の順番がそのままグルグルと入れ替わっているだけなのだ。</p>
+
+    <div class="try-box">
+      <span class="try-label">やってみよう</span>
+      <p>電卓で142857 × 3、142857 × 5を実際に計算して、本当に同じ6つの数字が並び替わっているだけか確かめてみよう。</p>
+    </div>
+
+    <figure class="inline-figure">
+      <img src="../images/columns/seisu-01-figure.jpg" alt="142857の数字が円形に並び、矢印でぐるぐる回転する様子を示した図">
+      <figcaption>1・4・2・8・5・7の6つの数字が、輪のように順番を変えて現れる</figcaption>
+    </figure>
+
+    <h2>どうしていつもそうなるのか</h2>
+    <p>実はこの数字、1 ÷ 7 を計算した時に出てくる循環小数（0.142857142857…）から生まれている。割り算の中にこんな美しいダンスが隠されているとは、驚きだ。</p>
+
+    <h2>身の回りとのつながり</h2>
+    <p>電卓があれば誰でも今すぐ確かめられる不思議だ。友達に「この数字、面白いことが起きるよ」と142857を渡して、かけ算してもらうだけで簡単な数学マジックになる。</p>
+
+  </div>
+
+  <div class="series-nav">
+    <span></span>
+    <a href="seisu-02.html">次の回へ：7を掛けると奇跡が起きる！ オール9の魔法 &rarr;</a>
+  </div>
+
+  <div class="article-footer">
+    <a class="back-link" href="genre-seisu.html">&larr; 整数のふしぎ 一覧に戻る</a>
+  </div>
+
+</article>
+
+</body>
+</html>
