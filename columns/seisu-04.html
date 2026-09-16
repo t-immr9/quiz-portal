@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>358年の難問をAIが11日で解いた!? フェルマーの最終定理と「証明」の真相｜整数のふしぎ</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="フェルマーの最終定理を整数で試し、具体例による確認と数学的証明、AIによる既存証明の形式化の違いを考える高校生向け数学コラム。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#10233d;--panel:#17335a;--grid-line:rgba(140,178,224,.14);--paper:#eef2f7;--paper-dim:#dbe3ee;--orange:#ff7a3d;--orange-dim:#c85f2c;--yellow:#ffcc33;--ink-text:#16233a;--paper-sub:#55637c}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:linear-gradient(var(--grid-line) 1px,transparent 1px) 0 0/40px 40px,linear-gradient(90deg,var(--grid-line) 1px,transparent 1px) 0 0/40px 40px,var(--ink);color:var(--paper);font-family:'Noto Sans JP',sans-serif;line-height:1.9}a{color:var(--orange)}
+.topbar{position:sticky;top:0;z-index:10;background:rgba(16,35,61,.96);backdrop-filter:blur(4px);border-bottom:1px solid #2c4f7c;padding:12px 20px}.topbar-inner{max-width:760px;margin:0 auto;font-family:'JetBrains Mono',monospace;font-size:.8rem}.topbar a{color:#9fb6d6;text-decoration:none}.topbar a:hover{color:#fff}
+.article{max-width:760px;margin:0 auto;padding:0 20px 100px}.eyecatch-wrap{margin:28px 0 0;border-radius:6px;overflow:hidden;border:1px solid #2c4f7c;background:var(--panel);min-height:180px}.eyecatch-wrap img{width:100%;height:auto;object-fit:cover;display:block}.article-meta{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:22px 0 10px}.pill{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--orange);border:1px solid var(--orange-dim);border-radius:20px;padding:4px 12px}.article-date{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:#7f96b8}
+h1.article-title{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:clamp(1.6rem,4vw,2.3rem);color:#fff;margin:0 0 8px;letter-spacing:.01em}p.article-lead{color:#c3d2e6;font-size:1rem;margin:0 0 8px;max-width:60ch}.article-body{margin-top:36px}.article-body h2{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:1.3rem;color:#fff;margin:44px 0 16px;padding-left:14px;border-left:4px solid var(--orange)}.article-body p{color:#dbe6f4;font-size:.98rem;margin:0 0 18px}.article-body strong{color:#fff}
+figure.inline-figure{margin:28px 0;padding:0}figure.inline-figure img{width:100%;border-radius:6px;border:1px solid #2c4f7c;display:block;background:var(--paper)}figure.inline-figure figcaption{font-size:.8rem;color:#7f96b8;margin-top:8px;text-align:center}.try-box{background:var(--paper);color:var(--ink-text);border-radius:6px;padding:20px 22px;margin:28px 0;box-shadow:0 3px 0 rgba(0,0,0,.18);border:1px solid var(--paper-dim)}.try-box .try-label{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.06em;color:var(--orange-dim);text-transform:uppercase;display:block;margin-bottom:8px}.try-box p{color:var(--ink-text);margin:0 0 10px;font-size:.92rem}.try-box p:last-child{margin-bottom:0}
+.calc-table{width:100%;border-collapse:collapse;margin:20px 0;font-family:'JetBrains Mono',monospace;font-size:.92rem}.calc-table td{padding:8px 10px;border-bottom:1px solid var(--paper-dim)}.calc-table td:first-child{color:#c3d2e6;white-space:nowrap}.calc-table td:last-child{text-align:right;font-weight:600}.calc-table tr.highlight td{color:var(--orange);font-weight:700}.series-nav{margin-top:44px;padding-top:20px;border-top:1px solid #2c4f7c;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.series-nav a,.back-link{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:.86rem;text-decoration:none;color:#9fb6d6;border:1px solid #2c4f7c;border-radius:20px;padding:8px 16px}.series-nav a:hover,.back-link:hover{color:#fff;border-color:var(--orange)}.article-footer{margin-top:32px;padding-top:24px;border-top:1px solid #2c4f7c;display:flex;justify-content:center}
+@media(max-width:640px){.article{padding:0 16px 72px}h1.article-title{font-size:1.5rem}.article-body h2{font-size:1.15rem;margin:36px 0 12px}.calc-table{font-size:.82rem}.calc-table td{padding:7px 5px}.eyecatch-wrap{min-height:120px}}
+</style></head><body>
+<div class="topbar"><div class="topbar-inner"><a href="genre-seisu.html">&larr; 整数のふしぎ 一覧に戻る</a></div></div>
+<article class="article">
+<div class="eyecatch-wrap"><img src="../images/columns/seisu-04-eyecatch.webp" alt="フェルマーの最終定理とAIによる既存証明の形式化を表した整数のふしぎ第4回のアイキャッチ画像" decoding="async"></div>
+<div class="article-meta"><span class="pill">整数のふしぎ</span><span class="article-date">第4回・2026年9月</span></div>
+<h1 class="article-title">358年の難問をAIが11日で解いた!? フェルマーの最終定理と「証明」の真相</h1>
+<p class="article-lead">「AIが11日で数学の難問を解いた」というニュースは、本当だろうか。まずは整数を実際に計算し、「解が見つからないこと」と「解が存在しないと証明すること」の違いを考えてみよう。</p>
+<div class="article-body">
+
+<h2>まずは2乗で試してみる</h2>
+<p>次の形の式を考える。</p>
+<div class="try-box"><span class="try-label">考える式</span><p>a<sup>n</sup> + b<sup>n</sup> = c<sup>n</sup></p></div>
+<p>指数がn = 2のとき、この式を満たす正の整数は実際に存在する。たとえば、a = 3、b = 4、c = 5を入れると、</p>
+<table class="calc-table">
+<tr><td>3<sup>2</sup> + 4<sup>2</sup></td><td>9 + 16 = 25 = 5<sup>2</sup></td></tr>
+<tr><td>5<sup>2</sup> + 12<sup>2</sup></td><td>25 + 144 = 169 = 13<sup>2</sup></td></tr>
+</table>
+<p>このように、2つの正の整数の2乗を足したものが、別の正の整数の2乗になる例は見つけられる。</p>
+
+<h2>3乗では「あと1」まで近づく</h2>
+<p>指数をn = 3に変えるとどうなるだろう。小さな整数を入れて確かめてみよう。</p>
+<table class="calc-table">
+<tr><td>1<sup>3</sup> + 2<sup>3</sup></td><td>1 + 8 = 9</td></tr>
+<tr><td>2<sup>3</sup> + 3<sup>3</sup></td><td>8 + 27 = 35</td></tr>
+<tr><td>3<sup>3</sup> + 4<sup>3</sup></td><td>27 + 64 = 91</td></tr>
+<tr><td>4<sup>3</sup> + 5<sup>3</sup></td><td>64 + 125 = 189</td></tr>
+<tr class="highlight"><td>6<sup>3</sup> + 8<sup>3</sup></td><td>216 + 512 = 728</td></tr>
+<tr><td>9<sup>3</sup></td><td>729</td></tr>
+</table>
+<p>6<sup>3</sup> + 8<sup>3</sup>は728で、9<sup>3</sup>は729である。したがって、</p>
+<div class="try-box"><span class="try-label">あと1</span><p>6<sup>3</sup> + 8<sup>3</sup> = 728 = 9<sup>3</sup> - 1</p></div>
+<p>となる。あと1まで近づいても、等式は成立しない。このわずかな差が、整数の問題のおもしろさである。</p>
+
+<figure class="inline-figure"><img src="../images/columns/seisu-04-figure.webp" alt="2乗では正の整数解があり、3乗ではあと1で等しくならず、3以上では正の整数解が存在しないことを比較した図" loading="lazy" decoding="async"><figcaption>具体例を調べること、すべての場合を証明すること、既存証明を形式化することは別の作業である</figcaption></figure>
+
+<div class="try-box"><span class="try-label">やってみよう</span><p>1<sup>3</sup> + 2<sup>3</sup>、2<sup>3</sup> + 3<sup>3</sup>、4<sup>3</sup> + 5<sup>3</sup>を計算し、それぞれの答えをはさむ2つの立方数を探してみよう。</p></div>
+
+<h2>フェルマーの最終定理</h2>
+<p>フェルマーの最終定理は、次のような定理である。</p>
+<div class="try-box"><span class="try-label">フェルマーの最終定理</span><p>nが3以上の整数であるとき、a<sup>n</sup> + b<sup>n</sup> = c<sup>n</sup>を満たす正の整数a、b、cは存在しない。</p></div>
+<p>条件を正確に読むことが大切だ。</p>
+<ul>
+<li>a、b、cは正の整数</li>
+<li>nは3以上の整数</li>
+<li>n = 2は対象外</li>
+</ul>
+<p>n = 2なら、3<sup>2</sup> + 4<sup>2</sup> = 5<sup>2</sup>のような例がある。フェルマーの最終定理は、すべての指数について整数解がないと主張しているわけではない。</p>
+
+<h2>「存在する」と「存在しない」</h2>
+<p>「条件を満たす整数が存在する」と示すには、条件を満たす例を一つ見つければよい。3<sup>2</sup> + 4<sup>2</sup> = 5<sup>2</sup>は、n = 2の場合に正の整数解が存在することを示している。</p>
+<p>一方、「条件を満たす整数は存在しない」と示すには、失敗した例をいくつ並べても十分ではない。正の整数は無限にあり、まだ調べていない数の中に解がある可能性を消せないからである。</p>
+<div class="try-box"><span class="try-label">反例の力</span><p>「すべての場合で成り立つ」という主張は、条件を満たさない例が一つ見つかれば否定できる。このような例を反例という。しかし、反例が見つからないことだけでは、主張全体を証明したことにはならない。</p></div>
+
+<h2>たくさん調べることと証明すること</h2>
+<p>コンピューターで100万通りや1億通りを調べ、解が一つも見つからなかったとする。この結果から、「調べた範囲には解がなかった」とは言える。しかし、「すべての正の整数について解が存在しない」とまでは言えない。</p>
+<p><strong>具体例による確認</strong>は、特定の整数について計算すること。<strong>数学的な証明</strong>は、条件を満たすすべての場合について、例外がないことを論理的に示すことである。</p>
+<p>大量の計算は、規則を見つけたり、予想が正しそうか判断したりする助けになる。しかし、有限個の確認と、無限にある場合を扱う証明は同じではない。</p>
+
+<h2>高校数学や大学入試とのつながり</h2>
+<p>高校数学Aの整数問題でも、問題文が何を求めているかによって必要な説明は変わる。</p>
+<div class="try-box"><span class="try-label">問い方の違い</span>
+<ul>
+<li>「条件を満たす整数の組を一つ求めよ」なら、具体例を一つ示せばよい。</li>
+<li>「すべての整数について成り立つことを証明せよ」なら、いくつかの例だけでは不十分である。</li>
+<li>「そのような整数が存在しないことを証明せよ」なら、すべての可能性を除く論理が必要である。</li>
+</ul>
+</div>
+<p>整数問題では、偶数と奇数、倍数と約数、余りによる分類、因数分解、背理法などが使われる。フェルマーの最終定理の証明そのものは高校数学の範囲を大きく超えるが、「具体例の確認」と「すべての場合の証明」を区別する考え方は、大学入試にも直接つながっている。</p>
+
+<h2>AIは11日間で何をしたのか</h2>
+<p>フェルマーの予想は、1637年ごろに書き残されたことで知られ、1990年代にアンドリュー・ワイルズらの仕事によって証明が完成した。したがって、2026年にAIが未解決問題を初めて解いたわけではない。</p>
+<p>2026年9月に話題になったのは、AIのClaudeが、すでにある証明を証明支援システムLeanで一段ずつ検証できる形に形式化したという成果である。</p>
+<div class="try-box"><span class="try-label">正確に言い換える</span><p>「AIが358年の難問を11日で初めて解いた」のではなく、「人間がすでに証明していた定理を、AIが11日間でコンピューターによって検証できる形に形式化した」と考えるのが正確である。</p></div>
+<p>新しい証明を発見すること、具体例を大量に計算すること、既存の証明を機械で検証できる形にすることは、それぞれ異なる作業である。</p>
+
+<h2>調べることから、証明へ</h2>
+<p>具体的な整数を代入して確かめる活動は無駄ではない。計算から規則に気づき、「いつも成り立つのか」「例外はないのか」と問いを立てることが、数学的な予想や証明への出発点になる。</p>
+<div class="try-box"><span class="try-label">考えてみよう</span>
+<ul>
+<li>100万通り調べて解が見つからなかったとき、何が分かり、何はまだ分からないだろう。</li>
+<li>「存在する」と「存在しない」では、示すために必要なことがどう違うだろう。</li>
+<li>AIが既存の証明を形式化したことと、AIが新しい証明を発見したことは、どこが違うだろう。</li>
+</ul>
+</div>
+
+<h2>まとめ</h2>
+<p>n = 2なら、3<sup>2</sup> + 4<sup>2</sup> = 5<sup>2</sup>のような正の整数解が存在する。しかし、nが3以上なら、そのような正の整数解は存在しない。これがフェルマーの最終定理である。</p>
+<p><strong>具体例を試すことは予想を生み、証明はすべての場合を論理で説明する。</strong>AIのニュースも、「何を発見したのか」「何を形式化したのか」を区別すると、成果を正確に読み取れる。</p>
+
+<h2>参考資料</h2>
+<p>Anthropic, “Formalizing Fermat's Last Theorem”, 2026年9月4日<br>Nature, “Anthropic AI ‘formalizes’ proof of Fermat’s last theorem”, 2026年9月</p>
+</div>
+<div class="series-nav"><a href="seisu-03.html">&larr; 前の回：コラッツ予想</a><span></span></div>
+<div class="article-footer"><a class="back-link" href="genre-seisu.html">&larr; 整数のふしぎ 一覧に戻る</a></div>
+</article>
+</body></html>
