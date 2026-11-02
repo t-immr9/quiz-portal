@@ -1,0 +1,411 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>サッカーボールの五角形は、なぜいつも12枚？｜数学コラム</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#10233d; --panel:#17335a; --grid-line:rgba(140,178,224,0.14);
+    --paper:#eef2f7; --paper-dim:#dbe3ee;
+    --orange:#ff7a3d; --orange-dim:#c85f2c; --yellow:#ffcc33;
+    --ink-text:#16233a; --paper-sub:#55637c;
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    background:
+      linear-gradient(var(--grid-line) 1px, transparent 1px) 0 0/40px 40px,
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px) 0 0/40px 40px,
+      var(--ink);
+    color:var(--paper); font-family:'Noto Sans JP', sans-serif; line-height:1.9;
+  }
+  a{ color:var(--orange); }
+
+  .topbar{
+    position:sticky; top:0; z-index:10;
+    background:rgba(16,35,61,.96); backdrop-filter:blur(4px);
+    border-bottom:1px solid #2c4f7c; padding:12px 20px;
+  }
+  .topbar-inner{ max-width:760px; margin:0 auto; font-family:'JetBrains Mono', monospace; font-size:.8rem; }
+  .topbar a{ color:#9fb6d6; text-decoration:none; }
+  .topbar a:hover{ color:#fff; }
+
+  .article{ max-width:760px; margin:0 auto; padding:0 20px 100px; }
+
+  .eyecatch-wrap{
+    margin:28px 0 0; border-radius:6px; overflow:hidden;
+    border:1px solid #2c4f7c; background:var(--panel);
+  }
+  .eyecatch-wrap img{ width:100%; height:auto; object-fit:cover; display:block; }
+
+  .article-meta{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:22px 0 10px; }
+  .pill{
+    font-family:'JetBrains Mono', monospace; font-size:.7rem; letter-spacing:.06em;
+    text-transform:uppercase; color:var(--orange);
+    border:1px solid var(--orange-dim); border-radius:20px; padding:4px 12px;
+  }
+  .article-date{ font-family:'JetBrains Mono', monospace; font-size:.78rem; color:#7f96b8; }
+
+  h1.article-title{
+    font-family:'Zen Kaku Gothic New', sans-serif; font-weight:900;
+    font-size:clamp(1.6rem,4vw,2.3rem); color:#fff; margin:0 0 8px; letter-spacing:.01em;
+  }
+  p.article-lead{ color:#c3d2e6; font-size:1rem; margin:0 0 8px; max-width:60ch; }
+
+  .article-body{ margin-top:36px; }
+  .article-body h2{
+    font-family:'Zen Kaku Gothic New', sans-serif; font-weight:700; font-size:1.3rem;
+    color:#fff; margin:44px 0 16px; padding-left:14px; border-left:4px solid var(--orange);
+  }
+  .article-body p{ color:#dbe6f4; font-size:.98rem; margin:0 0 18px; }
+  .article-body strong{ color:#fff; }
+
+  figure.inline-figure{ margin:28px 0; padding:0; }
+  figure.inline-figure img{
+    width:100%; border-radius:6px; border:1px solid #2c4f7c; display:block; background:var(--paper);
+  }
+  figure.inline-figure figcaption{ font-size:.8rem; color:#7f96b8; margin-top:8px; text-align:center; }
+
+  .try-box{
+    background:var(--paper); color:var(--ink-text); border-radius:6px;
+    padding:20px 22px; margin:28px 0; box-shadow:0 3px 0 rgba(0,0,0,.18); border:1px solid var(--paper-dim);
+  }
+  .try-box .try-label{
+    font-family:'JetBrains Mono', monospace; font-size:.7rem; letter-spacing:.06em;
+    color:var(--orange-dim); text-transform:uppercase; display:block; margin-bottom:8px;
+  }
+  .try-box p{ color:var(--ink-text); margin:0 0 10px; font-size:.92rem; }
+  .try-box p:last-child{ margin-bottom:0; }
+
+  /* 計算過程を見せる表（このコラム特有：かけ算の並びを見せる） */
+  .calc-table{
+    width:100%; border-collapse:collapse; margin:20px 0 0;
+    font-family:'JetBrains Mono', monospace; font-size:.92rem;
+  }
+  .calc-table td{ padding:6px 10px; border-bottom:1px solid var(--paper-dim); }
+  .calc-table td:first-child{ color:var(--paper-sub); white-space:nowrap; }
+  .calc-table td:last-child{ text-align:right; font-weight:600; }
+  .calc-table tr.highlight td{ color:var(--orange-dim); font-weight:700; }
+
+  .next-step{
+    margin-top:44px; padding:20px 22px; border-radius:6px; border:1px dashed #4b6a95;
+    background:repeating-linear-gradient(135deg, rgba(255,204,51,.06) 0 14px, rgba(255,204,51,0) 14px 28px);
+  }
+  .next-step .stamp{
+    display:inline-block; font-family:'JetBrains Mono', monospace; font-weight:600;
+    font-size:.72rem; letter-spacing:.08em; color:var(--ink);
+    background:var(--yellow); padding:3px 9px; border-radius:2px; margin-bottom:10px;
+  }
+  .next-step p{ color:#c3d2e6; font-size:.9rem; margin:0; }
+
+  .series-nav{
+    margin-top:44px; padding-top:20px; border-top:1px solid #2c4f7c;
+    display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  }
+  .series-nav a{
+    font-family:'Zen Kaku Gothic New', sans-serif; font-weight:700; font-size:.86rem;
+    text-decoration:none; color:#9fb6d6; border:1px solid #2c4f7c; border-radius:20px; padding:8px 16px;
+  }
+  .series-nav a:hover{ color:#fff; border-color:var(--orange); }
+
+  .article-footer{
+    margin-top:32px; padding-top:24px; border-top:1px solid #2c4f7c;
+    display:flex; justify-content:center;
+  }
+  .back-link{
+    font-family:'Zen Kaku Gothic New', sans-serif; font-weight:700; font-size:.9rem;
+    text-decoration:none; color:#9fb6d6; border:1px solid #2c4f7c; border-radius:20px; padding:8px 18px;
+  }
+  .back-link:hover{ color:#fff; border-color:var(--orange); }
+
+  /* 授業のその先：図はSVGで記事内に描く */
+  .eyecatch-wrap svg{ width:100%; height:auto; display:block; }
+  figure.inline-figure svg{ width:100%; height:auto; display:block; border-radius:6px; border:1px solid #2c4f7c; }
+
+  @media (max-width:640px){
+    .article{ padding:0 16px 72px; }
+    h1.article-title{ font-size:1.5rem; }
+    .article-body h2{ font-size:1.15rem; margin:36px 0 12px; }
+    .calc-table{ font-size:.82rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="../">&larr; 数学演習室に戻る</a>
+  </div>
+</div>
+
+<article class="article">
+
+  <div class="eyecatch-wrap">
+    <svg viewBox="0 0 1200 675" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="白い六角形と黒い五角形でできたサッカーボールと、同じ形の多面体の骨組み。頂点60・辺90・面32で、60−90+32=2">
+<defs><pattern id="ge" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="rgba(140,178,224,0.14)" stroke-width="1"/></pattern></defs>
+<rect width="1200" height="675" fill="#10233d"/><rect width="1200" height="675" fill="url(#ge)"/>
+<polygon points="277.7,416.1 364.8,400.1 394.1,316.6 336.4,249.1 249.4,265.2 220.0,348.6" fill="rgb(160,160,166)" stroke="#10233d" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="466.1,290.8 452.8,207.4 372.7,181.7 336.4,249.1 394.1,316.6" fill="#17233a" stroke="#10233d" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="137.8,265.4 151.0,348.8 220.0,348.6 249.4,265.2 198.6,213.7" fill="#17233a" stroke="#10233d" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="266.4,483.7 346.6,509.5 407.3,457.8 364.8,400.1 277.7,416.1" fill="#17233a" stroke="#10233d" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="321.9,130.2 234.8,146.2 198.6,213.7 249.4,265.2 336.4,249.1 372.7,181.7" fill="rgb(171,171,177)" stroke="#10233d" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="479.3,432.0 508.6,348.5 466.1,290.8 394.1,316.6 364.8,400.1 407.3,457.8" fill="rgb(171,171,177)" stroke="#10233d" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="139.8,416.3 197.5,483.8 266.4,483.7 277.7,416.1 220.0,348.6 151.0,348.8" fill="rgb(175,175,181)" stroke="#10233d" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="482.1,181.8 431.3,130.3 351.2,104.5 321.9,130.2 372.7,181.7 452.8,207.4" fill="rgb(188,188,194)" stroke="#10233d" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="538.0,322.9 524.7,239.5 482.1,181.8 452.8,207.4 466.1,290.8 508.6,348.5" fill="rgb(188,188,194)" stroke="#10233d" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="149.6,182.1 113.3,249.5 137.8,265.4 198.6,213.7 234.8,146.2 210.3,130.4" fill="rgb(192,192,198)" stroke="#10233d" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="357.7,535.4 429.7,509.6 490.4,457.9 479.3,432.0 407.3,457.8 346.6,509.5" fill="rgb(192,192,198)" stroke="#10233d" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="102.0,317.1 115.3,400.5 139.8,416.3 151.0,348.8 137.8,265.4 113.3,249.5" fill="rgb(195,195,201)" stroke="#10233d" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="288.8,535.5 357.7,535.4 346.6,509.5 266.4,483.7 197.5,483.8 208.7,509.7" fill="rgb(195,195,201)" stroke="#10233d" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="282.3,104.6 210.3,130.4 234.8,146.2 321.9,130.2 351.2,104.5" fill="#17233a" stroke="#10233d" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="490.4,457.9 526.7,390.5 538.0,322.9 508.6,348.5 479.3,432.0" fill="#17233a" stroke="#10233d" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="157.9,458.2 208.7,509.7 197.5,483.8 139.8,416.3 115.3,400.5" fill="#17233a" stroke="#10233d" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="500.2,223.7 442.5,156.2 431.3,130.3 482.1,181.8 524.7,239.5" fill="#17233a" stroke="#10233d" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="160.7,208.0 131.4,291.5 102.0,317.1 113.3,249.5 149.6,182.1" fill="#17233a" stroke="#10233d" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="318.1,509.8 405.2,493.8 429.7,509.6 357.7,535.4 288.8,535.5" fill="#17233a" stroke="#10233d" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="442.5,156.2 373.6,156.3 293.4,130.5 282.3,104.6 351.2,104.5 431.3,130.3" fill="rgb(220,220,226)" stroke="#10233d" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="502.2,374.6 489.0,291.2 500.2,223.7 524.7,239.5 538.0,322.9 526.7,390.5" fill="rgb(220,220,226)" stroke="#10233d" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="232.7,182.2 160.7,208.0 149.6,182.1 210.3,130.4 282.3,104.6 293.4,130.5" fill="rgb(222,222,228)" stroke="#10233d" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="405.2,493.8 441.4,426.3 502.2,374.6 526.7,390.5 490.4,457.9 429.7,509.6" fill="rgb(223,223,229)" stroke="#10233d" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="173.9,349.2 187.2,432.6 157.9,458.2 115.3,400.5 102.0,317.1 131.4,291.5" fill="rgb(227,227,233)" stroke="#10233d" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="267.3,458.3 318.1,509.8 288.8,535.5 208.7,509.7 157.9,458.2 187.2,432.6" fill="rgb(227,227,233)" stroke="#10233d" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="420.0,291.4 362.3,223.9 373.6,156.3 442.5,156.2 500.2,223.7 489.0,291.2" fill="rgb(240,240,246)" stroke="#10233d" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="275.2,239.9 245.9,323.4 173.9,349.2 131.4,291.5 160.7,208.0 232.7,182.2" fill="rgb(244,244,250)" stroke="#10233d" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="303.6,390.9 390.6,374.8 441.4,426.3 405.2,493.8 318.1,509.8 267.3,458.3" fill="rgb(244,244,250)" stroke="#10233d" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="362.3,223.9 275.2,239.9 232.7,182.2 293.4,130.5 373.6,156.3" fill="#17233a" stroke="#10233d" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="441.4,426.3 390.6,374.8 420.0,291.4 489.0,291.2 502.2,374.6" fill="#17233a" stroke="#10233d" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="303.6,390.9 267.3,458.3 187.2,432.6 173.9,349.2 245.9,323.4" fill="#17233a" stroke="#10233d" stroke-width="2" stroke-linejoin="round"/>
+<polygon points="390.6,374.8 303.6,390.9 245.9,323.4 275.2,239.9 362.3,223.9 420.0,291.4" fill="rgb(254,254,255)" stroke="#10233d" stroke-width="2" stroke-linejoin="round"/>
+<line x1="863.6" y1="390.9" x2="950.6" y2="374.8" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="863.6" y1="390.9" x2="827.3" y2="458.3" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="863.6" y1="390.9" x2="805.9" y2="323.4" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="950.6" y1="374.8" x2="1001.4" y2="426.3" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="950.6" y1="374.8" x2="980.0" y2="291.4" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="827.3" y1="458.3" x2="878.1" y2="509.8" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="827.3" y1="458.3" x2="747.2" y2="432.6" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="1001.4" y1="426.3" x2="965.2" y2="493.8" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="1001.4" y1="426.3" x2="1062.2" y2="374.6" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="805.9" y1="323.4" x2="835.2" y2="239.9" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="805.9" y1="323.4" x2="733.9" y2="349.2" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="980.0" y1="291.4" x2="922.3" y2="223.9" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="980.0" y1="291.4" x2="1049.0" y2="291.2" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="878.1" y1="509.8" x2="965.2" y2="493.8" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="878.1" y1="509.8" x2="848.8" y2="535.5" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="965.2" y1="493.8" x2="989.7" y2="509.6" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="835.2" y1="239.9" x2="922.3" y2="223.9" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="835.2" y1="239.9" x2="792.7" y2="182.2" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="922.3" y1="223.9" x2="933.6" y2="156.3" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="747.2" y1="432.6" x2="733.9" y2="349.2" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="747.2" y1="432.6" x2="717.9" y2="458.2" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="1062.2" y1="374.6" x2="1049.0" y2="291.2" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="1062.2" y1="374.6" x2="1086.7" y2="390.5" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="733.9" y1="349.2" x2="691.4" y2="291.5" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="1049.0" y1="291.2" x2="1060.2" y2="223.7" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="848.8" y1="535.5" x2="917.7" y2="535.4" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="848.8" y1="535.5" x2="768.7" y2="509.7" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="989.7" y1="509.6" x2="917.7" y2="535.4" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="989.7" y1="509.6" x2="1050.4" y2="457.9" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="792.7" y1="182.2" x2="720.7" y2="208.0" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="792.7" y1="182.2" x2="853.4" y2="130.5" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="933.6" y1="156.3" x2="1002.5" y2="156.2" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="933.6" y1="156.3" x2="853.4" y2="130.5" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="717.9" y1="458.2" x2="768.7" y2="509.7" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="717.9" y1="458.2" x2="675.3" y2="400.5" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="1086.7" y1="390.5" x2="1050.4" y2="457.9" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="1086.7" y1="390.5" x2="1098.0" y2="322.9" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="691.4" y1="291.5" x2="720.7" y2="208.0" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="691.4" y1="291.5" x2="662.0" y2="317.1" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="1060.2" y1="223.7" x2="1002.5" y2="156.2" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="1060.2" y1="223.7" x2="1084.7" y2="239.5" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="917.7" y1="535.4" x2="906.6" y2="509.5" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="768.7" y1="509.7" x2="757.5" y2="483.8" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="1050.4" y1="457.9" x2="1039.3" y2="432.0" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="720.7" y1="208.0" x2="709.6" y2="182.1" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="1002.5" y1="156.2" x2="991.3" y2="130.3" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="853.4" y1="130.5" x2="842.3" y2="104.6" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="675.3" y1="400.5" x2="662.0" y2="317.1" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="675.3" y1="400.5" x2="699.8" y2="416.3" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="1098.0" y1="322.9" x2="1084.7" y2="239.5" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="1098.0" y1="322.9" x2="1068.6" y2="348.5" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="662.0" y1="317.1" x2="673.3" y2="249.5" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="1084.7" y1="239.5" x2="1042.1" y2="181.8" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="906.6" y1="509.5" x2="826.4" y2="483.7" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="906.6" y1="509.5" x2="967.3" y2="457.8" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="757.5" y1="483.8" x2="699.8" y2="416.3" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="757.5" y1="483.8" x2="826.4" y2="483.7" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="1039.3" y1="432.0" x2="1068.6" y2="348.5" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="1039.3" y1="432.0" x2="967.3" y2="457.8" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="709.6" y1="182.1" x2="673.3" y2="249.5" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="709.6" y1="182.1" x2="770.3" y2="130.4" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="991.3" y1="130.3" x2="1042.1" y2="181.8" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="991.3" y1="130.3" x2="911.2" y2="104.5" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="842.3" y1="104.6" x2="770.3" y2="130.4" stroke="#ff7a3d" stroke-width="2.4" />
+<line x1="842.3" y1="104.6" x2="911.2" y2="104.5" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="699.8" y1="416.3" x2="711.0" y2="348.8" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="1068.6" y1="348.5" x2="1026.1" y2="290.8" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="673.3" y1="249.5" x2="697.8" y2="265.4" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="1042.1" y1="181.8" x2="1012.8" y2="207.4" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="826.4" y1="483.7" x2="837.7" y2="416.1" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="967.3" y1="457.8" x2="924.8" y2="400.1" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="770.3" y1="130.4" x2="794.8" y2="146.2" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="911.2" y1="104.5" x2="881.9" y2="130.2" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="711.0" y1="348.8" x2="697.8" y2="265.4" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="711.0" y1="348.8" x2="780.0" y2="348.6" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="1026.1" y1="290.8" x2="1012.8" y2="207.4" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="1026.1" y1="290.8" x2="954.1" y2="316.6" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="697.8" y1="265.4" x2="758.6" y2="213.7" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="1012.8" y1="207.4" x2="932.7" y2="181.7" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="837.7" y1="416.1" x2="924.8" y2="400.1" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="837.7" y1="416.1" x2="780.0" y2="348.6" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="924.8" y1="400.1" x2="954.1" y2="316.6" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="794.8" y1="146.2" x2="881.9" y2="130.2" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="794.8" y1="146.2" x2="758.6" y2="213.7" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="881.9" y1="130.2" x2="932.7" y2="181.7" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="780.0" y1="348.6" x2="809.4" y2="265.2" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="954.1" y1="316.6" x2="896.4" y2="249.1" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="758.6" y1="213.7" x2="809.4" y2="265.2" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="932.7" y1="181.7" x2="896.4" y2="249.1" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<line x1="809.4" y1="265.2" x2="896.4" y2="249.1" stroke="#4b6a95" stroke-width="1.4" stroke-dasharray="4 5"/>
+<circle cx="863.6" cy="390.9" r="4.5" fill="#ffcc33"/>
+<circle cx="950.6" cy="374.8" r="4.5" fill="#ffcc33"/>
+<circle cx="827.3" cy="458.3" r="4.5" fill="#ffcc33"/>
+<circle cx="1001.4" cy="426.3" r="4.5" fill="#ffcc33"/>
+<circle cx="805.9" cy="323.4" r="4.5" fill="#ffcc33"/>
+<circle cx="980.0" cy="291.4" r="4.5" fill="#ffcc33"/>
+<circle cx="878.1" cy="509.8" r="4.5" fill="#ffcc33"/>
+<circle cx="965.2" cy="493.8" r="4.5" fill="#ffcc33"/>
+<circle cx="835.2" cy="239.9" r="4.5" fill="#ffcc33"/>
+<circle cx="922.3" cy="223.9" r="4.5" fill="#ffcc33"/>
+<circle cx="747.2" cy="432.6" r="4.5" fill="#ffcc33"/>
+<circle cx="1062.2" cy="374.6" r="4.5" fill="#ffcc33"/>
+<circle cx="733.9" cy="349.2" r="4.5" fill="#ffcc33"/>
+<circle cx="1049.0" cy="291.2" r="4.5" fill="#ffcc33"/>
+<circle cx="848.8" cy="535.5" r="4.5" fill="#ffcc33"/>
+<circle cx="989.7" cy="509.6" r="4.5" fill="#ffcc33"/>
+<circle cx="792.7" cy="182.2" r="4.5" fill="#ffcc33"/>
+<circle cx="933.6" cy="156.3" r="4.5" fill="#ffcc33"/>
+<circle cx="717.9" cy="458.2" r="4.5" fill="#ffcc33"/>
+<circle cx="1086.7" cy="390.5" r="4.5" fill="#ffcc33"/>
+<circle cx="691.4" cy="291.5" r="4.5" fill="#ffcc33"/>
+<circle cx="1060.2" cy="223.7" r="4.5" fill="#ffcc33"/>
+<circle cx="768.7" cy="509.7" r="4.5" fill="#ffcc33"/>
+<circle cx="720.7" cy="208.0" r="4.5" fill="#ffcc33"/>
+<circle cx="1002.5" cy="156.2" r="4.5" fill="#ffcc33"/>
+<circle cx="853.4" cy="130.5" r="4.5" fill="#ffcc33"/>
+<circle cx="675.3" cy="400.5" r="4.5" fill="#ffcc33"/>
+<circle cx="662.0" cy="317.1" r="4.5" fill="#ffcc33"/>
+<circle cx="709.6" cy="182.1" r="4.5" fill="#ffcc33"/>
+<circle cx="842.3" cy="104.6" r="4.5" fill="#ffcc33"/>
+<path d="M570 320h60" stroke="#9fb6d6" stroke-width="3" stroke-linecap="round"/>
+<path d="M620 308l14 12-14 12" fill="none" stroke="#9fb6d6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="600" y="628" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="46" font-weight="600" fill="#fff">60 <tspan fill="#ffcc33">−</tspan> 90 <tspan fill="#ffcc33">+</tspan> 32 <tspan fill="#ffcc33">=</tspan> <tspan fill="#ff7a3d">2</tspan></text>
+</svg>
+  </div>
+
+  <div class="article-meta">
+    <span class="pill">授業のその先</span>
+    <span class="article-date">第2回・数学A（空間図形）</span>
+  </div>
+
+  <h1 class="article-title">サッカーボールの五角形は、なぜいつも12枚？</h1>
+  <p class="article-lead">
+    白と黒の模様のサッカーボールを思い浮かべてください。黒い五角形は何枚あるでしょうか？ 実はこの枚数、数学の授業で習う「オイラーの多面体定理」を使うと、数えなくても決まってしまうのです。
+  </p>
+
+  <div class="article-body">
+
+    <h2>サッカーボールを数えてみる</h2>
+    <p>昔ながらのサッカーボールは、<strong>黒い五角形が12枚、白い六角形が20枚</strong>、合わせて32枚の革を縫い合わせてできている。1970年のワールドカップで使われたボール「テルスター」もこの32枚の形だ。</p>
+    <p>では、辺（縫い目）と頂点（角）はいくつあるだろうか。1つずつ数えるのは大変なので、工夫しよう。</p>
+    <p>まず、それぞれの面の辺を全部足す。五角形12枚で 5 × 12 = 60本、六角形20枚で 6 × 20 = 120本、合計180本。ただし、1本の縫い目は<strong>2枚の面で共有</strong>されているので、2回ずつ数えたことになる。だから辺の数は 180 ÷ 2 = 90 だ。</p>
+    <p>頂点も同じように考える。面の角を全部足すと、同じく180個。サッカーボールの頂点には、どこを見ても<strong>3枚の面が集まっている</strong>ので、3回ずつ数えたことになる。頂点の数は 180 ÷ 3 = 60 だ。</p>
+
+    <table class="calc-table">
+      <tr><td>面の数</td><td>12 + 20 = 32</td></tr>
+      <tr><td>辺の数</td><td>(5×12 + 6×20) ÷ 2 = 90</td></tr>
+      <tr><td>頂点の数</td><td>(5×12 + 6×20) ÷ 3 = 60</td></tr>
+    </table>
+
+    <figure class="inline-figure">
+      <svg viewBox="0 0 760 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="黒い五角形1枚のまわりに白い六角形5枚を平らに並べた図。五角形と六角形が共有する1本の辺はオレンジ、3枚の面が集まる頂点は黄色の丸で示し、六角形どうしの間には12度のすき間がある">
+<rect width="760" height="600" fill="#eef2f7"/>
+<polygon points="380.0,260.5 387.3,190.8 451.3,162.4 507.9,203.5 500.6,273.1 436.6,301.6" fill="#ffffff" stroke="#16233a" stroke-width="2.5" stroke-linejoin="round"/>
+<polygon points="436.6,301.6 505.1,287.0 551.9,339.1 530.3,405.6 461.8,420.2 415.0,368.2" fill="#ffffff" stroke="#16233a" stroke-width="2.5" stroke-linejoin="round"/>
+<polygon points="415.0,368.2 450.0,428.8 415.0,489.4 345.0,489.4 310.0,428.8 345.0,368.2" fill="#ffffff" stroke="#16233a" stroke-width="2.5" stroke-linejoin="round"/>
+<polygon points="345.0,368.2 298.2,420.2 229.7,405.6 208.1,339.1 254.9,287.0 323.4,301.6" fill="#ffffff" stroke="#16233a" stroke-width="2.5" stroke-linejoin="round"/>
+<polygon points="323.4,301.6 259.4,273.1 252.1,203.5 308.7,162.4 372.7,190.8 380.0,260.5" fill="#ffffff" stroke="#16233a" stroke-width="2.5" stroke-linejoin="round"/>
+<polygon points="380.0,260.5 436.6,301.6 415.0,368.2 345.0,368.2 323.4,301.6" fill="#17233a" stroke="#16233a" stroke-width="2.5" stroke-linejoin="round"/>
+<line x1="436.6" y1="301.6" x2="415.0" y2="368.2" stroke="#ff7a3d" stroke-width="8" stroke-linecap="round"/>
+<circle cx="323.4" cy="301.6" r="11" fill="#ffcc33" stroke="#16233a" stroke-width="2.5"/>
+<polygon points="380.0,260.5 372.7,190.8 387.3,190.8" fill="#ff7a3d" fill-opacity=".35"/>
+<line x1="470" y1="560" x2="425.8" y2="334.9" stroke="#c85f2c" stroke-width="2.5"/><circle cx="425.8" cy="334.9" r="4" fill="#c85f2c"/>
+<text x="476" y="552" text-anchor="start" font-family="'Noto Sans JP',sans-serif" font-size="30" font-weight="700" fill="#16233a">この辺は2枚で共有</text>
+<line x1="60" y1="250" x2="313.4" y2="295.6" stroke="#b58900" stroke-width="2.5"/><circle cx="313.4" cy="295.6" r="4" fill="#b58900"/>
+<text x="20" y="242" text-anchor="start" font-family="'Noto Sans JP',sans-serif" font-size="30" font-weight="700" fill="#16233a">3枚の面が集まる頂点</text>
+<text x="380.0" y="40" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="28" font-weight="700" fill="#c85f2c">すき間（12°）を閉じると丸くなる</text>
+<line x1="380.0" y1="50" x2="380.0" y2="242.5" stroke="#c85f2c" stroke-width="2.5"/>
+</svg>
+      <figcaption>1本の辺は2枚の面で、1つの頂点は3枚の面で共有されている。平らに並べると12°のすき間ができる</figcaption>
+    </figure>
+
+    <h2>頂点 − 辺 + 面 = 2</h2>
+    <p>ここで、頂点 − 辺 + 面 を計算してみよう。</p>
+    <p><strong>60 − 90 + 32 = 2</strong></p>
+    <p>ぴったり2になった。これは偶然ではない。サイコロ（立方体）なら頂点8・辺12・面6で、8 − 12 + 6 = 2。三角柱なら頂点6・辺9・面5で、6 − 9 + 5 = 2。へこみや穴のない多面体なら、どんな形でも必ず2になる。これを<strong>オイラーの多面体定理</strong>という。18世紀の数学者オイラーが見つけた性質で、数学Aの空間図形で習う。</p>
+
+    <div class="try-box">
+      <span class="try-label">やってみよう</span>
+      <p>ティッシュ箱やお菓子の箱など身の回りの箱や、四角すい・六角柱の頂点・辺・面を数えて、頂点 − 辺 + 面 を計算してみよう。いつも2になるだろうか。</p>
+    </div>
+
+    <h2>五角形が12枚になる理由</h2>
+    <p>では本題だ。五角形と六角形だけを使い、どの頂点にも3枚の面が集まるようにボールを作るとする。五角形を p 枚、六角形を h 枚とすると、さっきと同じ考え方で</p>
+
+    <table class="calc-table">
+      <tr><td>面</td><td>p + h</td></tr>
+      <tr><td>辺</td><td>(5p + 6h) ÷ 2</td></tr>
+      <tr><td>頂点</td><td>(5p + 6h) ÷ 3</td></tr>
+    </table>
+
+    <p>これをオイラーの多面体定理「頂点 − 辺 + 面 = 2」に入れる。分母をそろえて6倍すると</p>
+    <p>2(5p + 6h) − 3(5p + 6h) + 6(p + h) = 12</p>
+    <p>左辺を整理すると、10p + 12h − 15p − 18h + 6p + 6h = <strong>p</strong>。なんと h が消えてしまい、<strong>p = 12</strong> になる。</p>
+    <p>つまり、六角形を何枚にしても、こういうボールが作れるなら<strong>五角形は必ず12枚</strong>なのだ。六角形は「平らに敷き詰められる形」なので、いくら増やしても丸くはならない。球のように閉じるための「曲がり」は、12枚の五角形が受け持っている。</p>
+
+    <div class="try-box">
+      <span class="try-label">まず予想しよう</span>
+      <p>六角形を0枚にしたら、どんな立体になるだろうか。五角形12枚だけでできる立体を思い浮かべてみよう。（答え：正十二面体。頂点20・辺30・面12で、20 − 30 + 12 = 2 になる）</p>
+    </div>
+
+    <h2>授業のその先</h2>
+    <p>この「五角形12枚・六角形20枚」の形は、自然の中にもある。炭素原子60個がサッカーボールの頂点の位置に並んだ分子「C60（フラーレン）」だ。1985年に見つかり、発見した3人の科学者は1996年にノーベル化学賞を受けた。名前は、球形のドーム建築で知られる建築家バックミンスター・フラーにちなんでいる。</p>
+    <p>一方、最近のワールドカップのボールは、パネルの数がどんどん減っている。2006年大会は14枚、2010年大会は8枚、2026年大会のボール「トリオンダ」は4枚だ。縫い目を減らして形をより球に近づけるためで、パネルの形も五角形や六角形ではなくなった。それでも、32枚のボールを見たら思い出してほしい。あの12枚の五角形は、数学が決めた枚数なのだ。</p>
+
+    <div class="try-box">
+      <span class="try-label">考えてみよう</span>
+      <p>学校にあるサッカーボールやバレーボール、ハンドボールのパネルを観察してみよう。五角形・六角形のボールなら、本当に五角形は12枚あるだろうか。</p>
+    </div>
+
+  </div>
+
+  <div class="series-nav">
+    <a href="sonosaki-01.html">&larr; 前の回へ：コンセントの電気は「sin のグラフ」だった</a>
+    <span></span>
+  </div>
+
+  <div class="article-footer">
+    <a class="back-link" href="../">&larr; 数学演習室に戻る</a>
+  </div>
+
+</article>
+
+</body>
+</html>
+
+</body></html>
