@@ -139,7 +139,7 @@ section.blk{scroll-margin-top:calc(110px + env(safe-area-inset-top));margin:18px
 /* =====================================================================
    アプリの一覧(ここに1行足すだけで、正しい場所に出る)
    g    : 学年 1=数学I 2=数学II 3=数学A 0=全学年共通(おまけ・コラム)
-   k    : 種類 daily=毎日3分数学 kousa=考査対策 test=小テスト extra=おまけ column=コラム
+   k    : 種類 daily=毎日3分数学 slide=授業スライド kousa=考査対策 test=小テスト extra=おまけ column=コラム
    n    : 小テストの番号(番号の大きいものが「今の単元」の上に来る)
    old  : true にすると「これまでの小テスト」(開閉式)に入る
    group: コラムのシリーズ名
@@ -147,6 +147,7 @@ section.blk{scroll-margin-top:calc(110px + env(safe-area-inset-top));margin:18px
    ===================================================================== */
 const APPS = [
   {"g": 1, "k": "daily", "tag": "毎日3分・習慣化", "name": "毎日3分数学", "desc": "2次方程式・2次不等式・データの分析を、毎日5問ずつ入力式で復習する。", "href": "https://t-immr9.github.io/daily-math-drill-1/"},
+  {"g": 1, "k": "slide", "tag": "授業スライド", "name": "授業スライド（データの分析）", "desc": "授業で使っているスライドです。開くにはパスワードが必要です（Teamsで連絡します）。", "href": "https://t-immr9.github.io/suu1-slides/"},
   {"g": 1, "k": "kousa", "tag": "考査対策", "name": "1学期中間対策", "href": "https://t-immr9.github.io/kousa-taisaku/suu1/00_1gakki_chuukan.html"},
   {"g": 1, "k": "kousa", "tag": "考査対策", "name": "1学期期末対策", "href": "https://t-immr9.github.io/kousa-taisaku/suu1/01_1gakki_kimatsu.html"},
   {"g": 1, "k": "kousa", "tag": "考査対策・ランダム", "name": "1学期期末対策 ランダム", "href": "https://t-immr9.github.io/kousa-taisaku/suu1/02_1gakki_kimatsu_random.html"},
@@ -256,7 +257,7 @@ const GRADES = {
   }
 
   function row(a, badge){
-    const left = a.k === 'test' ? '<span class="num">' + esc(a.n) + '</span>' : '<span class="num k">' + (a.k === 'kousa' ? '対策' : a.k === 'daily' ? '毎日' : a.k === 'column' ? '読む' : '練習') + '</span>';
+    const left = a.k === 'test' ? '<span class="num">' + esc(a.n) + '</span>' : '<span class="num k">' + (a.k === 'kousa' ? '対策' : a.k === 'slide' ? '授業' : a.k === 'daily' ? '毎日' : a.k === 'column' ? '読む' : '練習') + '</span>';
     return '<li><a class="row" href="' + esc(a.href) + '"' + tgt(a.href) + '>' + left +
       '<span class="t">' + esc(a.name) + '<span class="m">' + esc(a.tag || '') + (a.desc ? ' ・ ' + esc(a.desc) : '') + '</span></span>' +
       (badge ? '<span class="new">' + badge + '</span>' : chev) + '</a></li>';
@@ -299,7 +300,8 @@ const GRADES = {
     const now = mine.filter(a => a.k === 'test' && !a.old).sort((p, q) => num(q) - num(p));
     const past = mine.filter(a => a.k === 'test' && a.old).sort((p, q) => num(p) - num(q));
     const kousa = mine.filter(a => a.k === 'kousa').reverse();
-    return { mine, common, now, past, kousa, extra: common.filter(a => a.k === 'extra'), cols: common.filter(a => a.k === 'column') };
+    const slides = mine.filter(a => a.k === 'slide');
+    return { mine, common, now, past, kousa, slides, extra: common.filter(a => a.k === 'extra'), cols: common.filter(a => a.k === 'column') };
   }
 
   function render(g){
@@ -315,6 +317,7 @@ const GRADES = {
     const L = lists(g), G = GRADES[g];
     const blocks = [];
     blocks.push(['now', '今の単元', '<p class="note">' + esc(G.term) + '。新しい順。</p>' + (L.now.length ? '<ul class="rows">' + L.now.map((a, i) => row(a, i === 0 ? '最新' : '')).join('') + '</ul>' : '<div class="empty">今学期の小テストは、まだありません。</div>')]);
+    if (L.slides.length) blocks.push(['slides', '授業スライド', '<p class="note">授業のスライドを見返せます。</p><ul class="rows">' + L.slides.map(a => row(a)).join('') + '</ul>']);
     if (L.kousa.length) blocks.push(['exam', 'テスト対策', '<p class="note">考査対策アプリ。新しい順。</p><ul class="rows">' + L.kousa.map(a => row(a)).join('') + '</ul>']);
     if (L.past.length) blocks.push(['past', 'これまで', '<button type="button" class="acc-btn" aria-expanded="false">過去の小テスト ' + esc(L.past[0].n) + '〜' + esc(L.past[L.past.length - 1].n) + '(' + L.past.length + '個)' + '<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="acc"><div><ul class="rows">' + L.past.map(a => row(a)).join('') + '</ul></div></div>']);
     if (L.extra.length || L.cols.length) blocks.push(['more', 'おまけ・コラム', '<p class="note">授業の範囲とは別の、トレーニングと読みもの。横にスクロールできます。</p>' +
