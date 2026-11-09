@@ -68,6 +68,10 @@ button{font:inherit;color:inherit}
 .today.done .go{background:var(--ok);box-shadow:0 8px 18px -10px var(--ok)}
 .today.plain{grid-template-columns:1fr}
 .today>.go{grid-column:1/-1;width:100%}
+/* 授業スライド(今日の3分のすぐ下に、同じ大きさのカードで出す) */
+.today.slidecard{margin-top:12px}
+.slidecard .today-status{font-size:1.2rem}
+.go.outline{background:transparent;color:var(--accent);border:2px solid var(--accent);box-shadow:none}
 
 /* さがす */
 .search{position:relative;margin:16px 0 4px}
@@ -140,8 +144,10 @@ section.blk{scroll-margin-top:calc(110px + env(safe-area-inset-top));margin:18px
    アプリの一覧(ここに1行足すだけで、正しい場所に出る)
    g    : 学年 1=数学I 2=数学II 3=数学A 0=全学年共通(おまけ・コラム)
    k    : 種類 daily=毎日3分数学 slide=授業スライド kousa=考査対策 test=小テスト extra=おまけ column=コラム
-   n    : 小テストの番号(番号の大きいものが「今の単元」の上に来る)
-   old  : true にすると「これまでの小テスト」(開閉式)に入る
+   n    : 小テストの番号(学期の中で番号の大きいものが上に来る)
+   t    : 小テストの学期 2 / 3(書かなければリンク先の名前で決まる：…3gakki… は3学期、ほかは2学期)
+          「確認小テスト」は学期ごとの開閉式で、今の学期だけが開く(1〜3月は3学期、ほかは2学期)
+   old  : (今は使っていない。学期の開閉式になったため)
    group: コラムのシリーズ名
    tag / name / desc / href : 小見出し・名前・説明・リンク先
    ===================================================================== */
@@ -206,7 +212,7 @@ const APPS = [
   {"g": 2, "k": "test", "n": "25", "tag": "小テスト", "name": "常用対数（1）", "href": "https://t-immr9.github.io/suu2-2gakki-syoutest/25_jouyoutaisuu1.html"},
   {"g": 2, "k": "test", "n": "26", "tag": "小テスト", "name": "常用対数（2）", "href": "https://t-immr9.github.io/suu2-2gakki-syoutest/26_jouyoutaisuu2.html"},
   {"g": 3, "k": "daily", "tag": "毎日3分・習慣化", "name": "毎日3分数学", "desc": "円の性質(接線と弦・方べき・2つの円)と空間図形を、図を見ながら毎日5問ずつ入力式で復習する。", "href": "https://t-immr9.github.io/daily-math-drill-3/"},
-  {"g": 3, "k": "slide", "tag": "授業スライド", "name": "授業スライド（図形の性質）", "desc": "授業で使っているスライドです。開くにはパスワードが必要です（Teamsで連絡します）。", "href": "https://t-immr9.github.io/suuA-slides/"},
+  {"g": 3, "k": "slide", "tag": "授業スライド", "name": "授業スライド", "desc": "授業で使っているスライドです。開くにはパスワードが必要です（Teamsで連絡します）。", "href": "https://t-immr9.github.io/suuA-slides/"},
   {"g": 3, "k": "kousa", "tag": "考査対策", "name": "1学期中間対策", "href": "https://t-immr9.github.io/kousa-taisaku/suuA/00_1gakki_chuukan.html"},
   {"g": 3, "k": "kousa", "tag": "考査対策", "name": "1学期期末対策", "href": "https://t-immr9.github.io/kousa-taisaku/suuA/01_1gakki_kimatsu_main.html"},
   {"g": 3, "k": "kousa", "tag": "考査対策", "name": "1学期期末対策 II", "href": "https://t-immr9.github.io/kousa-taisaku/suuA/02_1gakki_kimatsu_random.html"},
@@ -248,6 +254,9 @@ const GRADES = {
   const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   const tgt = h => /^https?:/.test(h) ? ' target="_blank" rel="noopener noreferrer"' : '';
   const num = a => parseInt(a.n, 10) || 0;
+  const termOf = a => +(a.t || (/3gakki/.test(a.href) ? 3 : 2));
+  const CUR = (new Date().getMonth() + 1) <= 3 ? 3 : 2;   // 今の学期(1〜3月は3学期)
+  const TERMS = [2, 3];
   const chev = '<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   const pad = n => String(n).padStart(2, '0');
   const ymd = o => { const d = new Date(Date.now() + o * 864e5); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); };
@@ -274,7 +283,7 @@ const GRADES = {
     const G = GRADES[g], daily = mine.find(a => a.k === 'daily');
     const d = new Date(), wd = '日月火水木金土'[d.getDay()], date = (d.getMonth() + 1) + '月' + d.getDate() + '日(' + wd + ')';
     if (!daily) {
-      const latest = mine.filter(a => a.k === 'test' && !a.old).sort((p, q) => num(q) - num(p))[0];
+      const latest = mine.filter(a => a.k === 'test' && termOf(a) === CUR).sort((p, q) => num(q) - num(p))[0];
       if (!latest) return '';
       return '<section class="today plain"><div><p class="today-date">' + date + '</p><p class="today-status">いちばん新しい小テスト</p><p class="today-sub">' + esc(latest.n) + '　' + esc(latest.name) + '</p>' +
         '<a class="go" href="' + esc(latest.href) + '"' + tgt(latest.href) + '>小テストをひらく</a></div></section>';
@@ -303,11 +312,10 @@ const GRADES = {
 
   function lists(g){
     const mine = APPS.filter(a => a.g === +g), common = APPS.filter(a => a.g === 0);
-    const now = mine.filter(a => a.k === 'test' && !a.old).sort((p, q) => num(q) - num(p));
-    const past = mine.filter(a => a.k === 'test' && a.old).sort((p, q) => num(p) - num(q));
+    const byTerm = {}; TERMS.forEach(t => { byTerm[t] = mine.filter(a => a.k === 'test' && termOf(a) === t).sort((p, q) => num(q) - num(p)); });
     const kousa = mine.filter(a => a.k === 'kousa').reverse();
     const slides = mine.filter(a => a.k === 'slide');
-    return { mine, common, now, past, kousa, slides, extra: common.filter(a => a.k === 'extra'), cols: common.filter(a => a.k === 'column') };
+    return { mine, common, byTerm, kousa, slides, extra: common.filter(a => a.k === 'extra'), cols: common.filter(a => a.k === 'column') };
   }
 
   function render(g){
@@ -322,14 +330,18 @@ const GRADES = {
     }
     const L = lists(g), G = GRADES[g];
     const blocks = [];
-    blocks.push(['now', '今の単元', '<p class="note">' + esc(G.term) + '。新しい順。</p>' + (L.now.length ? '<ul class="rows">' + L.now.map((a, i) => row(a, i === 0 ? '最新' : '')).join('') + '</ul>' : '<div class="empty">今学期の小テストは、まだありません。</div>')]);
-    if (L.slides.length) blocks.push(['slides', '授業スライド', '<p class="note">授業のスライドを見返せます。</p><ul class="rows">' + L.slides.map(a => row(a)).join('') + '</ul>']);
+    const down = '<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    blocks.push(['tests', '確認小テスト', '<p class="note">学期ごとに、新しい順。学期の見出しをタップすると開いたり閉じたりできます。</p>' +
+      TERMS.map(t => { const A = L.byTerm[t], o = t === CUR;
+        return '<button type="button" class="acc-btn term-btn" aria-expanded="' + o + '">' + t + '学期' + (A.length ? '(' + A.length + '個)' : '') + down + '</button>' +
+          '<div class="acc' + (o ? ' open' : '') + '"><div>' + (A.length ? '<ul class="rows">' + A.map((a, i) => row(a, o && i === 0 ? '最新' : '')).join('') + '</ul>' : '<div class="empty" style="margin-top:10px">' + t + '学期の小テストは、まだありません。</div>') + '</div></div>'; }).join('')]);
     if (L.kousa.length) blocks.push(['exam', 'テスト対策', '<p class="note">考査対策アプリ。新しい順。</p><ul class="rows">' + L.kousa.map(a => row(a)).join('') + '</ul>']);
-    if (L.past.length) blocks.push(['past', 'これまで', '<button type="button" class="acc-btn" aria-expanded="false">過去の小テスト ' + esc(L.past[0].n) + '〜' + esc(L.past[L.past.length - 1].n) + '(' + L.past.length + '個)' + '<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="acc"><div><ul class="rows">' + L.past.map(a => row(a)).join('') + '</ul></div></div>']);
     if (L.extra.length || L.cols.length) blocks.push(['more', 'おまけ・コラム', '<p class="note">授業の範囲とは別の、トレーニングと読みもの。横にスクロールできます。</p>' +
       (L.extra.length ? '<div class="shelf">' + L.extra.map(tile).join('') + '</div>' : '') +
       [...new Set(L.cols.map(a => a.group))].map(gr => '<p class="shelf-label">' + esc(gr) + '</p><div class="shelf">' + L.cols.filter(a => a.group === gr).map(tile).join('') + '</div>').join('')]);
-    app.innerHTML = today(g, L.mine) +
+    const slideCards = L.slides.map(a => '<section class="today plain slidecard"><div><p class="today-date">' + esc(a.tag || '授業スライド') + '</p><p class="today-status">' + esc(a.name.replace('授業スライド', '').replace(/[（）()]/g, '') || '授業のスライドを見返そう') + '</p><p class="today-sub">' + esc(a.desc || '') + '</p></div>' +
+      '<a class="go outline" href="' + esc(a.href) + '"' + tgt(a.href) + '>授業スライドをひらく</a></section>').join('');
+    app.innerHTML = today(g, L.mine) + slideCards +
       '<div class="search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4" stroke-linecap="round"/></svg><input type="search" id="q" placeholder="さがす(例:不等式、期末)" aria-label="小テストやアプリをさがす"></div>' +
       '<nav class="chips" aria-label="ページ内の移動">' + blocks.map(b => '<button type="button" data-to="' + b[0] + '">' + b[1] + '</button>').join('') + '</nav>' +
       '<div id="lists">' + blocks.map(b => '<section class="blk" id="' + b[0] + '"><h2>' + b[1] + '</h2>' + b[2] + '</section>').join('') + '</div><div id="found" hidden></div>';
@@ -337,8 +349,7 @@ const GRADES = {
   }
 
   function wire(g, L){
-    const acc = app.querySelector('.acc-btn');
-    if (acc) acc.addEventListener('click', () => { const o = acc.getAttribute('aria-expanded') !== 'true'; acc.setAttribute('aria-expanded', o); acc.nextElementSibling.classList.toggle('open', o); });
+    app.querySelectorAll('.acc-btn').forEach(acc => acc.addEventListener('click', () => { const o = acc.getAttribute('aria-expanded') !== 'true'; acc.setAttribute('aria-expanded', o); acc.nextElementSibling.classList.toggle('open', o); }));
     const chips = [...app.querySelectorAll('.chips button')];
     chips.forEach(c => c.addEventListener('click', () => document.getElementById(c.dataset.to).scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' })));
     if ('IntersectionObserver' in window) {
