@@ -148,12 +148,13 @@ section.blk{scroll-margin-top:calc(110px + env(safe-area-inset-top));margin:18px
    t    : 小テストの学期 2 / 3(書かなければリンク先の名前で決まる：…3gakki… は3学期、ほかは2学期)
           「確認小テスト」は学期ごとの開閉式で、今の学期だけが開く(1〜3月は3学期、ほかは2学期)
    old  : (今は使っていない。学期の開閉式になったため)
+   hide : true にすると表示しない(一時的に閉じるとき。消さずに残しておき、false にすれば元に戻る)
    group: コラムのシリーズ名
    tag / name / desc / href : 小見出し・名前・説明・リンク先
    ===================================================================== */
 const APPS = [
   {"g": 1, "k": "daily", "tag": "毎日3分・習慣化", "name": "毎日3分数学", "desc": "2次方程式・2次不等式・データの分析を、毎日5問ずつ入力式で復習する。", "href": "https://t-immr9.github.io/daily-math-drill-1/"},
-  {"g": 1, "k": "slide", "tag": "授業スライド", "name": "授業スライド（データの分析）", "desc": "授業で使っているスライドです。開くにはパスワードが必要です（Teamsで連絡します）。", "href": "https://t-immr9.github.io/suu1-slides/"},
+  {"g": 1, "k": "slide", "hide": true, "tag": "授業スライド", "name": "授業スライド（データの分析）", "desc": "授業で使っているスライドです。開くにはパスワードが必要です（Teamsで連絡します）。", "href": "https://t-immr9.github.io/suu1-slides/"},
   {"g": 1, "k": "kousa", "tag": "考査対策", "name": "1学期中間対策", "href": "https://t-immr9.github.io/kousa-taisaku/suu1/00_1gakki_chuukan.html"},
   {"g": 1, "k": "kousa", "tag": "考査対策", "name": "1学期期末対策", "href": "https://t-immr9.github.io/kousa-taisaku/suu1/01_1gakki_kimatsu.html"},
   {"g": 1, "k": "kousa", "tag": "考査対策・ランダム", "name": "1学期期末対策 ランダム", "href": "https://t-immr9.github.io/kousa-taisaku/suu1/02_1gakki_kimatsu_random.html"},
@@ -178,7 +179,7 @@ const APPS = [
   {"g": 1, "k": "test", "n": "18", "tag": "小テスト", "name": "データの相関", "href": "https://t-immr9.github.io/suu1-2gakki-syoutest/18_de-tanosoukan.html"},
   {"g": 1, "k": "test", "n": "19", "tag": "小テスト", "name": "仮説検定の考え方", "href": "https://t-immr9.github.io/suu1-2gakki-syoutest/19_kasetsukentei.html"},
   {"g": 2, "k": "daily", "tag": "毎日3分・習慣化", "name": "毎日3分数学", "desc": "三角関数(有名角・加法定理・2倍角・合成)と指数を、毎日5問ずつ入力式で復習する。", "href": "https://t-immr9.github.io/daily-math-drill/"},
-  {"g": 2, "k": "slide", "tag": "授業スライド", "name": "授業スライド（指数関数と対数関数）", "desc": "授業で使っているスライドです。開くにはパスワードが必要です（Teamsで連絡します）。", "href": "https://t-immr9.github.io/suu2-slides/"},
+  {"g": 2, "k": "slide", "hide": true, "tag": "授業スライド", "name": "授業スライド（指数関数と対数関数）", "desc": "授業で使っているスライドです。開くにはパスワードが必要です（Teamsで連絡します）。", "href": "https://t-immr9.github.io/suu2-slides/"},
   {"g": 2, "k": "kousa", "tag": "考査対策", "name": "1学期中間対策", "href": "https://t-immr9.github.io/kousa-taisaku/suu2/00_1gakki_chuukan.html"},
   {"g": 2, "k": "kousa", "tag": "考査対策", "name": "1学期中間対策 II", "href": "https://t-immr9.github.io/kousa-taisaku/suu2/01_1gakki_chuukan2.html"},
   {"g": 2, "k": "kousa", "tag": "考査対策", "name": "1学期期末対策", "href": "https://t-immr9.github.io/kousa-taisaku/suu2/03_1gakki_kimatsu_main.html"},
@@ -212,7 +213,7 @@ const APPS = [
   {"g": 2, "k": "test", "n": "25", "tag": "小テスト", "name": "常用対数（1）", "href": "https://t-immr9.github.io/suu2-2gakki-syoutest/25_jouyoutaisuu1.html"},
   {"g": 2, "k": "test", "n": "26", "tag": "小テスト", "name": "常用対数（2）", "href": "https://t-immr9.github.io/suu2-2gakki-syoutest/26_jouyoutaisuu2.html"},
   {"g": 3, "k": "daily", "tag": "毎日3分・習慣化", "name": "毎日3分数学", "desc": "円の性質(接線と弦・方べき・2つの円)と空間図形を、図を見ながら毎日5問ずつ入力式で復習する。", "href": "https://t-immr9.github.io/daily-math-drill-3/"},
-  {"g": 3, "k": "slide", "tag": "授業スライド", "name": "授業スライド", "desc": "授業で使っているスライドです。開くにはパスワードが必要です（Teamsで連絡します）。", "href": "https://t-immr9.github.io/suuA-slides/"},
+  {"g": 3, "k": "slide", "hide": true, "tag": "授業スライド", "name": "授業スライド", "desc": "授業で使っているスライドです。開くにはパスワードが必要です（Teamsで連絡します）。", "href": "https://t-immr9.github.io/suuA-slides/"},
   {"g": 3, "k": "kousa", "tag": "考査対策", "name": "1学期中間対策", "href": "https://t-immr9.github.io/kousa-taisaku/suuA/00_1gakki_chuukan.html"},
   {"g": 3, "k": "kousa", "tag": "考査対策", "name": "1学期期末対策", "href": "https://t-immr9.github.io/kousa-taisaku/suuA/01_1gakki_kimatsu_main.html"},
   {"g": 3, "k": "kousa", "tag": "考査対策", "name": "1学期期末対策 II", "href": "https://t-immr9.github.io/kousa-taisaku/suuA/02_1gakki_kimatsu_random.html"},
@@ -311,7 +312,8 @@ const GRADES = {
   }
 
   function lists(g){
-    const mine = APPS.filter(a => a.g === +g), common = APPS.filter(a => a.g === 0);
+    const shown = APPS.filter(a => !a.hide);
+    const mine = shown.filter(a => a.g === +g), common = shown.filter(a => a.g === 0);
     const byTerm = {}; TERMS.forEach(t => { byTerm[t] = mine.filter(a => a.k === 'test' && termOf(a) === t).sort((p, q) => num(q) - num(p)); });
     const kousa = mine.filter(a => a.k === 'kousa').reverse();
     const slides = mine.filter(a => a.k === 'slide');
