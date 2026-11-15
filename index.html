@@ -33,6 +33,7 @@ button{font:inherit;color:inherit}
 .seg button[aria-pressed="true"]{color:#fff}
 .seg-ind{position:absolute;top:3px;bottom:3px;left:3px;width:calc((100% - 6px)/3);border-radius:999px;background:var(--accent);transition:transform .35s cubic-bezier(.2,.8,.2,1),opacity .2s;opacity:0}
 .seg[data-g] .seg-ind{opacity:1}
+@media (max-width:350px){.brand{font-size:1rem;gap:6px}.seg{min-width:156px}}
 
 /* 画面の切り替え */
 #app{transition:opacity .22s,transform .22s}
@@ -50,31 +51,29 @@ button{font:inherit;color:inherit}
 .choose-list small{display:block;color:var(--sub);font-size:.85rem;font-weight:400}
 
 /* 今日の3分(このページのいちばん大事な場所) */
-.today{margin:20px 0 8px;background:var(--card);border:1px solid var(--line);border-radius:24px;padding:20px;box-shadow:var(--shadow);display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
-.dial{position:relative;width:118px;height:118px}
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0 6px}
+.hero.one{grid-template-columns:1fr}
+.today{min-width:0;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:12px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:4px}
+.dial{position:relative;width:76px;height:76px;margin:2px auto 4px}
 .dial svg{width:100%;height:100%;transform:rotate(-90deg)}
 .dial .bg{fill:none;stroke:var(--line);stroke-width:10}
 .dial .fg{fill:none;stroke:var(--accent);stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1.1s cubic-bezier(.2,.8,.2,1)}
 .today.done .dial .fg{stroke:var(--ok)}
 .dial-c{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
-.dial-c b{font:900 2.3rem/1 var(--head)}
-.dial-c small{font-size:.75rem;color:var(--sub)}
-.today-date{font:700 .9rem/1.4 var(--head);color:var(--sub);margin:0}
-.today-status{font:900 1.35rem/1.35 var(--head);margin:2px 0 4px}
-.today.plain .today-sub{margin-bottom:12px}
-.today-sub{font-size:.88rem;color:var(--sub);margin:0}
-.go{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--accent);color:#fff;font:700 1rem/1 var(--head);padding:14px 20px;border-radius:14px;box-shadow:0 8px 18px -10px var(--accent);transition:transform .12s,filter .2s}
+.dial-c b{font:900 1.5rem/1 var(--head)}
+.dial-c small{font-size:.62rem;color:var(--sub)}
+.today-date{font:700 .8rem/1.4 var(--head);color:var(--sub);margin:0}
+.today-status{font:900 clamp(.98rem,4.3vw,1.15rem)/1.35 var(--head);margin:0}
+.today-sub{font-size:.78rem;line-height:1.55;color:var(--sub);margin:0 0 6px}
+.go{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--accent);color:#fff;font:700 clamp(.75rem,3.7vw,.9rem)/1 var(--head);padding:13px 4px;border-radius:12px;box-shadow:0 8px 18px -10px var(--accent);transition:transform .12s,filter .2s;white-space:nowrap}
 .go:active{transform:scale(.97)}
 .today.done .go{background:var(--ok);box-shadow:0 8px 18px -10px var(--ok)}
-.today.plain{grid-template-columns:1fr}
-.today>.go{grid-column:1/-1;width:100%}
-/* 授業スライド(今日の3分のすぐ下に、同じ大きさのカードで出す) */
-.today.slidecard{margin-top:12px}
-.slidecard .today-status{font-size:1.2rem}
+.today>.go{width:100%;margin-top:auto}
+/* 授業スライド(今日の3分のとなりに、同じ高さのカードで出す) */
 .go.outline{background:transparent;color:var(--accent);border:2px solid var(--accent);box-shadow:none}
 
 /* さがす */
-.search{position:relative;margin:16px 0 4px}
+.search{position:relative;margin:10px 0 2px}
 .search input{width:100%;font:500 1rem/1.4 var(--body);color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px 14px 13px 42px;appearance:none}
 .search input::placeholder{color:var(--sub)}
 .search svg{position:absolute;left:14px;top:50%;width:18px;height:18px;transform:translateY(-50%);stroke:var(--sub);fill:none;stroke-width:2.2}
@@ -103,7 +102,8 @@ section.blk{scroll-margin-top:calc(110px + env(safe-area-inset-top));margin:18px
 @keyframes ping{to{box-shadow:0 0 0 8px transparent}}
 .chev{width:18px;height:18px;stroke:var(--sub);fill:none;stroke-width:2.2}
 
-/* これまでの小テスト(開閉) */
+/* 開閉(小テストの学期、過去の考査対策) */
+.acc-btn+.acc+.acc-btn,.rows+.acc-btn,.empty+.acc-btn{margin-top:8px}
 .acc-btn{width:100%;display:flex;justify-content:space-between;align-items:center;background:var(--card);border:1px dashed var(--line);border-radius:16px;padding:14px 16px;cursor:pointer;font-weight:700}
 .acc-btn .chev{transition:transform .3s}
 .acc-btn[aria-expanded="true"] .chev{transform:rotate(180deg)}
@@ -144,9 +144,12 @@ section.blk{scroll-margin-top:calc(110px + env(safe-area-inset-top));margin:18px
    アプリの一覧(ここに1行足すだけで、正しい場所に出る)
    g    : 学年 1=数学I 2=数学II 3=数学A 0=全学年共通(おまけ・コラム)
    k    : 種類 daily=毎日3分数学 slide=授業スライド kousa=考査対策 test=小テスト extra=おまけ column=コラム
+   e    : 考査対策がどの考査のものか(下の SCHEDULE の exams にある名前。例 "2学期期末")
+          今の考査のカードだけが「テスト対策」に出て、ほかの考査のカードは「過去の考査対策」に折りたたまれる
+          e を書かないカードは、いつも出る(SPI など、考査と関係ないもの)
    n    : 小テストの番号(学期の中で番号の大きいものが上に来る)
    t    : 小テストの学期 2 / 3(書かなければリンク先の名前で決まる：…3gakki… は3学期、ほかは2学期)
-          「確認小テスト」は学期ごとの開閉式で、今の学期だけが開く(1〜3月は3学期、ほかは2学期)
+          「確認小テスト」は学期ごとの開閉式で、初めはどれも閉じている。今の学期のいちばん新しいものに「最新」が付く
    old  : (今は使っていない。学期の開閉式になったため)
    hide : true にすると表示しない(一時的に閉じるとき。消さずに残しておき、false にすれば元に戻る)
    group: コラムのシリーズ名
@@ -155,12 +158,12 @@ section.blk{scroll-margin-top:calc(110px + env(safe-area-inset-top));margin:18px
 const APPS = [
   {"g": 1, "k": "daily", "tag": "毎日3分・習慣化", "name": "毎日3分数学", "desc": "2次方程式・2次不等式・データの分析を、毎日5問ずつ入力式で復習する。", "href": "https://t-immr9.github.io/daily-math-drill-1/"},
   {"g": 1, "k": "slide", "tag": "授業スライド", "name": "授業スライド（データの分析）", "desc": "授業で使っているスライドです。開くにはパスワードが必要です（Teamsで連絡します）。", "href": "https://t-immr9.github.io/suu1-slides/"},
-  {"g": 1, "k": "kousa", "tag": "考査対策", "name": "1学期中間対策", "href": "https://t-immr9.github.io/kousa-taisaku/suu1/00_1gakki_chuukan.html"},
-  {"g": 1, "k": "kousa", "tag": "考査対策", "name": "1学期期末対策", "href": "https://t-immr9.github.io/kousa-taisaku/suu1/01_1gakki_kimatsu.html"},
-  {"g": 1, "k": "kousa", "tag": "考査対策・ランダム", "name": "1学期期末対策 ランダム", "href": "https://t-immr9.github.io/kousa-taisaku/suu1/02_1gakki_kimatsu_random.html"},
-  {"g": 1, "k": "kousa", "tag": "考査対策", "name": "2学期中間対策", "href": "https://t-immr9.github.io/kousa-taisaku/suu1/math1_2gakki_chukan_taisaku.html"},
-  {"g": 1, "k": "kousa", "tag": "考査対策・RPG", "name": "2学期期末対策 すうがくRPG", "href": "https://t-immr9.github.io/math-rpg/?course=suu1-2gakki-kimatsu"},
-  {"g": 1, "k": "kousa", "tag": "考査対策・ペット", "name": "2学期期末対策 すうがくペット", "desc": "キャラクターを育てながら、毎日3分の復習", "href": "https://t-immr9.github.io/math-rpg/pet.html?course=suu1-2gakki-kimatsu"},
+  {"g": 1, "k": "kousa", "e": "1学期中間", "tag": "考査対策", "name": "1学期中間対策", "href": "https://t-immr9.github.io/kousa-taisaku/suu1/00_1gakki_chuukan.html"},
+  {"g": 1, "k": "kousa", "e": "1学期期末", "tag": "考査対策", "name": "1学期期末対策", "href": "https://t-immr9.github.io/kousa-taisaku/suu1/01_1gakki_kimatsu.html"},
+  {"g": 1, "k": "kousa", "e": "1学期期末", "tag": "考査対策・ランダム", "name": "1学期期末対策 ランダム", "href": "https://t-immr9.github.io/kousa-taisaku/suu1/02_1gakki_kimatsu_random.html"},
+  {"g": 1, "k": "kousa", "e": "2学期中間", "tag": "考査対策", "name": "2学期中間対策", "href": "https://t-immr9.github.io/kousa-taisaku/suu1/math1_2gakki_chukan_taisaku.html"},
+  {"g": 1, "k": "kousa", "e": "2学期期末", "tag": "考査対策・RPG", "name": "2学期期末対策 すうがくRPG", "href": "https://t-immr9.github.io/math-rpg/?course=suu1-2gakki-kimatsu"},
+  {"g": 1, "k": "kousa", "e": "2学期期末", "tag": "考査対策・ペット", "name": "2学期期末対策 すうがくペット", "desc": "キャラクターを育てながら、毎日3分の復習", "href": "https://t-immr9.github.io/math-rpg/pet.html?course=suu1-2gakki-kimatsu"},
   {"g": 1, "k": "test", "n": "01", "old": true, "tag": "小テスト", "name": "関数とグラフ", "href": "https://t-immr9.github.io/suu1-2gakki-syoutest/01_kansuu_kansuutogurafu.html"},
   {"g": 1, "k": "test", "n": "02", "old": true, "tag": "小テスト", "name": "y=ax², y=ax²+qのグラフ", "href": "https://t-immr9.github.io/suu1-2gakki-syoutest/02_y%3Dax%5E2nogurafu_y%3Dax%5E2%2Bqnogurafu.html"},
   {"g": 1, "k": "test", "n": "03", "old": true, "tag": "小テスト", "name": "y=a(x-p)², y=a(x-p)²+qのグラフ", "href": "https://t-immr9.github.io/suu1-2gakki-syoutest/03_y%3Da%28x-p%29%5E2nogurafu_y%3Da%28x-p%29%5E2%2Bqnogurafu.html"},
@@ -182,13 +185,13 @@ const APPS = [
   {"g": 1, "k": "test", "n": "19", "tag": "小テスト", "name": "仮説検定の考え方", "href": "https://t-immr9.github.io/suu1-2gakki-syoutest/19_kasetsukentei.html"},
   {"g": 2, "k": "daily", "tag": "毎日3分・習慣化", "name": "毎日3分数学", "desc": "三角関数(有名角・加法定理・2倍角・合成)と指数を、毎日5問ずつ入力式で復習する。", "href": "https://t-immr9.github.io/daily-math-drill/"},
   {"g": 2, "k": "slide", "tag": "授業スライド", "name": "授業スライド（指数関数と対数関数）", "desc": "授業で使っているスライドです。開くにはパスワードが必要です（Teamsで連絡します）。", "href": "https://t-immr9.github.io/suu2-slides/"},
-  {"g": 2, "k": "kousa", "tag": "考査対策", "name": "1学期中間対策", "href": "https://t-immr9.github.io/kousa-taisaku/suu2/00_1gakki_chuukan.html"},
-  {"g": 2, "k": "kousa", "tag": "考査対策", "name": "1学期中間対策 II", "href": "https://t-immr9.github.io/kousa-taisaku/suu2/01_1gakki_chuukan2.html"},
-  {"g": 2, "k": "kousa", "tag": "考査対策", "name": "1学期期末対策", "href": "https://t-immr9.github.io/kousa-taisaku/suu2/03_1gakki_kimatsu_main.html"},
-  {"g": 2, "k": "kousa", "tag": "考査対策", "name": "1学期期末対策 α", "href": "https://t-immr9.github.io/kousa-taisaku/suu2/02_1gakki_kimatsu_alpha.html"},
-  {"g": 2, "k": "kousa", "tag": "考査対策", "name": "2学期中間対策", "href": "https://t-immr9.github.io/kousa-taisaku/suu2/math2_2gakki_chukan_taisaku.html"},
-  {"g": 2, "k": "kousa", "tag": "考査対策・RPG", "name": "2学期期末対策 すうがくRPG", "href": "https://t-immr9.github.io/math-rpg/?course=suu2-2gakki-kimatsu"},
-  {"g": 2, "k": "kousa", "tag": "考査対策・ペット", "name": "2学期期末対策 すうがくペット", "desc": "キャラクターを育てながら、毎日3分の復習", "href": "https://t-immr9.github.io/math-rpg/pet.html?course=suu2-2gakki-kimatsu"},
+  {"g": 2, "k": "kousa", "e": "1学期中間", "tag": "考査対策", "name": "1学期中間対策", "href": "https://t-immr9.github.io/kousa-taisaku/suu2/00_1gakki_chuukan.html"},
+  {"g": 2, "k": "kousa", "e": "1学期中間", "tag": "考査対策", "name": "1学期中間対策 II", "href": "https://t-immr9.github.io/kousa-taisaku/suu2/01_1gakki_chuukan2.html"},
+  {"g": 2, "k": "kousa", "e": "1学期期末", "tag": "考査対策", "name": "1学期期末対策", "href": "https://t-immr9.github.io/kousa-taisaku/suu2/03_1gakki_kimatsu_main.html"},
+  {"g": 2, "k": "kousa", "e": "1学期期末", "tag": "考査対策", "name": "1学期期末対策 α", "href": "https://t-immr9.github.io/kousa-taisaku/suu2/02_1gakki_kimatsu_alpha.html"},
+  {"g": 2, "k": "kousa", "e": "2学期中間", "tag": "考査対策", "name": "2学期中間対策", "href": "https://t-immr9.github.io/kousa-taisaku/suu2/math2_2gakki_chukan_taisaku.html"},
+  {"g": 2, "k": "kousa", "e": "2学期期末", "tag": "考査対策・RPG", "name": "2学期期末対策 すうがくRPG", "href": "https://t-immr9.github.io/math-rpg/?course=suu2-2gakki-kimatsu"},
+  {"g": 2, "k": "kousa", "e": "2学期期末", "tag": "考査対策・ペット", "name": "2学期期末対策 すうがくペット", "desc": "キャラクターを育てながら、毎日3分の復習", "href": "https://t-immr9.github.io/math-rpg/pet.html?course=suu2-2gakki-kimatsu"},
   {"g": 2, "k": "test", "n": "00", "old": true, "tag": "復習・小テスト", "name": "円の方程式", "href": "https://t-immr9.github.io/suu2-2gakki-syoutest/00_ennohouteisiki.html"},
   {"g": 2, "k": "test", "n": "01", "old": true, "tag": "小テスト", "name": "円と直線（1）", "href": "https://t-immr9.github.io/suu2-2gakki-syoutest/01_entotyokusen1.html"},
   {"g": 2, "k": "test", "n": "02", "old": true, "tag": "小テスト", "name": "円と直線（2）", "href": "https://t-immr9.github.io/suu2-2gakki-syoutest/02_entotyokusen2.html"},
@@ -218,12 +221,12 @@ const APPS = [
   {"g": 2, "k": "test", "n": "26", "tag": "小テスト", "name": "常用対数（2）", "href": "https://t-immr9.github.io/suu2-2gakki-syoutest/26_jouyoutaisuu2.html"},
   {"g": 3, "k": "daily", "tag": "毎日3分・習慣化", "name": "毎日3分数学", "desc": "円の性質(接線と弦・方べき・2つの円)と空間図形を、図を見ながら毎日5問ずつ入力式で復習する。", "href": "https://t-immr9.github.io/daily-math-drill-3/"},
   {"g": 3, "k": "slide", "tag": "授業スライド", "name": "授業スライド", "desc": "授業で使っているスライドです。開くにはパスワードが必要です（Teamsで連絡します）。", "href": "https://t-immr9.github.io/suuA-slides/"},
-  {"g": 3, "k": "kousa", "tag": "考査対策", "name": "1学期中間対策", "href": "https://t-immr9.github.io/kousa-taisaku/suuA/00_1gakki_chuukan.html"},
-  {"g": 3, "k": "kousa", "tag": "考査対策", "name": "1学期期末対策", "href": "https://t-immr9.github.io/kousa-taisaku/suuA/01_1gakki_kimatsu_main.html"},
-  {"g": 3, "k": "kousa", "tag": "考査対策", "name": "1学期期末対策 II", "href": "https://t-immr9.github.io/kousa-taisaku/suuA/02_1gakki_kimatsu_random.html"},
-  {"g": 3, "k": "kousa", "tag": "考査対策", "name": "2学期中間対策", "href": "https://t-immr9.github.io/kousa-taisaku/suuA/suuA_2gakki_chukan_taisaku.html"},
-  {"g": 3, "k": "kousa", "tag": "考査対策・RPG", "name": "2学期期末対策 すうがくRPG", "href": "https://t-immr9.github.io/math-rpg/?course=suuA-2gakki-kimatsu"},
-  {"g": 3, "k": "kousa", "tag": "考査対策・ペット", "name": "2学期期末対策 すうがくペット", "desc": "キャラクターを育てながら、毎日3分の復習", "href": "https://t-immr9.github.io/math-rpg/pet.html?course=suuA-2gakki-kimatsu"},
+  {"g": 3, "k": "kousa", "e": "1学期中間", "tag": "考査対策", "name": "1学期中間対策", "href": "https://t-immr9.github.io/kousa-taisaku/suuA/00_1gakki_chuukan.html"},
+  {"g": 3, "k": "kousa", "e": "1学期期末", "tag": "考査対策", "name": "1学期期末対策", "href": "https://t-immr9.github.io/kousa-taisaku/suuA/01_1gakki_kimatsu_main.html"},
+  {"g": 3, "k": "kousa", "e": "1学期期末", "tag": "考査対策", "name": "1学期期末対策 II", "href": "https://t-immr9.github.io/kousa-taisaku/suuA/02_1gakki_kimatsu_random.html"},
+  {"g": 3, "k": "kousa", "e": "2学期中間", "tag": "考査対策", "name": "2学期中間対策", "href": "https://t-immr9.github.io/kousa-taisaku/suuA/suuA_2gakki_chukan_taisaku.html"},
+  {"g": 3, "k": "kousa", "e": "2学期期末", "tag": "考査対策・RPG", "name": "2学期期末対策 すうがくRPG", "href": "https://t-immr9.github.io/math-rpg/?course=suuA-2gakki-kimatsu"},
+  {"g": 3, "k": "kousa", "e": "2学期期末", "tag": "考査対策・ペット", "name": "2学期期末対策 すうがくペット", "desc": "キャラクターを育てながら、毎日3分の復習", "href": "https://t-immr9.github.io/math-rpg/pet.html?course=suuA-2gakki-kimatsu"},
   {"g": 3, "k": "kousa", "tag": "SPI・確率", "name": "SPI対策15 確率", "href": "https://t-immr9.github.io/spi_15_kakuritu/"},
   {"g": 3, "k": "test", "n": "01", "old": true, "tag": "小テスト", "name": "角の二等分線と比", "href": "https://t-immr9.github.io/suuA-2gakki-syoutest/01_kakunitoubun.html"},
   {"g": 3, "k": "test", "n": "02", "old": true, "tag": "小テスト", "name": "三角形の外心・内心・重心", "href": "https://t-immr9.github.io/suuA-2gakki-syoutest/02_gaishin.html"},
@@ -249,6 +252,23 @@ const APPS = [
   {"g": 0, "k": "column", "group": "授業のその先", "tag": "授業のその先・第1回", "name": "コンセントの電気は「sin のグラフ」だった", "desc": "家庭の電気は sin の波。100Vの正体や、東日本50Hz・西日本60Hzの違いを三角関数で読み解く。", "href": "columns/sonosaki-01.html"},
   {"g": 0, "k": "column", "group": "授業のその先", "tag": "授業のその先・第2回", "name": "サッカーボールの五角形は、なぜいつも12枚？", "desc": "オイラーの多面体定理を使うと、五角形の枚数は数えなくても12枚と決まる。", "href": "columns/sonosaki-02.html"},
 ];
+/* =====================================================================
+   切り替わる日付(ここだけ直せばよい。日付は「月/日」で書き、年は書かない)
+   term3 : 小テストの3学期の期間(この間は3学期、ほかの日は2学期が「今の学期」)
+   exams : 考査の名前と、その考査対策を「今の考査」として出す最後の日(月末にしておき、次の月の1日に切り替わる)
+           4月から順に並べる。最後の日を過ぎると、次の行の考査に自動で切り替わる
+           名前は APPS の e と同じ文字にする
+   ===================================================================== */
+const SCHEDULE = {
+  term3: { from: '1/1', to: '3/31' },
+  exams: [
+    { name: '1学期中間', until: '5/31' },
+    { name: '1学期期末', until: '8/31' },
+    { name: '2学期中間', until: '10/31' },
+    { name: '2学期期末', until: '12/31' },
+    { name: '学年末',    until: '3/31' }
+  ]
+};
 /* 学年ごとの設定。term は今学期の小テストの範囲、store は毎日3分数学の記録の保存名(連続日数の表示に使う) */
 const GRADES = {
   1: { label: '1年', subject: '数学I',  term: '2学期「2次関数・データの分析」',             store: 'daily-math1-progress' },
@@ -263,8 +283,17 @@ const GRADES = {
   const tgt = h => /^https?:/.test(h) ? ' target="_blank" rel="noopener noreferrer"' : '';
   const num = a => parseInt(a.n, 10) || 0;
   const termOf = a => +(a.t || (/3gakki/.test(a.href) ? 3 : 2));
-  const CUR = (new Date().getMonth() + 1) <= 3 ? 3 : 2;   // 今の学期(1〜3月は3学期)
+  // 日付は4月始まりの順で比べる(4/1 がいちばん小さく、3/31 がいちばん大きい)
+  const dkey = (m, d) => ((+m + 8) % 12) * 100 + +d;
+  const skey = s => { const p = String(s).split('/'); return dkey(p[0], p[1]); };
+  // 確かめ用: URL に ?date=2027-01-15 を付けると、その日の表示になる(学期と考査の切り替えだけ)
+  const NOW = (() => { const m = /[?&]date=(\d{4})-(\d{1,2})-(\d{1,2})/.exec(location.search); return m ? new Date(+m[1], m[2] - 1, +m[3]) : new Date(); })();
+  const TODAY = dkey(NOW.getMonth() + 1, NOW.getDate());
+  const CUR = (TODAY >= skey(SCHEDULE.term3.from) && TODAY <= skey(SCHEDULE.term3.to)) ? 3 : 2;   // 今の学期
   const TERMS = [2, 3];
+  const EXAMS = SCHEDULE.exams.map(x => x.name);
+  const EXI = Math.max(0, SCHEDULE.exams.findIndex(x => TODAY <= skey(x.until)));   // 今の考査(どれも過ぎていたら最初の考査)
+  const EXAM = EXAMS[EXI];
   const chev = '<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   const pad = n => String(n).padStart(2, '0');
   const ymd = o => { const d = new Date(Date.now() + o * 864e5); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); };
@@ -293,18 +322,18 @@ const GRADES = {
     if (!daily) {
       const latest = mine.filter(a => a.k === 'test' && termOf(a) === CUR).sort((p, q) => num(q) - num(p))[0];
       if (!latest) return '';
-      return '<section class="today plain"><div><p class="today-date">' + date + '</p><p class="today-status">いちばん新しい小テスト</p><p class="today-sub">' + esc(latest.n) + '　' + esc(latest.name) + '</p>' +
-        '<a class="go" href="' + esc(latest.href) + '"' + tgt(latest.href) + '>小テストをひらく</a></div></section>';
+      return '<section class="today plain"><p class="today-date">' + date + '</p><p class="today-status">いちばん新しい小テスト</p><p class="today-sub">' + esc(latest.n) + '　' + esc(latest.name) + '</p>' +
+        '<a class="go" href="' + esc(latest.href) + '"' + tgt(latest.href) + '>小テストをひらく</a></section>';
     }
     const s = streak(G.store), cyc = s.run === 0 ? 0 : (s.run % 7 || 7), left = 7 - cyc;
     const status = s.done ? '今日はクリア済み' : '今日はまだです';
     const sub = s.done ? (left === 0 ? '1週間連続、達成。また明日。' : 'また明日。あと' + left + '日で1週間連続。')
                        : (s.run ? '今日も解けば ' + (s.run + 1) + '日連続。' : '1日5問、3分で終わります。');
     return '<section class="today' + (s.done ? ' done' : '') + '" data-cyc="' + cyc + '" data-run="' + s.run + '">' +
-      '<div class="dial"><svg viewBox="0 0 120 120" aria-hidden="true"><circle class="bg" cx="60" cy="60" r="50"/><circle class="fg" cx="60" cy="60" r="50"/></svg>' +
+      '<p class="today-date">' + date + '</p><div class="dial"><svg viewBox="0 0 120 120" aria-hidden="true"><circle class="bg" cx="60" cy="60" r="50"/><circle class="fg" cx="60" cy="60" r="50"/></svg>' +
       '<div class="dial-c"><b>0</b><small>日連続</small></div></div>' +
-      '<div><p class="today-date">' + date + '</p><p class="today-status">' + status + '</p><p class="today-sub">' + sub + '</p></div>' +
-      '<a class="go" href="' + esc(daily.href) + '"' + tgt(daily.href) + '>' + (s.done ? 'もう1回ひらく' : '毎日3分数学をひらく') + '</a></section>';
+      '<p class="today-status">' + status + '</p><p class="today-sub">' + sub + '</p>' +
+      '<a class="go" href="' + esc(daily.href) + '"' + tgt(daily.href) + ' aria-label="毎日3分数学をひらく">' + (s.done ? 'もう1回ひらく' : '3分数学をひらく') + '</a></section>';
   }
 
   function animateDial(){
@@ -322,9 +351,14 @@ const GRADES = {
     const shown = APPS.filter(a => !a.hide);
     const mine = shown.filter(a => a.g === +g), common = shown.filter(a => a.g === 0);
     const byTerm = {}; TERMS.forEach(t => { byTerm[t] = mine.filter(a => a.k === 'test' && termOf(a) === t).sort((p, q) => num(q) - num(p)); });
+    // 考査対策: 今の考査のもの → e のないもの(いつも出す)。ほかの考査のものは、今に近い順に「過去」へ
     const kousa = mine.filter(a => a.k === 'kousa').reverse();
+    const isNow = a => !a.e || a.e === EXAM || !EXAMS.includes(a.e);
+    const back = a => (EXI - EXAMS.indexOf(a.e) + EXAMS.length) % EXAMS.length;
+    const kNow = [...kousa.filter(a => a.e === EXAM), ...kousa.filter(a => isNow(a) && a.e !== EXAM)];
+    const kPast = kousa.filter(a => !isNow(a)).sort((p, q) => back(p) - back(q));
     const slides = mine.filter(a => a.k === 'slide');
-    return { mine, common, byTerm, kousa, slides, extra: common.filter(a => a.k === 'extra'), cols: common.filter(a => a.k === 'column') };
+    return { mine, common, byTerm, kousa, kNow, kPast, slides, extra: common.filter(a => a.k === 'extra'), cols: common.filter(a => a.k === 'column') };
   }
 
   function render(g){
@@ -340,17 +374,22 @@ const GRADES = {
     const L = lists(g), G = GRADES[g];
     const blocks = [];
     const down = '<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-    blocks.push(['tests', '確認小テスト', '<p class="note">学期ごとに、新しい順。学期の見出しをタップすると開いたり閉じたりできます。</p>' +
+    if (L.kousa.length) blocks.push(['exam', 'テスト対策', '<p class="note">今は「' + esc(EXAM) + '」の考査対策です。</p>' +
+      (L.kNow.some(a => a.e === EXAM) ? '' : '<div class="empty"' + (L.kNow.length ? ' style="margin-bottom:8px"' : '') + '>「' + esc(EXAM) + '」の考査対策は、準備中です。</div>') +
+      (L.kNow.length ? '<ul class="rows">' + L.kNow.map(a => row(a)).join('') + '</ul>' : '') +
+      (L.kPast.length ? '<button type="button" class="acc-btn" aria-expanded="false">過去の考査対策(' + L.kPast.length + '個)' + down + '</button>' +
+        '<div class="acc"><div><ul class="rows">' + L.kPast.map(a => row(a)).join('') + '</ul></div></div>' : '')]);
+    blocks.push(['tests', '確認小テスト', '<p class="note">学期の見出しをタップすると開きます。中は新しい順。</p>' +
       TERMS.map(t => { const A = L.byTerm[t], o = t === CUR;
-        return '<button type="button" class="acc-btn term-btn" aria-expanded="' + o + '">' + t + '学期' + (A.length ? '(' + A.length + '個)' : '') + down + '</button>' +
-          '<div class="acc' + (o ? ' open' : '') + '"><div>' + (A.length ? '<ul class="rows">' + A.map((a, i) => row(a, o && i === 0 ? '最新' : '')).join('') + '</ul>' : '<div class="empty" style="margin-top:10px">' + t + '学期の小テストは、まだありません。</div>') + '</div></div>'; }).join('')]);
-    if (L.kousa.length) blocks.push(['exam', 'テスト対策', '<p class="note">考査対策アプリ。新しい順。</p><ul class="rows">' + L.kousa.map(a => row(a)).join('') + '</ul>']);
+        return '<button type="button" class="acc-btn term-btn" aria-expanded="false">' + t + '学期' + (o ? '(今の学期)' : '') + '　' + A.length + '個' + down + '</button>' +
+          '<div class="acc"><div>' + (A.length ? '<ul class="rows">' + A.map((a, i) => row(a, o && i === 0 ? '最新' : '')).join('') + '</ul>' : '<div class="empty" style="margin-top:10px">' + t + '学期の小テストは、まだありません。</div>') + '</div></div>'; }).join('')]);
     if (L.extra.length || L.cols.length) blocks.push(['more', 'おまけ・コラム', '<p class="note">授業の範囲とは別の、トレーニングと読みもの。横にスクロールできます。</p>' +
       (L.extra.length ? '<div class="shelf">' + L.extra.map(tile).join('') + '</div>' : '') +
       [...new Set(L.cols.map(a => a.group))].map(gr => '<p class="shelf-label">' + esc(gr) + '</p><div class="shelf">' + L.cols.filter(a => a.group === gr).map(tile).join('') + '</div>').join('')]);
-    const slideCards = L.slides.map(a => '<section class="today plain slidecard"><div><p class="today-date">' + esc(a.tag || '授業スライド') + '</p><p class="today-status">' + esc(a.name.replace('授業スライド', '').replace(/[（）()]/g, '') || '授業のスライドを見返そう') + '</p><p class="today-sub">' + esc(a.desc || '') + '</p></div>' +
-      '<a class="go outline" href="' + esc(a.href) + '"' + tgt(a.href) + '>授業スライドをひらく</a></section>').join('');
-    app.innerHTML = today(g, L.mine) + slideCards +
+    const slideCards = L.slides.map(a => '<section class="today plain slidecard"><p class="today-date">' + esc(a.tag || '授業スライド') + '</p><p class="today-status">' + esc(a.name.replace('授業スライド', '').replace(/[（）()]/g, '') || '授業のスライドを見返そう') + '</p><p class="today-sub">' + esc(a.desc || '') + '</p>' +
+      '<a class="go outline" href="' + esc(a.href) + '"' + tgt(a.href) + ' aria-label="授業スライドをひらく">スライドをひらく</a></section>').join('');
+    const hero = today(g, L.mine) + slideCards;
+    app.innerHTML = (hero ? '<div class="hero' + ((hero.match(/<section /g) || []).length < 2 ? ' one' : '') + '">' + hero + '</div>' : '') +
       '<div class="search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4" stroke-linecap="round"/></svg><input type="search" id="q" placeholder="さがす(例:不等式、期末)" aria-label="小テストやアプリをさがす"></div>' +
       '<nav class="chips" aria-label="ページ内の移動">' + blocks.map(b => '<button type="button" data-to="' + b[0] + '">' + b[1] + '</button>').join('') + '</nav>' +
       '<div id="lists">' + blocks.map(b => '<section class="blk" id="' + b[0] + '"><h2>' + b[1] + '</h2>' + b[2] + '</section>').join('') + '</div><div id="found" hidden></div>';
