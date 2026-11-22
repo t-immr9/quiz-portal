@@ -16,6 +16,10 @@
 h1.article-title{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:clamp(1.6rem,4vw,2.3rem);color:#fff;margin:0 0 8px;letter-spacing:.01em}p.article-lead{color:#c3d2e6;font-size:1rem;margin:0 0 8px;max-width:60ch}.article-body{margin-top:36px}.article-body h2{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:1.3rem;color:#fff;margin:44px 0 16px;padding-left:14px;border-left:4px solid var(--orange)}.article-body p{color:#dbe6f4;font-size:.98rem;margin:0 0 18px}.article-body strong{color:#fff}
 figure.inline-figure{margin:28px 0;padding:0}figure.inline-figure img{width:100%;border-radius:6px;border:1px solid #2c4f7c;display:block;background:var(--paper)}figure.inline-figure figcaption{font-size:.8rem;color:#7f96b8;margin-top:8px;text-align:center}.try-box{background:var(--paper);color:var(--ink-text);border-radius:6px;padding:20px 22px;margin:28px 0;box-shadow:0 3px 0 rgba(0,0,0,.18);border:1px solid var(--paper-dim)}.try-box .try-label{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.06em;color:var(--orange-dim);text-transform:uppercase;display:block;margin-bottom:8px}.try-box p{color:var(--ink-text);margin:0 0 10px;font-size:.92rem}.try-box p:last-child{margin-bottom:0}.try-box strong{color:var(--ink-text)}
 .calc-table{width:100%;border-collapse:collapse;margin:20px 0;font-family:'JetBrains Mono',monospace;font-size:.92rem}.calc-table td{padding:8px 10px;border-bottom:1px solid var(--paper-dim)}.calc-table td:first-child{color:#c3d2e6;white-space:nowrap}.calc-table td:last-child{text-align:right;font-weight:600}.calc-table tr.highlight td{color:var(--orange);font-weight:700}.series-nav{margin-top:44px;padding-top:20px;border-top:1px solid #2c4f7c;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.series-nav a,.back-link{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:.86rem;text-decoration:none;color:#9fb6d6;border:1px solid #2c4f7c;border-radius:20px;padding:8px 16px}.series-nav a:hover,.back-link:hover{color:#fff;border-color:var(--orange)}.article-footer{margin-top:32px;padding-top:24px;border-top:1px solid #2c4f7c;display:flex;justify-content:center}
+/* 平方根:高校生が書く形(√の記号+かぶせ線)。文字のフォントに頼らず、CSSで描く */
+.rt{display:inline-block;position:relative;padding-left:.8em;margin:0 .1em 0 .05em;vertical-align:baseline;white-space:nowrap}
+.rt::before{content:"";position:absolute;left:0;top:0;bottom:0;width:.8em;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 100' preserveAspectRatio='none'%3E%3Cpath d='M3 62L14 55L30 92L56 3H64' fill='none' stroke='%23000' stroke-width='7'/%3E%3C/svg%3E") no-repeat 0 0/100% 100%;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 100' preserveAspectRatio='none'%3E%3Cpath d='M3 62L14 55L30 92L56 3H64' fill='none' stroke='%23000' stroke-width='7'/%3E%3C/svg%3E") no-repeat 0 0/100% 100%}
+.rt .rd{display:block;border-top:.075em solid currentColor;padding:0 .12em;line-height:1.2}
 @media(max-width:640px){.article{padding:0 16px 72px}h1.article-title{font-size:1.5rem}.article-body h2{font-size:1.15rem;margin:36px 0 12px}.calc-table{font-size:.82rem}.calc-table td{padding:7px 5px}.eyecatch-wrap{min-height:120px}}
 </style></head><body>
 <div class="topbar"><div class="topbar-inner"><a href="../">&larr; 数学演習室に戻る</a></div></div>
@@ -47,9 +51,9 @@ figure.inline-figure{margin:28px 0;padding:0}figure.inline-figure img{width:100%
 <tr class="highlight"><td>ズレ</td><td>約129個</td></tr>
 </table>
 <p>見積もりは、ほとんど当たっている。それでも、ぴったりとは一致せず、少しだけズレる。<strong>リーマン予想は、このズレがどれくらい小さいかについての予想</strong>である。</p>
-<div class="try-box"><span class="try-label">リーマン予想(やさしい言い方)</span><p>素数の個数の見積もりとのズレは、N の平方根(√N)くらいの大きさにおさまる。</p><p>※正確には、√N に少しだけ余裕をもたせた大きさ。</p></div>
-<p>100万の平方根は √1000000 = 1000 で、ズレの約129個は、それよりずっと小さい。1000までなら、見積もりは約177個、実際は168個で、ズレは約9個。√1000 は約32なので、こちらもずっと小さい。</p>
-<p>コインを100回投げると、表が出る回数は50回ぴったりにはならず、45〜55回くらいにおさまることが多い。ズレの大きさは、投げた回数の平方根(√100 = 10)の半分、つまり5回くらいだ。素数の個数のズレにも、これとよく似た「ここまでしかズレない」という限界がある、というのがリーマン予想の中身である。</p>
+<div class="try-box"><span class="try-label">リーマン予想(やさしい言い方)</span><p>素数の個数の見積もりとのズレは、N の平方根(<span class="rt"><span class="rd">N</span></span>)くらいの大きさにおさまる。</p><p>※正確には、<span class="rt"><span class="rd">N</span></span> に少しだけ余裕をもたせた大きさ。</p></div>
+<p>100万の平方根は <span class="rt"><span class="rd">1000000</span></span> = 1000 で、ズレの約129個は、それよりずっと小さい。1000までなら、見積もりは約177個、実際は168個で、ズレは約9個。<span class="rt"><span class="rd">1000</span></span> は約32なので、こちらもずっと小さい。</p>
+<p>コインを100回投げると、表が出る回数は50回ぴったりにはならず、45〜55回くらいにおさまることが多い。ズレの大きさは、投げた回数の平方根(<span class="rt"><span class="rd">100</span></span> = 10)の半分、つまり5回くらいだ。素数の個数のズレにも、これとよく似た「ここまでしかズレない」という限界がある、というのがリーマン予想の中身である。</p>
 <p>数学者は、この話を、「ゼータ関数」という特別な関数の「0になる場所(零点)」の話に言いかえた。「零点はすべて、ある1本の直線の上にならぶ」——1859年にリーマンが論文に書いた予想がこれである。直線の上にならぶことと、ズレが小さくおさまることは、同じ意味だと知られている。リーマンは「とてもありそうだ」と書いたが、証明は、いくつかの軽い試みのあと、ひとまず脇に置いた。それから167年、だれも証明できなかった。</p>
 <div class="try-box"><span class="try-label">コンピューターで調べた結果</span><p>最初の約10兆個(10<sup>13</sup>個)の零点を調べた計算(2004年)があり、これまでに見つかった零点は、すべて直線の上にあった。それでも、これは証明ではない。零点は無限にあるからだ。</p><p>これは、<a href="seisu-04.html">第4回</a>で見た「たくさん調べることと、証明すること」の違いと同じ話である。</p></div>
 
@@ -84,7 +88,7 @@ figure.inline-figure{margin:28px 0;padding:0}figure.inline-figure img{width:100%
 <p>新しい発表があったときは、「だれが、いつ、何を、どの段階まで確かめたのか」を見ると、成果を正確に読み取れる。「証明を見つけたと発表した」ことと、「証明が正しいと数学界が受け入れた」ことは、同じではない。</p>
 <div class="try-box"><span class="try-label">考えてみよう</span>
 <ul>
-<li>素数の個数の見積もりとのズレが「√N くらい」とは、どんなことを言っているのだろう。</li>
+<li>素数の個数の見積もりとのズレが「<span class="rt"><span class="rd">N</span></span> くらい」とは、どんなことを言っているのだろう。</li>
 <li>「Leanが通った」だけでは、なぜ「リーマン予想が解けた」と言い切れないのだろう。</li>
 <li>テストの答え合わせにたとえると、①②③はそれぞれ何にあたるだろう。</li>
 </ul>
