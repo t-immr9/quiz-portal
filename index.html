@@ -121,6 +121,8 @@ section.blk{scroll-margin-top:calc(110px + env(safe-area-inset-top));margin:18px
 .tile .t{font:700 .98rem/1.45 var(--head)}
 .tile .d{font-size:.8rem;color:var(--sub);line-height:1.6}
 .shelf-label{font:700 .85rem/1 var(--head);color:var(--sub);margin:14px 0 8px}
+/* ゆっくり左へ自動で動く棚(JSが .auto を付ける。さわると止まる) */
+.shelf.auto{scroll-snap-type:none}
 
 .empty{background:var(--card);border:1px dashed var(--line);border-radius:16px;padding:18px;color:var(--sub);text-align:center}
 .count{color:var(--sub);font-size:.85rem;margin:6px 0 10px}
@@ -370,6 +372,64 @@ const GRADES = {
     return { mine, common, byTerm, kousa, kNow, kPast, slides, extra: common.filter(a => a.k === 'extra'), cols: common.filter(a => a.k === 'column'), sono: shown.filter(a => a.k === 'sonosaki') };
   }
 
+  // 横の棚(その先・コラム)を、ゆっくり左へ自動で動かす。
+  // さわる/マウスを乗せる/キーで選ぶと止まり、離して少し待つと再開。「動きを減らす」設定の端末では動かさない。
+  // 最後のカードの次に最初のカードがつながるよう、カードを複製して(読み上げ・Tab移動の対象外)ぐるっと回す。
+  const AUTO_SPEED = 18;      // px/秒(ゆっくり)
+  const AUTO_RESUME = 2500;   // ms: さわったあと、再開するまで
+  let autos = [], autoIO = null, autoRun = false, autoLast = 0;
+  function autoMeasure(s){
+    const el = s.el, o = s.orig, gap = parseFloat(getComputedStyle(el).columnGap) || 0;
+    const w = o[o.length - 1].offsetLeft + o[o.length - 1].offsetWidth - o[0].offsetLeft + gap;
+    s.on = w > el.clientWidth + 8;          // 画面に全部入るなら動かさない(複製も隠す)
+    s.loop = w;
+    s.clones.forEach(c => { c.style.display = s.on ? '' : 'none'; });
+    el.classList.toggle('auto', s.on);
+  }
+  function autoShelves(){
+    autos = [];
+    if (autoIO) { autoIO.disconnect(); autoIO = null; }
+    if (reduce) return;
+    if ('IntersectionObserver' in window) autoIO = new IntersectionObserver(es => es.forEach(e => { const s = autos.find(x => x.el === e.target); if (s) s.vis = e.isIntersecting; }), { threshold: 0.01 });
+    app.querySelectorAll('.shelf').forEach(el => {
+      const orig = [...el.children];
+      if (!orig.length) return;
+      const clones = orig.map(c => { const k = c.cloneNode(true); k.setAttribute('aria-hidden', 'true'); k.tabIndex = -1; el.appendChild(k); return k; });
+      const s = { el, orig, clones, on: false, loop: 0, vis: !autoIO, held: false, resumeAt: 0, pos: el.scrollLeft, set: el.scrollLeft };
+      const hold = () => { s.held = true; }, release = () => { s.held = false; s.resumeAt = performance.now() + AUTO_RESUME; };
+      el.addEventListener('touchstart', hold, { passive: true });
+      el.addEventListener('touchend', release, { passive: true });
+      el.addEventListener('touchcancel', release, { passive: true });
+      el.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') hold(); });
+      el.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') release(); });
+      el.addEventListener('focusin', hold);
+      el.addEventListener('focusout', release);
+      autos.push(s); autoMeasure(s);
+      if (autoIO) autoIO.observe(el);
+    });
+    if (autos.length && !autoRun) {
+      autoRun = true; autoLast = performance.now();
+      const tick = now => {
+        const dt = Math.min(0.1, (now - autoLast) / 1000); autoLast = now;
+        autos.forEach(s => {
+          if (!s.on || !s.vis) return;
+          const el = s.el;
+          if (Math.abs(el.scrollLeft - s.set) > 2) {   // 自分で動かした(スワイプ・ホイール・キー)→ そこから再開
+            s.pos = el.scrollLeft >= s.loop ? el.scrollLeft - s.loop : el.scrollLeft; s.set = el.scrollLeft;
+            s.resumeAt = now + AUTO_RESUME;
+          }
+          if (s.held || now < s.resumeAt) return;
+          s.pos += AUTO_SPEED * dt;
+          if (s.pos >= s.loop) s.pos -= s.loop;
+          el.scrollLeft = s.pos; s.set = s.pos;
+        });
+        requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+      window.addEventListener('resize', () => autos.forEach(autoMeasure));
+    }
+  }
+
   function render(g){
     document.querySelectorAll('.seg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.grade === String(g)));
     const seg = document.querySelector('.seg');
@@ -392,9 +452,9 @@ const GRADES = {
       TERMS.map(t => { const A = L.byTerm[t], o = t === CUR;
         return '<button type="button" class="acc-btn term-btn" aria-expanded="false">' + t + '学期' + (o ? '(今の学期)' : '') + '　' + A.length + '個' + down + '</button>' +
           '<div class="acc"><div>' + (A.length ? '<ul class="rows">' + A.map((a, i) => row(a, o && i === 0 ? '最新' : '')).join('') + '</ul>' : '<div class="empty" style="margin-top:10px">' + t + '学期の小テストは、まだありません。</div>') + '</div></div>'; }).join('')]);
-    if (L.sono.length) blocks.push(['rikei', '理系大学を目指す人へ', '<p class="note">授業の先の内容と、入試の標準問題を自分で解き進めるスライド。授業とは別の自習用です。</p>' +
+    if (L.sono.length) blocks.push(['rikei', '理系大学を目指す人へ', '<p class="note">授業の先の内容と、入試の標準問題を自分で解き進めるスライド。授業とは別の自習用です。ゆっくり左に動きます。さわると止まります。</p>' +
       '<div class="shelf">' + L.sono.map(tile).join('') + '</div>']);
-    if (L.extra.length || L.cols.length) blocks.push(['more', 'おまけ・コラム', '<p class="note">授業の範囲とは別の、トレーニングと読みもの。横にスクロールできます。</p>' +
+    if (L.extra.length || L.cols.length) blocks.push(['more', 'おまけ・コラム', '<p class="note">授業の範囲とは別の、トレーニングと読みもの。ゆっくり左に動きます。さわると止まり、横にスクロールもできます。</p>' +
       (L.extra.length ? '<div class="shelf">' + L.extra.map(tile).join('') + '</div>' : '') +
       [...new Set(L.cols.map(a => a.group))].map(gr => '<p class="shelf-label">' + esc(gr) + '</p><div class="shelf">' + L.cols.filter(a => a.group === gr).map(tile).join('') + '</div>').join('')]);
     const slideCards = L.slides.map(a => '<section class="today plain slidecard"><p class="today-date">' + esc(a.tag || '授業スライド') + '</p><p class="today-status">' + esc(a.name.replace('授業スライド', '').replace(/[（）()]/g, '') || '授業のスライドを見返そう') + '</p><p class="today-sub">' + esc(a.desc || '') + '</p>' +
@@ -404,7 +464,7 @@ const GRADES = {
       '<div class="search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4" stroke-linecap="round"/></svg><input type="search" id="q" placeholder="さがす(例:不等式、期末)" aria-label="小テストやアプリをさがす"></div>' +
       '<nav class="chips" aria-label="ページ内の移動">' + blocks.map(b => '<button type="button" data-to="' + b[0] + '">' + b[1] + '</button>').join('') + '</nav>' +
       '<div id="lists">' + blocks.map(b => '<section class="blk" id="' + b[0] + '"><h2>' + b[1] + '</h2>' + b[2] + '</section>').join('') + '</div><div id="found" hidden></div>';
-    animateDial(); wire(g, L);
+    animateDial(); wire(g, L); autoShelves();
   }
 
   function wire(g, L){
