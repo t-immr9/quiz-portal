@@ -144,6 +144,7 @@ section.blk{scroll-margin-top:calc(110px + env(safe-area-inset-top));margin:18px
    アプリの一覧(ここに1行足すだけで、正しい場所に出る)
    g    : 学年 1=数学I 2=数学II 3=数学A 0=全学年共通(おまけ・コラム)
    k    : 種類 daily=毎日3分数学 slide=授業スライド kousa=考査対策 test=小テスト extra=おまけ column=コラム
+          sonosaki=単元ごとのその先(自習スライド。その学年の「おまけ・コラム」で、コラムの上に group ごとの棚で出る)
    e    : 考査対策がどの考査のものか(下の SCHEDULE の exams にある名前。例 "2学期期末")
           今の考査のカードだけが「テスト対策」に出て、ほかの考査のカードは「過去の考査対策」に折りたたまれる
           e を書かないカードは、いつも出る(SPI など、考査と関係ないもの)
@@ -245,6 +246,7 @@ const APPS = [
   {"g": 0, "k": "extra", "tag": "計算練習", "name": "平方完成トレーニング", "desc": "手書きメモ付き・基本＆係数ありの2次関数変形ドリル", "href": "https://t-immr9.github.io/drill-app/heihoukansei_drill.html"},
   {"g": 0, "k": "extra", "tag": "思考力・集中力", "name": "無言パズル", "href": "https://t-immr9.github.io/mugonpazuru/"},
   {"g": 0, "k": "extra", "tag": "中学の復習", "name": "中学校の内容の確認ドリル", "desc": "正負の数・文字式・方程式など、中学校の内容を40問の4択で確かめる。", "href": "https://t-immr9.github.io/suu1chuugakkounonaiyounokakunin/"},
+  {"g": 2, "k": "sonosaki", "hide": true, "group": "単元ごとのその先", "tag": "その先・三角関数", "name": "三角関数のその先（自習スライド）", "desc": "授業の先の内容と入試の標準問題を、ヒントを見ながら自分で解き進める。開くにはパスワードが必要です（Teamsで連絡します）。", "href": "https://t-immr9.github.io/suu2-slides/"},
   {"g": 0, "k": "column", "group": "整数のふしぎ", "tag": "整数のふしぎ・第1回", "name": "クルクル回る!? ダイヤル数「142857」の秘密", "desc": "かける数を変えると、6つの数字がダイヤルのように入れ替わる不思議を確かめる。", "href": "columns/seisu-01.html"},
   {"g": 0, "k": "column", "group": "整数のふしぎ", "tag": "整数のふしぎ・第2回", "name": "どんな数もブラックホールへ！ 3桁の「495」", "desc": "数字を大きい順と小さい順に並べて引くと、多くの3桁の数が495へ集まる。", "href": "columns/seisu-02.html"},
   {"g": 0, "k": "column", "group": "整数のふしぎ", "tag": "整数のふしぎ・第3回", "name": "最後は必ず1になる!? 終わらない謎「コラッツ予想」", "desc": "偶数なら2で割り、奇数なら3倍して1を足す。簡単なルールの先にある未解決問題を体験する。", "href": "columns/seisu-03.html"},
@@ -310,7 +312,7 @@ const GRADES = {
   }
 
   function row(a, badge){
-    const left = a.k === 'test' ? '<span class="num">' + esc(a.n) + '</span>' : '<span class="num k">' + (a.k === 'kousa' ? '対策' : a.k === 'slide' ? '授業' : a.k === 'daily' ? '毎日' : a.k === 'column' ? '読む' : '練習') + '</span>';
+    const left = a.k === 'test' ? '<span class="num">' + esc(a.n) + '</span>' : '<span class="num k">' + (a.k === 'kousa' ? '対策' : a.k === 'slide' ? '授業' : a.k === 'daily' ? '毎日' : a.k === 'column' ? '読む' : a.k === 'sonosaki' ? 'その先' : '練習') + '</span>';
     return '<li><a class="row" href="' + esc(a.href) + '"' + tgt(a.href) + '>' + left +
       '<span class="t">' + esc(a.name) + '<span class="m">' + esc(a.tag || '') + (a.desc ? ' ・ ' + esc(a.desc) : '') + '</span></span>' +
       (badge ? '<span class="new">' + badge + '</span>' : chev) + '</a></li>';
@@ -359,7 +361,7 @@ const GRADES = {
     const kNow = [...kousa.filter(a => a.e === EXAM), ...kousa.filter(a => isNow(a) && a.e !== EXAM)];
     const kPast = kousa.filter(a => !isNow(a)).sort((p, q) => back(p) - back(q));
     const slides = mine.filter(a => a.k === 'slide');
-    return { mine, common, byTerm, kousa, kNow, kPast, slides, extra: common.filter(a => a.k === 'extra'), cols: common.filter(a => a.k === 'column') };
+    return { mine, common, byTerm, kousa, kNow, kPast, slides, extra: common.filter(a => a.k === 'extra'), cols: common.filter(a => a.k === 'column'), sono: mine.filter(a => a.k === 'sonosaki') };
   }
 
   function render(g){
@@ -384,8 +386,9 @@ const GRADES = {
       TERMS.map(t => { const A = L.byTerm[t], o = t === CUR;
         return '<button type="button" class="acc-btn term-btn" aria-expanded="false">' + t + '学期' + (o ? '(今の学期)' : '') + '　' + A.length + '個' + down + '</button>' +
           '<div class="acc"><div>' + (A.length ? '<ul class="rows">' + A.map((a, i) => row(a, o && i === 0 ? '最新' : '')).join('') + '</ul>' : '<div class="empty" style="margin-top:10px">' + t + '学期の小テストは、まだありません。</div>') + '</div></div>'; }).join('')]);
-    if (L.extra.length || L.cols.length) blocks.push(['more', 'おまけ・コラム', '<p class="note">授業の範囲とは別の、トレーニングと読みもの。横にスクロールできます。</p>' +
+    if (L.extra.length || L.cols.length || L.sono.length) blocks.push(['more', 'おまけ・コラム', '<p class="note">授業の範囲とは別の、トレーニングと読みもの。横にスクロールできます。</p>' +
       (L.extra.length ? '<div class="shelf">' + L.extra.map(tile).join('') + '</div>' : '') +
+      [...new Set(L.sono.map(a => a.group))].map(gr => '<p class="shelf-label">' + esc(gr) + '</p><div class="shelf">' + L.sono.filter(a => a.group === gr).map(tile).join('') + '</div>').join('') +
       [...new Set(L.cols.map(a => a.group))].map(gr => '<p class="shelf-label">' + esc(gr) + '</p><div class="shelf">' + L.cols.filter(a => a.group === gr).map(tile).join('') + '</div>').join('')]);
     const slideCards = L.slides.map(a => '<section class="today plain slidecard"><p class="today-date">' + esc(a.tag || '授業スライド') + '</p><p class="today-status">' + esc(a.name.replace('授業スライド', '').replace(/[（）()]/g, '') || '授業のスライドを見返そう') + '</p><p class="today-sub">' + esc(a.desc || '') + '</p>' +
       '<a class="go outline" href="' + esc(a.href) + '"' + tgt(a.href) + ' aria-label="授業スライドをひらく">スライドをひらく</a></section>').join('');
