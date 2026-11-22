@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>リーマン予想をAIが証明!? 「正しい」と言えるまでに時間がかかる理由｜整数のふしぎ</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="リーマン予想とは何かを中学生にも分かる言葉で説明し、AIによる証明の発表がなぜすぐには「正しい」と言えないのかを考える数学コラム。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#10233d;--panel:#17335a;--grid-line:rgba(140,178,224,.14);--paper:#eef2f7;--paper-dim:#dbe3ee;--orange:#ff7a3d;--orange-dim:#c85f2c;--yellow:#ffcc33;--ink-text:#16233a;--paper-sub:#55637c}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:linear-gradient(var(--grid-line) 1px,transparent 1px) 0 0/40px 40px,linear-gradient(90deg,var(--grid-line) 1px,transparent 1px) 0 0/40px 40px,var(--ink);color:var(--paper);font-family:'Noto Sans JP',sans-serif;line-height:1.9}a{color:var(--orange)}
+.topbar{position:sticky;top:0;z-index:10;background:rgba(16,35,61,.96);backdrop-filter:blur(4px);border-bottom:1px solid #2c4f7c;padding:12px 20px}.topbar-inner{max-width:760px;margin:0 auto;font-family:'JetBrains Mono',monospace;font-size:.8rem}.topbar a{color:#9fb6d6;text-decoration:none}.topbar a:hover{color:#fff}
+.article{max-width:760px;margin:0 auto;padding:0 20px 100px}.eyecatch-wrap{margin:28px 0 0;border-radius:6px;overflow:hidden;border:1px solid #2c4f7c;background:var(--panel);min-height:180px}.eyecatch-wrap img{width:100%;height:auto;object-fit:cover;display:block}.article-meta{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:22px 0 10px}.pill{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--orange);border:1px solid var(--orange-dim);border-radius:20px;padding:4px 12px}.article-date{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:#7f96b8}
+h1.article-title{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:clamp(1.6rem,4vw,2.3rem);color:#fff;margin:0 0 8px;letter-spacing:.01em}p.article-lead{color:#c3d2e6;font-size:1rem;margin:0 0 8px;max-width:60ch}.article-body{margin-top:36px}.article-body h2{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:1.3rem;color:#fff;margin:44px 0 16px;padding-left:14px;border-left:4px solid var(--orange)}.article-body p{color:#dbe6f4;font-size:.98rem;margin:0 0 18px}.article-body strong{color:#fff}
+figure.inline-figure{margin:28px 0;padding:0}figure.inline-figure img{width:100%;border-radius:6px;border:1px solid #2c4f7c;display:block;background:var(--paper)}figure.inline-figure figcaption{font-size:.8rem;color:#7f96b8;margin-top:8px;text-align:center}.try-box{background:var(--paper);color:var(--ink-text);border-radius:6px;padding:20px 22px;margin:28px 0;box-shadow:0 3px 0 rgba(0,0,0,.18);border:1px solid var(--paper-dim)}.try-box .try-label{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.06em;color:var(--orange-dim);text-transform:uppercase;display:block;margin-bottom:8px}.try-box p{color:var(--ink-text);margin:0 0 10px;font-size:.92rem}.try-box p:last-child{margin-bottom:0}.try-box strong{color:var(--ink-text)}
+.calc-table{width:100%;border-collapse:collapse;margin:20px 0;font-family:'JetBrains Mono',monospace;font-size:.92rem}.calc-table td{padding:8px 10px;border-bottom:1px solid var(--paper-dim)}.calc-table td:first-child{color:#c3d2e6;white-space:nowrap}.calc-table td:last-child{text-align:right;font-weight:600}.calc-table tr.highlight td{color:var(--orange);font-weight:700}.series-nav{margin-top:44px;padding-top:20px;border-top:1px solid #2c4f7c;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.series-nav a,.back-link{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:.86rem;text-decoration:none;color:#9fb6d6;border:1px solid #2c4f7c;border-radius:20px;padding:8px 16px}.series-nav a:hover,.back-link:hover{color:#fff;border-color:var(--orange)}.article-footer{margin-top:32px;padding-top:24px;border-top:1px solid #2c4f7c;display:flex;justify-content:center}
+@media(max-width:640px){.article{padding:0 16px 72px}h1.article-title{font-size:1.5rem}.article-body h2{font-size:1.15rem;margin:36px 0 12px}.calc-table{font-size:.82rem}.calc-table td{padding:7px 5px}.eyecatch-wrap{min-height:120px}}
+</style></head><body>
+<div class="topbar"><div class="topbar-inner"><a href="../">&larr; 数学演習室に戻る</a></div></div>
+<article class="article">
+<div class="eyecatch-wrap"><img src="../images/columns/seisu-05-eyecatch.webp" alt="数直線の上に不規則に並ぶ素数の目印を、虫眼鏡で確かめているイメージ。整数のふしぎ第5回のアイキャッチ画像" decoding="async"></div>
+<div class="article-meta"><span class="pill">整数のふしぎ</span><span class="article-date">第5回・2026年11月</span></div>
+<h1 class="article-title">リーマン予想をAIが証明!? 「正しい」と言えるまでに時間がかかる理由</h1>
+<p class="article-lead">2026年11月、「数学で最も有名な未解決問題」を、AIといっしょに証明したという発表がありました。その問題が「リーマン予想」です。いったい何を言っている予想なのでしょうか。そして、証明が見つかったと言われているのに、なぜ「正しい」と言い切れるまでに時間がかかるのでしょうか。まずは、素数を数えるところから始めましょう。</p>
+<div class="article-body">
+
+<h2>素数を数えてみよう</h2>
+<p>素数とは、1とその数自身でしか割り切れない2以上の整数のこと。2、3、5、7、11、13……と続く。1から100までの素数を全部書き出すと、次の25個になる。</p>
+<div class="try-box"><span class="try-label">100までの素数(25個)</span><p>2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97</p></div>
+<p>範囲を広げて、素数がどれくらいあるかを見てみよう。</p>
+<table class="calc-table">
+<tr><td>100まで</td><td>25個(25%)</td></tr>
+<tr><td>1000まで</td><td>168個(16.8%)</td></tr>
+<tr><td>1万まで</td><td>1229個(約12.3%)</td></tr>
+<tr><td>100万まで</td><td>78498個(約7.8%)</td></tr>
+</table>
+<p>大きい数になるほど、素数はまばらになっていく。しかも、素数がどこに出てくるかは、一見でたらめに見える。</p>
+<div class="try-box"><span class="try-label">やってみよう</span><p>1〜10、11〜20、21〜30……と、10ずつに区切って、それぞれの中に素数が何個あるか数えてみよう。同じ個数になるだろうか。</p><p>答え合わせ：4、4、2、2、3、2、2、3、2、1個(合計25個)。</p></div>
+
+<h2>リーマン予想は、何を言っているのか</h2>
+<p>でたらめに見える素数の並びにも、実は大きな「くせ」がある。<strong>N までに素数が何個あるか</strong>は、ある計算式を使うと、かなり正確に見積もれるのだ(高校では習わない「対数積分」という式)。100万までなら、次のようになる。</p>
+<table class="calc-table">
+<tr><td>見積もりの式で求めた個数</td><td>約78627個</td></tr>
+<tr><td>実際の個数</td><td>78498個</td></tr>
+<tr class="highlight"><td>ズレ</td><td>約129個</td></tr>
+</table>
+<p>見積もりは、ほとんど当たっている。それでも、ぴったりとは一致せず、少しだけズレる。<strong>リーマン予想は、このズレがどれくらい小さいかについての予想</strong>である。</p>
+<div class="try-box"><span class="try-label">リーマン予想(やさしい言い方)</span><p>素数の個数の見積もりとのズレは、N の平方根(√N)くらいの大きさにおさまる。</p><p>※正確には、√N に少しだけ余裕をもたせた大きさ。</p></div>
+<p>100万の平方根は √1000000 = 1000 で、ズレの約129個は、それよりずっと小さい。1000までなら、見積もりは約177個、実際は168個で、ズレは約9個。√1000 は約32なので、こちらもずっと小さい。</p>
+<p>コインを100回投げると、表が出る回数は50回ぴったりにはならず、45〜55回くらいにおさまることが多い。ズレの大きさは、投げた回数の平方根(√100 = 10)の半分、つまり5回くらいだ。素数の個数のズレにも、これとよく似た「ここまでしかズレない」という限界がある、というのがリーマン予想の中身である。</p>
+<p>数学者は、この話を、「ゼータ関数」という特別な関数の「0になる場所(零点)」の話に言いかえた。「零点はすべて、ある1本の直線の上にならぶ」——1859年にリーマンが論文に書いた予想がこれである。直線の上にならぶことと、ズレが小さくおさまることは、同じ意味だと知られている。リーマンは「とてもありそうだ」と書いたが、証明は、いくつかの軽い試みのあと、ひとまず脇に置いた。それから167年、だれも証明できなかった。</p>
+<div class="try-box"><span class="try-label">コンピューターで調べた結果</span><p>最初の約10兆個(10<sup>13</sup>個)の零点を調べた計算(2004年)があり、これまでに見つかった零点は、すべて直線の上にあった。それでも、これは証明ではない。零点は無限にあるからだ。</p><p>これは、<a href="seisu-04.html">第4回</a>で見た「たくさん調べることと、証明すること」の違いと同じ話である。</p></div>
+
+<h2>2026年11月、何が発表されたのか</h2>
+<p>まず、事実を日付の順に整理する(2026年11月23日時点の報道にもとづく)。</p>
+<ul>
+<li><strong>8月10日</strong>　Anthropic(アンソロピック)社が、研究中のAI「Claude」が、零点のうち「直線の上にあると証明できる割合」を、それまでの約41.6%から約67.2%へ引き上げたと発表した。これはリーマン予想そのものの証明ではなかった。</li>
+<li><strong>11月20日(金)</strong>　同社の数学者レベント・アルポーゲさんが、自分のWebサイトで、Claudeといっしょにリーマン予想の証明を見つけたと発表した。証明は、コンピューターで確かめられる「Lean」という形式で公開された。</li>
+<li><strong>11月21日</strong>　Leanと、その数学ライブラリ「Mathlib」のコミュニティが、共同声明で「証明は正しい」と認定した。</li>
+</ul>
+<p>いっしょに取り組んだAIは、Anthropic社の「Claude」である。ニュースは「AIが解いた」と大きく伝えたが、何が、どこまで確かめられたのかを分けて見る必要がある。</p>
+
+<h2>「正しい」を確かめる、3つの段階</h2>
+<p><a href="seisu-04.html">第4回</a>では、「具体例を調べること」「証明すること」「証明を機械で確かめられる形にすること(形式化)」の違いを見た。今回のニュースを読むには、そこからもう一歩進んで、「確かめる」の中に3つの段階があることを知っておくとよい。</p>
+<figure class="inline-figure"><img src="../images/columns/seisu-05-figure.webp" alt="「確かめる」の3つの段階を並べた図。1機械のチェックは完了と発表、2問題の取り違えがないかは機械の照合まで済み、3人間が理解し論文になるのはこれから" loading="lazy" decoding="async"><figcaption>「確かめる」には3つの段階がある(2026年11月23日時点)</figcaption></figure>
+<div class="try-box"><span class="try-label">確かめる3つの段階</span>
+<ul>
+<li><strong>① 機械のチェック</strong>：証明を、数学の規則だけで一歩ずつ確かめるプログラム(Lean)で調べる。Leanのコミュニティは、約1700万行におよぶ証明を、数十人が再現し、複数の独立したチェッカーでも調べて、エラーなく通ったと発表した。</li>
+<li><strong>② 問題の取り違えがないか</strong>：機械が保証するのは「証明が規則どおり」というところまで。証明したことが、本当に「リーマン予想」なのかは、別の確認が必要になる。Leanコミュニティは、証明された内容が、数学ライブラリに書かれたリーマン予想の命題と一致することを、2つの独立したツールで確かめた。さらに、その命題が、一般に言われるリーマン予想の問題文と同じかどうかは、人間の専門家の確認が必要だとされている。</li>
+<li><strong>③ 人間が理解する</strong>：人間が読める形の論文は、まだ公開されていない。報道では、形式証明を文書にすると25万ページを超え、そのままでは読めないという。発表したアルポーゲさん自身も、証明で使われた高度な理論を十分には理解していないと認めたと報じられている。数学者が理解するには、数か月から数年かかるかもしれない、という見方もある。</li>
+</ul>
+</div>
+<p>テストにたとえてみよう。計算はぜんぶ合っている(①)。けれど、問題文を読みまちがえていたら意味がない(②)。そして、「なぜその答えになるのか」を人が説明できなければ、「わかった」とは言いにくい(③)。</p>
+<p>数学では、答えが正しいだけでなく、「なぜ正しいか」がわかることが大切だ。理由がわかれば、そこから次の発見が生まれるからである。</p>
+
+<h2>時間がかかるのは、なぜか</h2>
+<p>リーマン予想は、アメリカのクレイ数学研究所が100万ドルの賞金をかけた、7つの問題の1つでもある。ただし、賞金の審査には決まりがある。解答が、専門家の審査(査読)のある専門誌などで公表されてから少なくとも2年が過ぎていること。そして、世界の数学界に広く受け入れられていること。これが条件の一部である。</p>
+<p>前の例を見てみよう。同じ賞金問題だったポアンカレ予想は、最初の論文がインターネットに投稿されたのが2002年11月、賞の授与が発表されたのが2010年3月だった。約7年4か月かかっている。</p>
+<p>時間がかかるのは、のろいからではない。まちがいを、世界じゅうの専門家の目で、できるだけ確実に取りのぞくための時間である。今回のように機械による確認が先に進んでも、「人間が理解して確かめる」という大事な段階は残っている。</p>
+
+<h2>ニュースを読むときのコツ</h2>
+<p>新しい発表があったときは、「だれが、いつ、何を、どの段階まで確かめたのか」を見ると、成果を正確に読み取れる。「証明を見つけたと発表した」ことと、「証明が正しいと数学界が受け入れた」ことは、同じではない。</p>
+<div class="try-box"><span class="try-label">考えてみよう</span>
+<ul>
+<li>素数の個数の見積もりとのズレが「√N くらい」とは、どんなことを言っているのだろう。</li>
+<li>「Leanが通った」だけでは、なぜ「リーマン予想が解けた」と言い切れないのだろう。</li>
+<li>テストの答え合わせにたとえると、①②③はそれぞれ何にあたるだろう。</li>
+</ul>
+</div>
+
+<h2>まとめ</h2>
+<p>リーマン予想は、素数の個数の見積もりとのズレが小さいことを予想した問題である。2026年11月、AIといっしょに証明を見つけたという発表があり、機械による確認は進んだ。しかし、人間が内容を理解して確かめるのは、これからである。</p>
+<p><strong>調べることは予想を生み、証明はすべての場合を論理で示し、その証明が正しいと言えるには、人間の理解の時間もかかる。</strong>結果がどうなるかは、これからの確認を見守ろう。</p>
+
+<h2>参考資料</h2>
+<p>ITmedia NEWS「Anthropicの数学者、『Claude』と共同で『リーマン予想』を証明したと主張 Leanコミュニティが『正しい』と認定」2026年11月22日<br>CNET Japan「リーマン予想の証明、Lean開発者らが『正しい』と声明 Claudeを使って発見」2026年11月<br>XenoSpectrum「AIによるリーマン予想の証明がLean検証を通過、それでも100万ドルの懸賞金がすぐに支払われない理由」2026年11月<br>ビジネス+IT「AnthropicのClaudeが、167年未解決の数学最大の難問『リーマン予想』の証明を前進」2026年8月11日<br>A computational history of prime numbers and Riemann zeros (arXiv:1810.05244)</p>
+</div>
+<div class="series-nav"><a href="seisu-04.html">&larr; 前の回：フェルマーの最終定理</a><span></span></div>
+<div class="article-footer"><a class="back-link" href="../">&larr; 数学演習室に戻る</a></div>
+</article>
+</body></html>
