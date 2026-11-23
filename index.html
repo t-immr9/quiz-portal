@@ -121,7 +121,7 @@ section.blk{scroll-margin-top:calc(110px + env(safe-area-inset-top));margin:18px
 .tile .t{font:700 .98rem/1.45 var(--head)}
 .tile .d{font-size:.8rem;color:var(--sub);line-height:1.6}
 /* 動かないカードの並び（理系大学を目指す人へ） */
-.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:760px}
 .tiles .tile{width:auto}
 .shelf-label{font:700 .85rem/1 var(--head);color:var(--sub);margin:14px 0 8px}
 /* ゆっくり左へ自動で動く棚(JSが .auto を付ける。さわると止まる) */
@@ -252,11 +252,11 @@ const APPS = [
   {"g": 0, "k": "extra", "tag": "計算練習", "name": "平方完成トレーニング", "desc": "手書きメモ付き・基本＆係数ありの2次関数変形ドリル", "href": "https://t-immr9.github.io/drill-app/heihoukansei_drill.html"},
   {"g": 0, "k": "extra", "tag": "思考力・集中力", "name": "無言パズル", "href": "https://t-immr9.github.io/mugonpazuru/"},
   {"g": 0, "k": "extra", "tag": "中学の復習", "name": "中学校の内容の確認ドリル", "desc": "正負の数・文字式・方程式など、中学校の内容を40問の4択で確かめる。", "href": "https://t-immr9.github.io/suu1chuugakkounonaiyounokakunin/"},
-  {"g": 0, "k": "sonosaki", "tag": "その先・数学Ⅰ", "name": "数学Ⅰのその先", "desc": "2次方程式・2次不等式：判別式と2次不等式の基本から、常に成り立つ条件、解の配置、条件つきの最大・最小、絶対値まで。データの分析：中央値・四分位数の性質、分散の公式、変量の変換、グループの合体、相関係数まで。", "href": "https://t-immr9.github.io/sonosaki-slides/#suu1"},
-  {"g": 0, "k": "sonosaki", "tag": "その先・数学A", "name": "数学Aのその先", "desc": "図形の性質：三角形の五心、チェバ・メネラウス、円と四角形、接弦定理、方べきの定理から、作図、最短経路、空間図形、多面体まで。", "href": "https://t-immr9.github.io/sonosaki-slides/#suuA"},
-  {"g": 0, "k": "sonosaki", "tag": "その先・数学Ⅱ", "name": "数学Ⅱのその先", "desc": "三角関数：加法定理の応用、合成、最大・最小、和と積の公式。指数関数・対数関数：方程式と不等式、おきかえ、常用対数。", "href": "https://t-immr9.github.io/sonosaki-slides/#suu2"},
-  {"g": 0, "k": "sonosaki", "tag": "その先・数学B", "name": "数学Bのその先", "desc": "数列：授業で習っていなくても大丈夫。等差・等比数列、Σ、漸化式、数学的帰納法まで。", "href": "https://t-immr9.github.io/sonosaki-slides/#suuB"},
-  {"g": 0, "k": "sonosaki", "tag": "その先・数学C", "name": "数学Cのその先", "desc": "平面ベクトル・空間ベクトル・複素数平面：授業で習っていなくても大丈夫。基礎から入試の標準問題まで。", "href": "https://t-immr9.github.io/sonosaki-slides/#suuC"},
+  {"g": 0, "k": "sonosaki", "tag": "その先・数学Ⅰ", "name": "数学Ⅰのその先", "slot": "1/1", "desc": "2次方程式・2次不等式：判別式と2次不等式の基本から、常に成り立つ条件、解の配置、条件つきの最大・最小、絶対値まで。データの分析：中央値・四分位数の性質、分散の公式、変量の変換、グループの合体、相関係数まで。", "href": "https://t-immr9.github.io/sonosaki-slides/#suu1"},
+  {"g": 0, "k": "sonosaki", "tag": "その先・数学A", "name": "数学Aのその先", "slot": "1/2", "desc": "図形の性質：三角形の五心、チェバ・メネラウス、円と四角形、接弦定理、方べきの定理から、作図、最短経路、空間図形、多面体まで。", "href": "https://t-immr9.github.io/sonosaki-slides/#suuA"},
+  {"g": 0, "k": "sonosaki", "tag": "その先・数学Ⅱ", "name": "数学Ⅱのその先", "slot": "2/1", "desc": "三角関数：加法定理の応用、合成、最大・最小、和と積の公式。指数関数・対数関数：方程式と不等式、おきかえ、常用対数。", "href": "https://t-immr9.github.io/sonosaki-slides/#suu2"},
+  {"g": 0, "k": "sonosaki", "tag": "その先・数学B", "name": "数学Bのその先", "slot": "2/2", "desc": "数列：授業で習っていなくても大丈夫。等差・等比数列、Σ、漸化式、数学的帰納法まで。", "href": "https://t-immr9.github.io/sonosaki-slides/#suuB"},
+  {"g": 0, "k": "sonosaki", "tag": "その先・数学C", "name": "数学Cのその先", "slot": "3/2", "desc": "平面ベクトル・空間ベクトル・複素数平面：授業で習っていなくても大丈夫。基礎から入試の標準問題まで。", "href": "https://t-immr9.github.io/sonosaki-slides/#suuC"},
   {"g": 0, "k": "column", "group": "整数のふしぎ", "tag": "整数のふしぎ・第1回", "name": "クルクル回る!? ダイヤル数「142857」の秘密", "desc": "かける数を変えると、6つの数字がダイヤルのように入れ替わる不思議を確かめる。", "href": "columns/seisu-01.html"},
   {"g": 0, "k": "column", "group": "整数のふしぎ", "tag": "整数のふしぎ・第2回", "name": "どんな数もブラックホールへ！ 3桁の「495」", "desc": "数字を大きい順と小さい順に並べて引くと、多くの3桁の数が495へ集まる。", "href": "columns/seisu-02.html"},
   {"g": 0, "k": "column", "group": "整数のふしぎ", "tag": "整数のふしぎ・第3回", "name": "最後は必ず1になる!? 終わらない謎「コラッツ予想」", "desc": "偶数なら2で割り、奇数なら3倍して1を足す。簡単なルールの先にある未解決問題を体験する。", "href": "columns/seisu-03.html"},
@@ -331,7 +331,8 @@ const GRADES = {
       '<span class="t">' + esc(a.name) + '<span class="m">' + esc(a.tag || '') + (a.desc ? ' ・ ' + esc(a.desc) : '') + '</span></span>' +
       (badge ? '<span class="new">' + badge + '</span>' : chev) + '</a></li>';
   }
-  const tile = a => '<a class="tile" href="' + esc(a.href) + '"' + tgt(a.href) + '><span class="m">' + esc(a.tag || a.group || '') + '</span><span class="t">' + esc(a.name) + '</span>' + (a.desc ? '<span class="d">' + esc(a.desc) + '</span>' : '') + '</a>';
+  // slot:"行/列" で並びの場所を決める（理系大学を目指す人へ：左の列 Ⅰ・Ⅱ・Ⅲ，右の列 A・B・C）
+  const tile = a => '<a class="tile" href="' + esc(a.href) + '"' + (a.slot ? ' style="grid-row:' + esc(a.slot.split('/')[0]) + ';grid-column:' + esc(a.slot.split('/')[1]) + '"' : '') + tgt(a.href) + '><span class="m">' + esc(a.tag || a.group || '') + '</span><span class="t">' + esc(a.name) + '</span>' + (a.desc ? '<span class="d">' + esc(a.desc) + '</span>' : '') + '</a>';
 
   function today(g, mine){
     const G = GRADES[g], daily = mine.find(a => a.k === 'daily');
