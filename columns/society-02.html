@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ガチャ「確率1％」を100回回せば当たる？｜数学コラム</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="「確率1％のガチャを100回回せば当たる？」という疑問を、確率の計算で確かめ、コンプガチャが規制された理由まで考える数学コラム。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#10233d;--panel:#17335a;--grid-line:rgba(140,178,224,.14);--paper:#eef2f7;--paper-dim:#dbe3ee;--orange:#ff7a3d;--orange-dim:#c85f2c;--yellow:#ffcc33;--ink-text:#16233a;--paper-sub:#55637c}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:linear-gradient(var(--grid-line) 1px,transparent 1px) 0 0/40px 40px,linear-gradient(90deg,var(--grid-line) 1px,transparent 1px) 0 0/40px 40px,var(--ink);color:var(--paper);font-family:'Noto Sans JP',sans-serif;line-height:1.9}a{color:var(--orange)}
+.topbar{position:sticky;top:0;z-index:10;background:rgba(16,35,61,.96);backdrop-filter:blur(4px);border-bottom:1px solid #2c4f7c;padding:12px 20px}.topbar-inner{max-width:760px;margin:0 auto;font-family:'JetBrains Mono',monospace;font-size:.8rem}.topbar a{color:#9fb6d6;text-decoration:none}.topbar a:hover{color:#fff}
+.article{max-width:760px;margin:0 auto;padding:0 20px 100px}.eyecatch-wrap{margin:28px 0 0;border-radius:6px;overflow:hidden;border:1px solid #2c4f7c;background:var(--panel);min-height:180px}.eyecatch-wrap img{width:100%;height:auto;object-fit:cover;display:block}.article-meta{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:22px 0 10px}.pill{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--orange);border:1px solid var(--orange-dim);border-radius:20px;padding:4px 12px}.article-date{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:#7f96b8}
+h1.article-title{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:clamp(1.6rem,4vw,2.3rem);color:#fff;margin:0 0 8px;letter-spacing:.01em}p.article-lead{color:#c3d2e6;font-size:1rem;margin:0 0 8px;max-width:60ch}.article-body{margin-top:36px}.article-body h2{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:1.3rem;color:#fff;margin:44px 0 16px;padding-left:14px;border-left:4px solid var(--orange)}.article-body p{color:#dbe6f4;font-size:.98rem;margin:0 0 18px}.article-body strong{color:#fff}
+figure.inline-figure{margin:28px 0;padding:0}figure.inline-figure img{width:100%;border-radius:6px;border:1px solid #2c4f7c;display:block;background:var(--paper)}figure.inline-figure figcaption{font-size:.8rem;color:#7f96b8;margin-top:8px;text-align:center}.try-box{background:var(--paper);color:var(--ink-text);border-radius:6px;padding:20px 22px;margin:28px 0;box-shadow:0 3px 0 rgba(0,0,0,.18);border:1px solid var(--paper-dim)}.try-box .try-label{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.06em;color:var(--orange-dim);text-transform:uppercase;display:block;margin-bottom:8px}.try-box p,.try-box li{color:var(--ink-text);font-size:.92rem}.try-box strong{color:var(--ink-text)}.try-box p{margin:0 0 10px}.try-box p:last-child{margin-bottom:0}.try-box ul{margin:8px 0 0;padding-left:1.4em}.try-box li{margin:6px 0;font-weight:500}.try-box li::marker{color:var(--orange-dim)}
+.calc-table{width:100%;border-collapse:collapse;margin:20px 0;font-family:'JetBrains Mono',monospace;font-size:.92rem}.calc-table td{padding:8px 10px;border-bottom:1px solid #2c4f7c}.calc-table td:first-child{color:#c3d2e6}.calc-table td:last-child{text-align:right;font-weight:600;color:#fff}.calc-table tr.highlight td{color:var(--orange);font-weight:700}.calc-table.wide td{text-align:right}.calc-table.wide td:first-child{text-align:left}.calc-table tr.head td{color:#7f96b8;font-size:.78rem;font-weight:500}.formula{font-family:'JetBrains Mono',monospace}.source-list{font-size:.82rem;color:#9fb6d6;padding-left:1.4em}.source-list li{margin-bottom:8px}.series-nav{margin-top:44px;padding-top:20px;border-top:1px solid #2c4f7c;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.series-nav a,.back-link{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:.86rem;text-decoration:none;color:#9fb6d6;border:1px solid #2c4f7c;border-radius:20px;padding:8px 16px}.series-nav a:hover,.back-link:hover{color:#fff;border-color:var(--orange)}.article-footer{margin-top:32px;padding-top:24px;border-top:1px solid #2c4f7c;display:flex;justify-content:center}
+sup{font-size:.7em;line-height:0}
+@media(max-width:640px){.article{padding:0 16px 72px}h1.article-title{font-size:1.5rem}.article-body h2{font-size:1.15rem;margin:36px 0 12px}.calc-table{font-size:.82rem}.calc-table td{padding:7px 5px}.eyecatch-wrap{min-height:120px}}
+</style></head><body>
+<div class="topbar"><div class="topbar-inner"><a href="../">&larr; 数学演習室に戻る</a></div></div>
+<article class="article">
+<div class="eyecatch-wrap"><img src="../images/columns/society-02-eyecatch.webp" alt="「ガチャ『確率1％』を100回回せば当たる？」というタイトルと、100回回しても約63％しか当たらないことを表すイメージ。数学と社会コラム第2回のアイキャッチ画像" decoding="async"></div>
+<div class="article-meta"><span class="pill">数学と社会</span><span class="article-date">第2回</span><span class="article-date">2026.11</span></div>
+<h1 class="article-title">ガチャ「確率1％」を100回回せば当たる？</h1>
+<p class="article-lead">当たりの確率が1％と書いてあるガチャ。「1％を100回回せば、100％になるから当たるはず」と考えたことはないだろうか。確率の計算で、その考え方を確かめてみよう。</p>
+<div class="article-body">
+<h2>「100回で当たる」は本当？</h2>
+<p>ゲームのガチャで、当たりの確率が1％と表示されているとする。1回で当たる確率が1％なら、100回回せば、1％×100＝100％になって、必ず当たる——そう考えたくなる。</p>
+<div class="try-box"><span class="try-label">まず予想しよう</span><p>確率1％のガチャを100回回したとき、少なくとも1回は当たる確率は、何％くらいだろう。</p><ul><li>ほぼ100％</li><li>約80％</li><li>約63％</li><li>約50％</li></ul></div>
+<h2>「ずっと外れる」確率を計算する</h2>
+<p>「少なくとも1回当たる」は、「100回ぜんぶ外れる」の反対のことだ。だから、先に「ぜんぶ外れる確率」を求めればよい。</p>
+<p>1回で外れる確率は99％、つまり0.99。毎回の結果が前の結果に影響されないなら、100回続けて外れる確率は、0.99を100回かけた <strong>0.99<sup>100</sup></strong> で求められる。電卓で計算すると、約0.366。つまり36.6％だ。</p>
+<p>したがって、100回回して少なくとも1回当たる確率は、100％ − 36.6％ ＝ <strong>約63.4％</strong>。</p>
+<table class="calc-table">
+<tr class="head"><td>回す回数</td><td>少なくとも1回当たる確率</td></tr>
+<tr><td>10回</td><td>約9.6％</td></tr>
+<tr><td>50回</td><td>約39.5％</td></tr>
+<tr class="highlight"><td>69回</td><td>約50.0％</td></tr>
+<tr><td>100回</td><td>約63.4％</td></tr>
+<tr><td>200回</td><td>約86.6％</td></tr>
+<tr><td>300回</td><td>約95.1％</td></tr>
+<tr><td>459回</td><td>約99.0％</td></tr>
+</table>
+<p>この表は、毎回の当たる確率が1％で、前の結果に影響されないものとして計算した値だ。確率が50％を超えるのは、69回目から。100回回しても、約63.4％にしかならない。100人が100回ずつ回すと、およそ37人は1回も当たらない計算になる。</p>
+<figure class="inline-figure"><img src="../images/columns/society-02-figure.webp" alt="確率1％のガチャを回した回数と、少なくとも1回当たる確率の関係を表すグラフ。69回で約50％、100回で約63％、230回で約90％、459回で約99％と、増え方はだんだんゆるやかになる" loading="lazy" decoding="async"><figcaption>回数を増やしても、確率が100％になるわけではない</figcaption></figure>
+<div class="try-box"><span class="try-label">やってみよう</span><p>電卓で、0.99に0.99をくり返しかけていき、答えが0.5より小さくなるのは何回目か調べてみよう。べき乗(累乗)のキーがある電卓なら、0.99<sup>n</sup>の n を変えて試してもよい。</p><p>答え合わせ：69回目(0.99<sup>69</sup>は約0.4998)。</p></div>
+
+<h2>「平均して100回」の意味</h2>
+<p>確率1％とは、「平均すると、100回に1回当たる」という意味だ。当たりが出るまでの回数の平均が、1÷0.01＝100回になる。</p>
+<p>ただし、「平均が100回」であることと、「100回で必ず当たる」ことは、同じではない。100回回したとき、当たりが何回出るかを計算すると、次のようになる。</p>
+<table class="calc-table">
+<tr class="head"><td>100回で当たった回数</td><td>その確率</td></tr>
+<tr><td>0回</td><td>約36.6％</td></tr>
+<tr><td>1回</td><td>約37.0％</td></tr>
+<tr><td>2回</td><td>約18.5％</td></tr>
+<tr><td>3回以上</td><td>約7.9％</td></tr>
+</table>
+<p>当たりの平均は1回だが、「ちょうど1回」は約37％にすぎない。0回の人も約37％いて、2回以上当たる人は約26％いる。結果には、かなりのばらつきがある。</p>
+
+<h2>外れ続けたら、次は当たりやすい？</h2>
+<p>99回続けて外れたら、100回目は当たりやすくなるだろうか。答えは「いいえ」だ。毎回の抽選が前の結果に影響されないなら、100回目も、当たる確率は1％のままである。ガチャは、前に何が出たかを覚えていない。</p>
+<p>「これだけ外れたのだから、そろそろ当たるはず」という感覚は、確率の計算では説明できない。なお、ゲームによっては、一定の回数でルールとして当たりが保証される仕組みを用意している場合もある。それは、ゲームのルールの話で、確率の計算とは別のことだ。</p>
+
+<h2>コンプガチャが禁止されたわけ</h2>
+<p>ガチャには、かつて「コンプガチャ」というしくみがあった。特定の複数のアイテムをすべて集めると、さらに珍しいアイテムがもらえるというものだ。2012年5月、消費者庁は、これが景品表示法で禁止されている「カード合わせ」にあたるという考えを示した。そして7月1日から、行政処分の対象となった。1回ごとのガチャが禁止されたわけではなく、「そろえさせるしくみ」が対象になったのである。</p>
+<p>禁止された理由の1つは、そろうまでの回数を、実際より少なく感じさせるおそれがあることだ。カードをそろえていくほど、残りのカードを引き当てる確率は下がるのに、はじめのうちは簡単に集まるので、残りもすぐにそろうと思ってしまう。</p>
+<p>たとえば、5種類のカードが同じ確率で出るとき、新しい種類が1つ出るまでの平均の回数は、次のようになる。</p>
+<table class="calc-table">
+<tr class="head"><td>集める種類</td><td>新しい1種類が出るまでの平均</td></tr>
+<tr><td>1種類目</td><td>1回</td></tr>
+<tr><td>2種類目</td><td>約1.25回</td></tr>
+<tr><td>3種類目</td><td>約1.7回</td></tr>
+<tr><td>4種類目</td><td>2.5回</td></tr>
+<tr class="highlight"><td>5種類目</td><td>5回</td></tr>
+<tr><td>合計</td><td>約11.4回</td></tr>
+</table>
+<p>1種類目は1回で出るのに、最後の1種類だけで平均5回かかり、全体の約44％をしめる。実際のコンプガチャでは、出やすさが同じとは限らず、珍しいものほど出にくい。そろえるのは、この計算よりずっと大変になる。</p>
+
+<h2>確率は「保証」ではなく「見通し」</h2>
+<p>確率の数字は、「当たるかどうか」を保証するものではない。しかし、「何回くらい回すと、どれくらいの確率で当たるのか」という見通しを、数字で教えてくれる。90％の確率を目指すなら、230回が目安になる。回数が増えれば、かかるお金も増える。</p>
+<p><strong>ガチャを引くかどうかは、自分で決めることだ。決める前に、確率の数字が何を教えてくれて、何を教えてくれないのかを知っておこう。</strong></p>
+<div class="try-box"><span class="try-label">考えてみよう</span>
+<ul>
+<li>確率2％のガチャで、少なくとも1回当たる確率が50％を超えるのは、何回目だろう。(答え：35回目。0.98<sup>35</sup>は約0.493)</li>
+<li>確率1％のガチャで、99回続けて外れたあと、100回目に当たる確率は何％だろう。</li>
+<li>日常生活で、「確率」の数字を見かける場面を探してみよう。</li>
+</ul>
+</div>
+
+<h2>参考資料</h2>
+<ul class="source-list">
+<li><a href="https://game.watch.impress.co.jp/docs/news/533875.html" target="_blank" rel="noopener noreferrer">GAME Watch「消費者庁、『コンプガチャ』に関する景品表示法上の考え方を公表」</a></li>
+<li><a href="https://www.gamer.ne.jp/news/201603050005/" target="_blank" rel="noopener noreferrer">Gamer「オンラインゲームと景品表示法」(景品規制の解説)</a></li>
+<li><a href="https://president.jp/articles/-/8858" target="_blank" rel="noopener noreferrer">PRESIDENT Online「コンプガチャ」の記事</a></li>
+</ul>
+</div>
+<div class="series-nav"><a href="society-01.html">&larr; 前の回：数学のテストと電卓</a><span></span></div>
+<div class="article-footer"><a class="back-link" href="../">&larr; 数学演習室に戻る</a></div>
+</article>
+</body></html>

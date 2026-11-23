@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>紙を何回折ると月に届く？｜整数のふしぎ</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="紙を半分に折るたびに厚さは2倍。2のn乗の増え方を、電卓で確かめながら、富士山や月まで届く回数を考える数学コラム。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#10233d;--panel:#17335a;--grid-line:rgba(140,178,224,.14);--paper:#eef2f7;--paper-dim:#dbe3ee;--orange:#ff7a3d;--orange-dim:#c85f2c;--yellow:#ffcc33;--ink-text:#16233a;--paper-sub:#55637c}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:linear-gradient(var(--grid-line) 1px,transparent 1px) 0 0/40px 40px,linear-gradient(90deg,var(--grid-line) 1px,transparent 1px) 0 0/40px 40px,var(--ink);color:var(--paper);font-family:'Noto Sans JP',sans-serif;line-height:1.9}a{color:var(--orange)}
+.topbar{position:sticky;top:0;z-index:10;background:rgba(16,35,61,.96);backdrop-filter:blur(4px);border-bottom:1px solid #2c4f7c;padding:12px 20px}.topbar-inner{max-width:760px;margin:0 auto;font-family:'JetBrains Mono',monospace;font-size:.8rem}.topbar a{color:#9fb6d6;text-decoration:none}.topbar a:hover{color:#fff}
+.article{max-width:760px;margin:0 auto;padding:0 20px 100px}.eyecatch-wrap{margin:28px 0 0;border-radius:6px;overflow:hidden;border:1px solid #2c4f7c;background:var(--panel);min-height:180px}.eyecatch-wrap img{width:100%;height:auto;object-fit:cover;display:block}.article-meta{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:22px 0 10px}.pill{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--orange);border:1px solid var(--orange-dim);border-radius:20px;padding:4px 12px}.article-date{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:#7f96b8}
+h1.article-title{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:clamp(1.6rem,4vw,2.3rem);color:#fff;margin:0 0 8px;letter-spacing:.01em}p.article-lead{color:#c3d2e6;font-size:1rem;margin:0 0 8px;max-width:60ch}.article-body{margin-top:36px}.article-body h2{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:1.3rem;color:#fff;margin:44px 0 16px;padding-left:14px;border-left:4px solid var(--orange)}.article-body p{color:#dbe6f4;font-size:.98rem;margin:0 0 18px}.article-body strong{color:#fff}
+figure.inline-figure{margin:28px 0;padding:0}figure.inline-figure img{width:100%;border-radius:6px;border:1px solid #2c4f7c;display:block;background:var(--paper)}figure.inline-figure figcaption{font-size:.8rem;color:#7f96b8;margin-top:8px;text-align:center}.try-box{background:var(--paper);color:var(--ink-text);border-radius:6px;padding:20px 22px;margin:28px 0;box-shadow:0 3px 0 rgba(0,0,0,.18);border:1px solid var(--paper-dim)}.try-box .try-label{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.06em;color:var(--orange-dim);text-transform:uppercase;display:block;margin-bottom:8px}.try-box p,.try-box li{color:var(--ink-text);font-size:.92rem}.try-box strong{color:var(--ink-text)}.try-box p{margin:0 0 10px}.try-box p:last-child{margin-bottom:0}.try-box ul{margin:8px 0 0;padding-left:1.4em}.try-box li{margin:6px 0;font-weight:500}.try-box li::marker{color:var(--orange-dim)}
+.calc-table{width:100%;border-collapse:collapse;margin:20px 0;font-family:'JetBrains Mono',monospace;font-size:.92rem}.calc-table td{padding:8px 10px;border-bottom:1px solid #2c4f7c}.calc-table td:first-child{color:#c3d2e6}.calc-table td:last-child{text-align:right;font-weight:600;color:#fff}.calc-table tr.highlight td{color:var(--orange);font-weight:700}.calc-table.wide td{text-align:right}.calc-table.wide td:first-child{text-align:left}.calc-table tr.head td{color:#7f96b8;font-size:.78rem;font-weight:500}.formula{font-family:'JetBrains Mono',monospace}.source-list{font-size:.82rem;color:#9fb6d6;padding-left:1.4em}.source-list li{margin-bottom:8px}.series-nav{margin-top:44px;padding-top:20px;border-top:1px solid #2c4f7c;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.series-nav a,.back-link{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:.86rem;text-decoration:none;color:#9fb6d6;border:1px solid #2c4f7c;border-radius:20px;padding:8px 16px}.series-nav a:hover,.back-link:hover{color:#fff;border-color:var(--orange)}.article-footer{margin-top:32px;padding-top:24px;border-top:1px solid #2c4f7c;display:flex;justify-content:center}
+sup{font-size:.7em;line-height:0}
+@media(max-width:640px){.article{padding:0 16px 72px}h1.article-title{font-size:1.5rem}.article-body h2{font-size:1.15rem;margin:36px 0 12px}.calc-table{font-size:.82rem}.calc-table td{padding:7px 5px}.eyecatch-wrap{min-height:120px}}
+</style></head><body>
+<div class="topbar"><div class="topbar-inner"><a href="../">&larr; 数学演習室に戻る</a></div></div>
+<article class="article">
+<div class="eyecatch-wrap"><img src="../images/columns/seisu-06-eyecatch.webp" alt="「紙を何回折ると月に届く？」というタイトルと、紙を折るたびに厚さが倍になっていくイメージ。10回で約10センチ、20回で約105メートル、26回で約6.7キロメートル、42回で約44万キロメートルと、月までの距離が示されている。整数のふしぎ第6回のアイキャッチ画像" decoding="async"></div>
+<div class="article-meta"><span class="pill">整数のふしぎ</span><span class="article-date">第6回・2026年11月</span></div>
+<h1 class="article-title">紙を何回折ると月に届く？</h1>
+<p class="article-lead">紙を半分に折ると、厚さは2倍になる。それをくり返すと、いったい何回で月に届くのだろうか。答えは、電卓があれば自分で確かめられる。</p>
+<div class="article-body">
+
+<h2>折るたびに、厚さは2倍</h2>
+<p>厚さ0.1mmの紙(コピー用紙は、だいたいこのくらい)を、半分に折ってみよう。1回折ると2枚重ねで、厚さは0.2mm。もう1回折ると4枚重ねで0.4mm。折るたびに、重なる枚数が2倍になっていく。</p>
+<table class="calc-table">
+<tr class="head"><td>折る回数</td><td>重なる枚数</td><td>厚さ</td></tr>
+<tr><td>1回</td><td>2枚</td><td>0.2mm</td></tr>
+<tr><td>2回</td><td>4枚</td><td>0.4mm</td></tr>
+<tr><td>3回</td><td>8枚</td><td>0.8mm</td></tr>
+<tr><td>5回</td><td>32枚</td><td>3.2mm</td></tr>
+<tr class="highlight"><td>10回</td><td>1024枚</td><td>約10cm</td></tr>
+</table>
+<p>n 回折ると、2<sup>n</sup>枚重なる。10回なら 2<sup>10</sup> = 1024枚で、厚さは約10cm。ここまでは、手のひらにのる大きさだ。</p>
+<div class="try-box"><span class="try-label">やってみよう</span><p>厚さ0.1mmの紙を折り続けると、厚さが身長(約1.7m)を超えるのは、何回目だろう。電卓で、0.1mmに2を何回かけたかを数えながら、確かめてみよう。</p><p>答え合わせ：15回目。14回で約1.6m、15回で約3.3mになる。</p></div>
+
+<h2>26回で、富士山を追い越す</h2>
+<p>ここからが、2倍をくり返す計算のおもしろいところだ。</p>
+<table class="calc-table">
+<tr><td>20回</td><td>約105m</td></tr>
+<tr><td>25回</td><td>約3355m</td></tr>
+<tr class="highlight"><td>26回</td><td>約6711m</td></tr>
+<tr><td>30回</td><td>約107km</td></tr>
+</table>
+<p>20回で約105m、25回で約3.4km。25回目の時点では、まだ富士山(標高3776m)に届かない。ところが、あと1回折って26回にすると、約6.7kmになり、富士山を追い越す。30回では約107km。宇宙の入口といわれる高さ(約100km)を越えてしまう。</p>
+
+<h2>42回で、月に届く</h2>
+<p>地球から月までの距離は、約38万km(平均で約384,400km)。さて、何回で届くだろうか。</p>
+<table class="calc-table">
+<tr><td>41回</td><td>約22万km</td></tr>
+<tr class="highlight"><td>42回</td><td>約44万km</td></tr>
+<tr><td>月までの距離</td><td>約38万km</td></tr>
+</table>
+<p>41回では約22万kmで、月には届かない。ところが、あと1回折って<strong>42回</strong>にすると、約44万kmになり、月を越える。</p>
+<figure class="inline-figure"><img src="../images/columns/seisu-06-figure.webp" alt="厚さ0.1mmの紙を折った回数と厚さを、階段のように並べた図。10回で約10センチ、20回で約105メートル、26回で約6.7キロメートルで富士山より高く、42回で約44万キロメートルとなり、月までの約38万キロメートルを越える" loading="lazy" decoding="async"><figcaption>折る回数が増えるほど、厚さは階段を駆け上がるように増える(厚さ0.1mmの紙の場合)</figcaption></figure>
+<p>41回から42回で増えた厚さは、約22万km。折るたびに、それまでの全部の厚さと同じだけ増えるので、最後の1回が、いちばん大きく増える。</p>
+<div class="try-box"><span class="try-label">考えてみよう</span><p>紙の厚さが、半分の0.05mmだったら、月に届くのは何回目になるだろう。</p><p>答え合わせ：43回目。厚さが半分でも、必要な回数は1回増えるだけである。2倍をくり返す増え方は、出発点が半分になっても、1回分の差にしかならない。</p></div>
+
+<h2>本当に42回、折れるのか</h2>
+<p>もちろん、現実にはこうはいかない。紙は、折るたびに厚さが2倍になるだけでなく、折れる方向の長さが半分になる。A4用紙(長さ297mm)を同じ向きに折り続けると、計算上は7回目で長さが約2.3mmになる。いっぽう、厚さは約12.8mmだ。厚さのほうが長さより大きくなってしまい、もう折れない。</p>
+<p>「紙は7〜8回までしか折れない」と言われてきたのは、このためだ。</p>
+<p>ところが、2002年1月27日、当時高校生だったブリトニー・ギャリヴァンさんが、長さ約1.2km(4000フィート)のトイレットペーパーを使って、同じ向きに<strong>12回</strong>折ることに成功した。ギネス世界記録にも登録されている。彼女は、折るたびに紙の端が丸くなって長さが失われることを考えて、必要な長さを式で求めてから挑戦したという。12回折ると、2<sup>12</sup> = 4096枚重ねになる。</p>
+<p>その後、アメリカの学校の生徒と先生のグループが、約4km(13,000フィート)の紙を使って、13回折ったと主張している。それでも、42回となると、必要な紙の長さが桁違いに長くなる。月まで届く折り紙は、計算の中だけの話なのだ。</p>
+
+<h2>まとめ</h2>
+<p>折るたびに2倍になる計算を、くり返してみた。10回で約10cm、26回で富士山を越え、42回で月を越える。2倍をくり返す増え方は、私たちの感覚をはるかに超えて、あっというまに大きくなる。</p>
+<p><strong>計算では42回で月に届くが、現実に折れるのは12回まで。数学の答えと現実のちがいを知ることも、数学のおもしろさである。</strong></p>
+<div class="try-box"><span class="try-label">考えてみよう</span>
+<ul>
+<li>折る回数が1回増えると、厚さは何倍になるだろう。</li>
+<li>7回折ると、厚さは何倍になっているだろう。(2<sup>7</sup>を計算してみよう)</li>
+<li>身のまわりで、「倍々」に増えるものを探してみよう。</li>
+</ul>
+</div>
+
+<h2>参考資料</h2>
+<ul class="source-list">
+<li><a href="https://guinnessworldrecords.com/world-records/494571-most-times-to-fold-a-piece-of-paper" target="_blank" rel="noopener noreferrer">Guinness World Records「Most times to fold a piece of paper」</a></li>
+<li><a href="https://www.mentalfloss.com/article/62865/how-many-times-can-you-fold-piece-paper" target="_blank" rel="noopener noreferrer">Mental Floss「How Many Times Can You Fold a Piece of Paper?」</a></li>
+<li><a href="https://themarysue.com/?p=154274" target="_blank" rel="noopener noreferrer">The Mary Sue「Students Claim New Paper Folding Record: 13 Folds of Toilet Paper」</a></li>
+</ul>
+</div>
+<div class="series-nav"><a href="seisu-05.html">&larr; 前の回：リーマン予想</a><span></span></div>
+<div class="article-footer"><a class="back-link" href="../">&larr; 数学演習室に戻る</a></div>
+</article>
+</body></html>

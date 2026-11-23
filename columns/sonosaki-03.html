@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>制動距離は、なぜ速度の2乗なのか？｜数学コラム</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="時速が2倍になると、ブレーキをかけてから止まるまでの距離は4倍になる。その理由を、二次関数 y = ax² とつなげて考える数学コラム。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#10233d;--panel:#17335a;--grid-line:rgba(140,178,224,.14);--paper:#eef2f7;--paper-dim:#dbe3ee;--orange:#ff7a3d;--orange-dim:#c85f2c;--yellow:#ffcc33;--ink-text:#16233a;--paper-sub:#55637c}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:linear-gradient(var(--grid-line) 1px,transparent 1px) 0 0/40px 40px,linear-gradient(90deg,var(--grid-line) 1px,transparent 1px) 0 0/40px 40px,var(--ink);color:var(--paper);font-family:'Noto Sans JP',sans-serif;line-height:1.9}a{color:var(--orange)}
+.topbar{position:sticky;top:0;z-index:10;background:rgba(16,35,61,.96);backdrop-filter:blur(4px);border-bottom:1px solid #2c4f7c;padding:12px 20px}.topbar-inner{max-width:760px;margin:0 auto;font-family:'JetBrains Mono',monospace;font-size:.8rem}.topbar a{color:#9fb6d6;text-decoration:none}.topbar a:hover{color:#fff}
+.article{max-width:760px;margin:0 auto;padding:0 20px 100px}.eyecatch-wrap{margin:28px 0 0;border-radius:6px;overflow:hidden;border:1px solid #2c4f7c;background:var(--panel);min-height:180px}.eyecatch-wrap img{width:100%;height:auto;object-fit:cover;display:block}.article-meta{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:22px 0 10px}.pill{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--orange);border:1px solid var(--orange-dim);border-radius:20px;padding:4px 12px}.article-date{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:#7f96b8}
+h1.article-title{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:clamp(1.6rem,4vw,2.3rem);color:#fff;margin:0 0 8px;letter-spacing:.01em}p.article-lead{color:#c3d2e6;font-size:1rem;margin:0 0 8px;max-width:60ch}.article-body{margin-top:36px}.article-body h2{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:1.3rem;color:#fff;margin:44px 0 16px;padding-left:14px;border-left:4px solid var(--orange)}.article-body p{color:#dbe6f4;font-size:.98rem;margin:0 0 18px}.article-body strong{color:#fff}
+figure.inline-figure{margin:28px 0;padding:0}figure.inline-figure img{width:100%;border-radius:6px;border:1px solid #2c4f7c;display:block;background:var(--paper)}figure.inline-figure figcaption{font-size:.8rem;color:#7f96b8;margin-top:8px;text-align:center}.try-box{background:var(--paper);color:var(--ink-text);border-radius:6px;padding:20px 22px;margin:28px 0;box-shadow:0 3px 0 rgba(0,0,0,.18);border:1px solid var(--paper-dim)}.try-box .try-label{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.06em;color:var(--orange-dim);text-transform:uppercase;display:block;margin-bottom:8px}.try-box p,.try-box li{color:var(--ink-text);font-size:.92rem}.try-box strong{color:var(--ink-text)}.try-box p{margin:0 0 10px}.try-box p:last-child{margin-bottom:0}.try-box ul{margin:8px 0 0;padding-left:1.4em}.try-box li{margin:6px 0;font-weight:500}.try-box li::marker{color:var(--orange-dim)}
+.calc-table{width:100%;border-collapse:collapse;margin:20px 0;font-family:'JetBrains Mono',monospace;font-size:.92rem}.calc-table td{padding:8px 10px;border-bottom:1px solid #2c4f7c}.calc-table td:first-child{color:#c3d2e6}.calc-table td:last-child{text-align:right;font-weight:600;color:#fff}.calc-table tr.highlight td{color:var(--orange);font-weight:700}.calc-table.wide td{text-align:right}.calc-table.wide td:first-child{text-align:left}.calc-table tr.head td{color:#7f96b8;font-size:.78rem;font-weight:500}.formula{font-family:'JetBrains Mono',monospace}.source-list{font-size:.82rem;color:#9fb6d6;padding-left:1.4em}.source-list li{margin-bottom:8px}.series-nav{margin-top:44px;padding-top:20px;border-top:1px solid #2c4f7c;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.series-nav a,.back-link{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:.86rem;text-decoration:none;color:#9fb6d6;border:1px solid #2c4f7c;border-radius:20px;padding:8px 16px}.series-nav a:hover,.back-link:hover{color:#fff;border-color:var(--orange)}.article-footer{margin-top:32px;padding-top:24px;border-top:1px solid #2c4f7c;display:flex;justify-content:center}
+sup{font-size:.7em;line-height:0}
+
+/* 式:分数は縦に積む。変数は斜体 */
+.eq{font-size:1.2rem;text-align:center;margin:22px 0;color:#fff;line-height:1.3;overflow-x:auto}
+.eq var,.article-body var{font-style:italic;font-family:'Times New Roman','Noto Serif JP',serif;font-size:1.08em}
+.eq .frac,.frac{display:inline-block;vertical-align:middle;text-align:center;margin:0 .18em}
+.frac .n{display:block;padding:0 .35em;border-bottom:1.5px solid currentColor;line-height:1.45}
+.frac .d{display:block;padding:0 .35em;line-height:1.45}
+.try-box var{font-style:italic;font-family:'Times New Roman','Noto Serif JP',serif;font-size:1.08em}
+
+/* 授業のその先：図はSVGで記事内に描く */
+.eyecatch-wrap svg{ width:100%; height:auto; display:block; }
+figure.inline-figure svg{ width:100%; height:auto; display:block; border-radius:6px; border:1px solid #2c4f7c; }
+@media(max-width:640px){.article{padding:0 16px 72px}h1.article-title{font-size:1.5rem}.article-body h2{font-size:1.15rem;margin:36px 0 12px}.calc-table{font-size:.82rem}.calc-table td{padding:7px 5px}.eyecatch-wrap{min-height:120px}}
+</style></head><body>
+<div class="topbar"><div class="topbar-inner"><a href="../">&larr; 数学演習室に戻る</a></div></div>
+<article class="article">
+<div class="eyecatch-wrap">
+<svg viewBox="0 0 1200 675" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="同じ道路で、時速50kmの車と時速100kmの車がブレーキをかけて止まるまでの距離を比べた図。時速50kmでは約14m、時速100kmでは約56mで、速度が2倍になると距離は4倍になる。右下に制動距離の式 d = v の2乗 ÷ (2μg) が書かれている">
+<defs><pattern id="gs3" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="rgba(140,178,224,0.14)" stroke-width="1"/></pattern></defs>
+<rect width="1200" height="675" fill="#10233d"/><rect width="1200" height="675" fill="url(#gs3)"/>
+<text x="60" y="136" font-family="'Noto Sans JP',sans-serif" font-size="46" font-weight="700" fill="#c3d2e6">時速50km</text>
+<rect x="40" y="150" width="1120" height="96" rx="6" fill="#17335a"/>
+<line x1="40" y1="198" x2="1160" y2="198" stroke="#3a5f8f" stroke-width="3" stroke-dasharray="26 22"/>
+<rect x="300" y="220" width="141.0" height="14" fill="#ff7a3d"/>
+<g>
+<rect x="170" y="192" width="130" height="36" rx="10" fill="#eef2f7"/>
+<polygon points="195,192 215,166 260,166 278,192" fill="#eef2f7"/>
+<polygon points="204,190 219,171 238,171 238,190" fill="#8fb0d6"/>
+<polygon points="245,190 245,171 258,171 270,190" fill="#8fb0d6"/>
+<circle cx="205" cy="228" r="14" fill="#10233d" stroke="#eef2f7" stroke-width="5"/>
+<circle cx="268" cy="228" r="14" fill="#10233d" stroke="#eef2f7" stroke-width="5"/>
+</g>
+<rect x="441.0" y="164" width="7" height="78" fill="#ffcc33"/>
+<text x="465.0" y="212" font-family="'Noto Sans JP',sans-serif" font-size="56" font-weight="900" fill="#ffcc33">約14m</text>
+<text x="60" y="306" font-family="'Noto Sans JP',sans-serif" font-size="46" font-weight="700" fill="#c3d2e6">時速100km</text>
+<rect x="40" y="320" width="1120" height="96" rx="6" fill="#17335a"/>
+<line x1="40" y1="368" x2="1160" y2="368" stroke="#3a5f8f" stroke-width="3" stroke-dasharray="26 22"/>
+<rect x="300" y="390" width="562.0" height="14" fill="#ff7a3d"/>
+<g>
+<rect x="170" y="362" width="130" height="36" rx="10" fill="#eef2f7"/>
+<polygon points="195,362 215,336 260,336 278,362" fill="#eef2f7"/>
+<polygon points="204,360 219,341 238,341 238,360" fill="#8fb0d6"/>
+<polygon points="245,360 245,341 258,341 270,360" fill="#8fb0d6"/>
+<circle cx="205" cy="398" r="14" fill="#10233d" stroke="#eef2f7" stroke-width="5"/>
+<circle cx="268" cy="398" r="14" fill="#10233d" stroke="#eef2f7" stroke-width="5"/>
+</g>
+<rect x="862.0" y="334" width="7" height="78" fill="#ffcc33"/>
+<text x="886.0" y="382" font-family="'Noto Sans JP',sans-serif" font-size="56" font-weight="900" fill="#ffcc33">約56m</text>
+<text x="60" y="575" font-family="'Noto Sans JP',sans-serif" font-size="62" font-weight="700" fill="#ffffff">速度 2倍</text>
+<polygon points="340,550 410,550 410,534 450,560 410,586 410,570 340,570" fill="#ff7a3d"/>
+<text x="478" y="578" font-family="'Noto Sans JP',sans-serif" font-size="74" font-weight="900" fill="#ffcc33">距離 4倍</text>
+<text x="850" y="582" font-family="'Noto Sans JP',sans-serif" font-size="64" font-weight="700" fill="#ffffff" font-style="italic">d =</text>
+<text x="1025" y="560" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="58" font-weight="700" fill="#ffffff" font-style="italic">v<tspan dy="-22" font-size="36" font-style="normal">2</tspan></text>
+<line x1="955" y1="578" x2="1095" y2="578" stroke="#ffffff" stroke-width="4"/>
+<text x="1025" y="636" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="58" font-weight="700" fill="#ffffff" font-style="italic">2μg</text>
+</svg>
+</div>
+<div class="article-meta"><span class="pill">授業のその先</span><span class="article-date">第3回・数学Ⅰ(2次関数)</span></div>
+<h1 class="article-title">制動距離は、なぜ速度の2乗なのか？</h1>
+<p class="article-lead">時速50kmと時速100kmでは、速度は2倍。ところが、ブレーキをかけてから止まるまでの距離は、2倍ではなく4倍になる。この「2乗」は、数学Ⅰで習う二次関数そのものだ。</p>
+<div class="article-body">
+
+<h2>速度が2倍なら、距離は4倍</h2>
+<p>車は、ブレーキを踏んでも、その場ですぐには止まれない。ブレーキがきき始めてから止まるまでに進む距離を、<strong>制動距離</strong>という。</p>
+<p>乾いたアスファルトの道路で、ブレーキをかけたとき、制動距離は次のようになる(計算の方法はあとで説明する)。</p>
+<table class="calc-table">
+<tr><td>時速50km</td><td>約14m</td></tr>
+<tr class="highlight"><td>時速100km</td><td>約56m</td></tr>
+</table>
+<p>速度は2倍なのに、距離は4倍になっている。速度が3倍になれば、距離は9倍。制動距離は、速度に比例するのではなく、<strong>速度の2乗に比例する</strong>のだ。なぜだろうか。</p>
+
+<h2>式で説明する</h2>
+<p>走っている車は、「運動エネルギー」を持っている。質量が <var>m</var>、速さが <var>v</var>(m/s)の車の運動エネルギーは、</p>
+<div class="eq"><span class="frac"><span class="n">1</span><span class="d">2</span></span> <var>m</var><var>v</var><sup>2</sup></div>
+<p>と表される(理科で習う式だ)。ブレーキをかけると、タイヤと路面の間に摩擦力がはたらく。摩擦力の大きさは <var>μmg</var> と書ける。<var>μ</var>(ミュー)は摩擦係数といい、すべりにくい路面ほど大きい。<var>g</var> は重力加速度で、約9.8m/s<sup>2</sup>だ。</p>
+<p>この力で、車が距離 <var>d</var> だけ進んで止まるとき、摩擦力がする仕事は <var>μmg</var> × <var>d</var>。運動エネルギーが、すべて摩擦に使われて止まるので、次の式が成り立つ。</p>
+<div class="eq"><span class="frac"><span class="n">1</span><span class="d">2</span></span> <var>m</var><var>v</var><sup>2</sup> ＝ <var>μmg</var> × <var>d</var></div>
+<p>両辺の <var>m</var> を消して <var>d</var> について解くと、</p>
+<div class="eq"><var>d</var> ＝ <span class="frac"><span class="n"><var>v</var><sup>2</sup></span><span class="d">2<var>μg</var></span></span></div>
+<p>制動距離 <var>d</var> は、<var>v</var> の2乗に比例する。速さが2倍になると、(2<var>v</var>)<sup>2</sup> ＝ 4<var>v</var><sup>2</sup> なので、距離は4倍になる。</p>
+<p>この式には、質量 <var>m</var> が入っていない。車が重いと、運動エネルギーは大きくなるが、そのぶん路面を押す力も大きくなって、摩擦力も大きくなるからだ。理想的な条件では、重い車も軽い車も、同じ距離で止まる。</p>
+<p>時速 <var>v</var> km/h で計算するときは、<var>v</var> を 3.6 で割って m/s に直す。すると、<span class="frac"><span class="n">1</span><span class="d">3.6<sup>2</sup> × 2 × 9.8</span></span> ≒ <span class="frac"><span class="n">1</span><span class="d">254</span></span> なので、次の形になる。</p>
+<div class="eq"><var>d</var> ＝ <span class="frac"><span class="n"><var>v</var><sup>2</sup></span><span class="d">254<var>μ</var></span></span>　(<var>v</var> は km/h、<var>d</var> は m)</div>
+
+<h2>計算で確かめる</h2>
+<p>乾いたアスファルトの摩擦係数は、0.7〜0.9くらいが目安とされる。<var>μ</var> ＝ 0.7 として、計算してみよう。</p>
+<table class="calc-table">
+<tr class="head"><td>速度</td><td>制動距離(計算)</td></tr>
+<tr><td>時速30km</td><td>約5m</td></tr>
+<tr><td>時速50km</td><td>約14m</td></tr>
+<tr><td>時速60km</td><td>約20m</td></tr>
+<tr><td>時速80km</td><td>約36m</td></tr>
+<tr class="highlight"><td>時速100km</td><td>約56m</td></tr>
+</table>
+<div class="try-box"><span class="try-label">やってみよう</span><p><var>d</var> ＝ <span class="frac"><span class="n"><var>v</var><sup>2</sup></span><span class="d">254<var>μ</var></span></span> で <var>μ</var> ＝ 0.7 として、次の2つを計算してみよう。</p><ul><li>時速30kmから時速60kmになると、制動距離は何倍になるだろう。</li><li>時速80kmのときの制動距離は、約何mだろう。</li></ul><p>答え合わせ：4倍、約36m。</p></div>
+
+<h2>グラフにすると、二次関数</h2>
+<p>速度 <var>v</var> を横軸、制動距離 <var>d</var> を縦軸にしてグラフを描くと、原点を通る放物線になる。数学Ⅰで習う <var>y</var> ＝ <var>ax</var><sup>2</sup> のグラフと同じ形だ。<var>a</var> にあたるのが、<span class="frac"><span class="n">1</span><span class="d">254<var>μ</var></span></span> である。</p>
+<p>実際に止まるまでには、制動距離のほかに「<strong>空走距離</strong>」もある。危険に気づいてブレーキを踏み、ブレーキがきき始めるまでに車が進む距離だ。空走距離は、速度に比例して増える。ふつうの1次関数のグラフで、直線になる。</p>
+<figure class="inline-figure">
+<svg viewBox="0 0 760 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="速度と距離の関係を表すグラフ。横軸は速度(km/h)、縦軸は距離(m)。制動距離は放物線のように速度の2乗で急に伸び、空走距離はまっすぐな直線で増える。ホンダの目安表では、時速50kmの制動距離が18m、時速100kmで84m">
+<rect width="760" height="560" fill="#eef2f7"/>
+<line x1="100.0" y1="70" x2="100.0" y2="470" stroke="#dbe3ee" stroke-width="1.5"/><text x="100.0" y="504" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="26" fill="#55637c">0</text><line x1="224.0" y1="70" x2="224.0" y2="470" stroke="#dbe3ee" stroke-width="1.5"/><text x="224.0" y="504" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="26" fill="#55637c">20</text><line x1="348.0" y1="70" x2="348.0" y2="470" stroke="#dbe3ee" stroke-width="1.5"/><text x="348.0" y="504" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="26" fill="#55637c">40</text><line x1="472.0" y1="70" x2="472.0" y2="470" stroke="#dbe3ee" stroke-width="1.5"/><text x="472.0" y="504" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="26" fill="#55637c">60</text><line x1="596.0" y1="70" x2="596.0" y2="470" stroke="#dbe3ee" stroke-width="1.5"/><text x="596.0" y="504" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="26" fill="#55637c">80</text><line x1="720.0" y1="70" x2="720.0" y2="470" stroke="#dbe3ee" stroke-width="1.5"/><text x="720.0" y="504" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="26" fill="#55637c">100</text><line x1="100" y1="470.0" x2="720" y2="470.0" stroke="#dbe3ee" stroke-width="1.5"/><text x="88" y="479.0" text-anchor="end" font-family="'Noto Sans JP',sans-serif" font-size="26" fill="#55637c">0</text><line x1="100" y1="403.3" x2="720" y2="403.3" stroke="#dbe3ee" stroke-width="1.5"/><text x="88" y="412.3" text-anchor="end" font-family="'Noto Sans JP',sans-serif" font-size="26" fill="#55637c">20</text><line x1="100" y1="336.7" x2="720" y2="336.7" stroke="#dbe3ee" stroke-width="1.5"/><text x="88" y="345.7" text-anchor="end" font-family="'Noto Sans JP',sans-serif" font-size="26" fill="#55637c">40</text><line x1="100" y1="270.0" x2="720" y2="270.0" stroke="#dbe3ee" stroke-width="1.5"/><text x="88" y="279.0" text-anchor="end" font-family="'Noto Sans JP',sans-serif" font-size="26" fill="#55637c">60</text><line x1="100" y1="203.3" x2="720" y2="203.3" stroke="#dbe3ee" stroke-width="1.5"/><text x="88" y="212.3" text-anchor="end" font-family="'Noto Sans JP',sans-serif" font-size="26" fill="#55637c">80</text><line x1="100" y1="136.7" x2="720" y2="136.7" stroke="#dbe3ee" stroke-width="1.5"/><text x="88" y="145.7" text-anchor="end" font-family="'Noto Sans JP',sans-serif" font-size="26" fill="#55637c">100</text><line x1="100" y1="70.0" x2="720" y2="70.0" stroke="#dbe3ee" stroke-width="1.5"/><text x="88" y="79.0" text-anchor="end" font-family="'Noto Sans JP',sans-serif" font-size="26" fill="#55637c">120</text>
+<line x1="100" y1="470" x2="720" y2="470" stroke="#16233a" stroke-width="3"/>
+<line x1="100" y1="70" x2="100" y2="470" stroke="#16233a" stroke-width="3"/>
+<text x="720" y="542" text-anchor="end" font-family="'Noto Sans JP',sans-serif" font-size="28" font-weight="700" fill="#16233a">速度(km/h)</text>
+<text x="100" y="42" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="28" font-weight="700" fill="#16233a">距離(m)</text>
+<polyline points="100.0,470.0 720.0,377.4" fill="none" stroke="#2c4f7c" stroke-width="6" stroke-linecap="round"/>
+<polyline points="100.0,470.0 112.4,469.9 124.8,469.6 137.2,469.1 149.6,468.3 162.0,467.4 174.4,466.2 186.8,464.9 199.2,463.3 211.6,461.5 224.0,459.5 236.4,457.3 248.8,454.9 261.2,452.3 273.6,449.4 286.0,446.4 298.4,443.1 310.8,439.7 323.2,436.0 335.6,432.1 348.0,428.0 360.4,423.7 372.8,419.2 385.2,414.5 397.6,409.5 410.0,404.4 422.4,399.0 434.8,393.5 447.2,387.7 459.6,381.7 472.0,375.5 484.4,369.1 496.8,362.5 509.2,355.7 521.6,348.6 534.0,341.4 546.4,333.9 558.8,326.3 571.2,318.4 583.6,310.3 596.0,302.0 608.4,293.5 620.8,284.8 633.2,275.9 645.6,266.7 658.0,257.4 670.4,247.8 682.8,238.1 695.2,228.1 707.6,217.9 720.0,207.5" fill="none" stroke="#ff7a3d" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="224.0" cy="460.0" r="8" fill="#ffcc33" stroke="#16233a" stroke-width="2.5"/><circle cx="286.0" cy="450.0" r="8" fill="#ffcc33" stroke="#16233a" stroke-width="2.5"/><circle cx="348.0" cy="433.3" r="8" fill="#ffcc33" stroke="#16233a" stroke-width="2.5"/><circle cx="410.0" cy="410.0" r="8" fill="#ffcc33" stroke="#16233a" stroke-width="2.5"/><circle cx="472.0" cy="380.0" r="8" fill="#ffcc33" stroke="#16233a" stroke-width="2.5"/><circle cx="534.0" cy="340.0" r="8" fill="#ffcc33" stroke="#16233a" stroke-width="2.5"/><circle cx="596.0" cy="290.0" r="8" fill="#ffcc33" stroke="#16233a" stroke-width="2.5"/><circle cx="658.0" cy="243.3" r="8" fill="#ffcc33" stroke="#16233a" stroke-width="2.5"/><circle cx="720.0" cy="190.0" r="8" fill="#ffcc33" stroke="#16233a" stroke-width="2.5"/>
+<text x="710.0" y="448" text-anchor="end" font-family="'Noto Sans JP',sans-serif" font-size="28" font-weight="700" fill="#2c4f7c">空走距離(直線)</text>
+<text x="534.0" y="317.4" text-anchor="end" font-family="'Noto Sans JP',sans-serif" font-size="28" font-weight="700" fill="#c85f2c">制動距離(放物線)</text>
+<text x="414.0" y="392.0" text-anchor="middle" font-family="'Noto Sans JP',sans-serif" font-size="26" font-weight="700" fill="#16233a">18m</text>
+<text x="706.0" y="194.0" text-anchor="end" font-family="'Noto Sans JP',sans-serif" font-size="26" font-weight="700" fill="#16233a">84m</text>
+<circle cx="140" cy="92" r="8" fill="#ffcc33" stroke="#16233a" stroke-width="2.5"/>
+<text x="162" y="101" font-family="'Noto Sans JP',sans-serif" font-size="24" fill="#16233a">ホンダの目安表(制動距離)</text>
+</svg>
+<figcaption>制動距離は放物線(2乗)、空走距離は直線(比例)。点はホンダの目安表、曲線は摩擦係数0.5で計算</figcaption></figure>
+<p>空走距離と制動距離を合わせたものが、<strong>停止距離</strong>である。ホンダが示す、乾いた舗装路面での普通自動車の目安は、次のとおりだ。</p>
+<table class="calc-table wide">
+<tr class="head"><td>速度</td><td>空走</td><td>制動</td><td>停止</td></tr>
+<tr><td>時速40km</td><td>11m</td><td>11m</td><td>22m</td></tr>
+<tr><td>時速60km</td><td>17m</td><td>27m</td><td>44m</td></tr>
+<tr><td>時速80km</td><td>22m</td><td>54m</td><td>76m</td></tr>
+<tr class="highlight"><td>時速100km</td><td>28m</td><td>84m</td><td>112m</td></tr>
+</table>
+<p>空走距離は、時速100kmで28m。これは、約1秒間に進む距離(時速100kmは秒速約27.8m)とほぼ同じだ。</p>
+<p>この表では、時速50kmの制動距離が18m、時速100kmで84mと、約4.7倍になっている。式の「ぴったり4倍」とは少しちがう。表の値から、式の摩擦係数を逆算すると、時速50kmでは約0.55、時速100kmでは約0.47になる。現実の摩擦係数は一定ではなく、式は、現実を単純にした「モデル」なのだ。それでも、速度が上がると距離が急に伸びる、という性質は、よくとらえている。</p>
+
+<h2>路面で変わる</h2>
+<p>式の中の <var>μ</var> が小さくなると、<var>d</var> は大きくなる。<var>d</var> は <var>μ</var> に反比例するので、摩擦係数が半分になれば、距離は2倍になる。目安として、乾いたアスファルトは0.7〜0.9、濡れたアスファルトは0.45〜0.6とされる。時速50kmで <var>μ</var> ＝ 0.5 なら、約20mになる(<var>μ</var> ＝ 0.7 のときは約14m)。</p>
+<p>日本自動車連盟(JAF)が2017年に行った、時速40kmからの実験では、雪道(圧雪路)の制動距離は、次のようになった。</p>
+<table class="calc-table">
+<tr><td>ノーマルタイヤ</td><td>29.9m</td></tr>
+<tr class="highlight"><td>スタッドレスタイヤ</td><td>17.3m</td></tr>
+</table>
+<p>ノーマルタイヤはスタッドレスタイヤの約1.7倍。凍結した路面では、スタッドレスタイヤでも78.5m、ノーマルタイヤでは105.4mだった。乾いた路面の目安(時速40kmで11m)と比べると、はるかに長い。</p>
+
+<h2>授業のその先</h2>
+<p>数学Ⅰの二次関数 <var>y</var> ＝ <var>ax</var><sup>2</sup> は、グラフの形を調べる単元だと思われがちだ。しかし、制動距離の式では、<var>a</var> が「路面のすべりにくさ」を、<var>x</var> が「速度」を表している。路面がすべりやすいほど <var>a</var> は大きくなり、放物線は急に立ち上がる。</p>
+<p>速度が2倍になると距離が4倍になるという性質は、スピードを出しすぎることの危険さを、数字ではっきり教えてくれる。</p>
+<div class="try-box"><span class="try-label">考えてみよう</span>
+<ul>
+<li>同じ路面で、制限速度50kmの道路と30kmの道路では、制動距離は何倍ちがうだろう。(答え：約2.8倍)</li>
+<li>雨の日(<var>μ</var> ＝ 0.5)に、乾いた路面で時速50km(<var>μ</var> ＝ 0.7)のときと同じ制動距離におさめるには、時速約何kmまで落とせばよいだろう。(答え：約42km/h)</li>
+</ul>
+</div>
+<p>学校の近くや通学路で、速度の制限が低くなっている理由を、この式から考えてみよう。</p>
+
+<h2>参考資料</h2>
+<ul class="source-list">
+<li><a href="https://global.honda/jp/safetyinfo/sj/16_06/pdf/SJ_16_4_quiz.pdf" target="_blank" rel="noopener noreferrer">本田技研工業「SJクイズ(2016年4・5月号)」停止距離の目安</a></li>
+<li><a href="https://www.sompo-direct.co.jp/otona/oshiete/car/braking-distance.html" target="_blank" rel="noopener noreferrer">そんぽ24「制動距離、空走距離、停止距離とは?」</a></li>
+<li><a href="https://www.moj.go.jp/content/001421877.pdf" target="_blank" rel="noopener noreferrer">交通事故総合分析センター「速度による制動現象の差異と速度による事故発生傾向の差異について」(法務省資料)</a></li>
+<li><a href="https://kuruma-news.jp/post/329040" target="_blank" rel="noopener noreferrer">くるまのニュース「停止距離は1.7倍!? 夏タイヤでの雪道走行は絶対NG!」(JAF 2017年実験)</a></li>
+</ul>
+</div>
+<div class="series-nav"><a href="sonosaki-02.html">&larr; 前の回へ：サッカーボールの五角形は、なぜいつも12枚？</a><span></span></div>
+<div class="article-footer"><a class="back-link" href="../">&larr; 数学演習室に戻る</a></div>
+</article>
+</body></html>
