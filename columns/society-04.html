@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>奨学金100万円を借りると、いくら返す？ 「利息」の計算入門｜数学と社会</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#10233d;--panel:#17335a;--grid-line:rgba(140,178,224,.14);--paper:#eef2f7;--paper-dim:#dbe3ee;--orange:#ff7a3d;--orange-dim:#c85f2c;--yellow:#ffcc33;--ink-text:#16233a;--paper-sub:#55637c}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:linear-gradient(var(--grid-line) 1px,transparent 1px) 0 0/40px 40px,linear-gradient(90deg,var(--grid-line) 1px,transparent 1px) 0 0/40px 40px,var(--ink);color:var(--paper);font-family:'Noto Sans JP',sans-serif;line-height:1.9}a{color:var(--orange)}
+.topbar{position:sticky;top:0;z-index:10;background:rgba(16,35,61,.96);backdrop-filter:blur(4px);border-bottom:1px solid #2c4f7c;padding:12px 20px}.topbar-inner{max-width:760px;margin:0 auto;font-family:'JetBrains Mono',monospace;font-size:.8rem}.topbar a{color:#9fb6d6;text-decoration:none}.topbar a:hover{color:#fff}
+.article{max-width:760px;margin:0 auto;padding:0 20px 100px}.eyecatch-wrap{margin:28px 0 0;border-radius:6px;overflow:hidden;border:1px solid #2c4f7c;background:var(--panel);min-height:180px}.eyecatch-wrap img{width:100%;height:auto;object-fit:cover;display:block}.article-meta{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:22px 0 10px}.pill{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--orange);border:1px solid var(--orange-dim);border-radius:20px;padding:4px 12px}.article-date{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:#7f96b8}
+h1.article-title{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:clamp(1.6rem,4vw,2.3rem);color:#fff;margin:0 0 8px;letter-spacing:.01em}p.article-lead{color:#c3d2e6;font-size:1rem;margin:0 0 8px;max-width:60ch}.article-body{margin-top:36px}.article-body h2{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:1.3rem;color:#fff;margin:44px 0 16px;padding-left:14px;border-left:4px solid var(--orange)}.article-body p{color:#dbe6f4;font-size:.98rem;margin:0 0 18px}.article-body strong{color:#fff}
+figure.inline-figure{margin:28px 0;padding:0}figure.inline-figure img{width:100%;border-radius:6px;border:1px solid #2c4f7c;display:block;background:var(--paper)}figure.inline-figure figcaption{font-size:.8rem;color:#7f96b8;margin-top:8px;text-align:center}.try-box{background:var(--paper);color:var(--ink-text);border-radius:6px;padding:20px 22px;margin:28px 0;box-shadow:0 3px 0 rgba(0,0,0,.18);border:1px solid var(--paper-dim)}.try-box .try-label{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.06em;color:var(--orange-dim);text-transform:uppercase;display:block;margin-bottom:8px}.try-box p,.try-box li{color:var(--ink-text);font-size:.92rem}.try-box strong{color:var(--ink-text)}.try-box p{margin:0 0 10px}.try-box p:last-child{margin-bottom:0}.try-box ul{margin:8px 0 0;padding-left:1.4em}.try-box li{margin:6px 0;font-weight:500}.try-box li::marker{color:var(--orange-dim)}
+.calc-table{width:100%;border-collapse:collapse;margin:20px 0;font-family:'JetBrains Mono',monospace;font-size:.92rem}.calc-table td{padding:8px 10px;border-bottom:1px solid #2c4f7c}.calc-table td:first-child{color:#c3d2e6}.calc-table td:last-child{text-align:right;font-weight:600;color:#fff}.calc-table tr.highlight td{color:var(--orange);font-weight:700}.formula{font-family:'JetBrains Mono',monospace}.source-list{font-size:.82rem;color:#9fb6d6;padding-left:1.4em}.source-list li{margin-bottom:8px}.series-nav{margin-top:44px;padding-top:20px;border-top:1px solid #2c4f7c;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.series-nav a,.back-link{font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:.86rem;text-decoration:none;color:#9fb6d6;border:1px solid #2c4f7c;border-radius:20px;padding:8px 16px}.series-nav a:hover,.back-link:hover{color:#fff;border-color:var(--orange)}.article-footer{margin-top:32px;padding-top:24px;border-top:1px solid #2c4f7c;display:flex;justify-content:center}
+
+/* 式:分数は縦に積む。変数は斜体 */
+sup{font-size:.7em;line-height:0}sub{font-size:.7em;line-height:0}
+.eq{font-size:1.2rem;text-align:center;margin:22px 0;color:#fff;line-height:1.3;overflow-x:auto}
+.eq var,.article-body var,.try-box var{font-style:italic;font-family:'Times New Roman','Noto Serif JP',serif;font-size:1.08em}
+.frac{display:inline-block;vertical-align:middle;text-align:center;margin:0 .18em}
+.frac .n{display:block;padding:0 .35em;border-bottom:1.5px solid currentColor;line-height:1.45}
+.frac .d{display:block;padding:0 .35em;line-height:1.45}
+.calc-table.wide td{text-align:right}.calc-table.wide td:first-child{text-align:left}
+.calc-table tr.head td{color:#7f96b8;font-size:.78rem;font-weight:500}
+@media(max-width:640px){.article{padding:0 16px 72px}h1.article-title{font-size:1.5rem}.article-body h2{font-size:1.15rem;margin:36px 0 12px}.calc-table{font-size:.82rem}.calc-table td{padding:7px 5px}.eyecatch-wrap{min-height:120px}}
+</style></head><body>
+<div class="topbar"><div class="topbar-inner"><a href="../">&larr; 数学演習室に戻る</a></div></div>
+<article class="article">
+<div class="eyecatch-wrap"><img src="../images/columns/society-04-eyecatch.webp" alt="奨学金100万円を借りると、いくら返す？「利息」の計算入門。年3%で10年後、複利は約134万円、単利は130万円となるグラフ" decoding="async"></div>
+<div class="article-meta"><span class="pill">数学と社会</span><span class="article-date">第4回</span><span class="article-date">2026.11</span></div>
+<h1 class="article-title">奨学金100万円を借りると、いくら返す？「利息」の計算入門</h1>
+<p class="article-lead">お金を借りると、借りた金額より多く返すことになります。その差が「利息」です。数学の計算で、そのしくみを確かめてみましょう。</p>
+<div class="article-body">
+<h2>借りたお金には「利息」がつく</h2>
+<p>お金を借りると、借りた金額より多く返すことになる。その差が「利息」で、借りた金額に対する割合を「利率」という。年1%なら、100万円を1年借りると1万円が利息になる。</p>
+<p>日本の国の奨学金（日本学生支援機構、JASSO）には、返す必要のない「給付型」と、返す必要のある「貸与型」がある。貸与型には、利子がつかない第一種と、利子がつく第二種がある。第二種では、貸与が終わるときに決まった利率が返し終わるまで続く「利率固定方式」と、おおむね5年ごとに利率を見直す「利率見直し方式」のどちらかを選ぶ。</p>
+<p>利率は時期によって変わる。この記事では、計算のしくみを知るために、いくつかの「仮の利率」で計算してみる。実際の利率は、日本学生支援機構の公式ページで確認しよう。</p>
+<h2>単利と複利</h2>
+<p>100万円を、年3%の利息で借りたまま、1円も返さずに放っておくとしよう。利息のつき方には2種類ある。</p>
+<div class="try-box"><span class="try-label">2つの利息のつき方</span><ul><li><strong>単利</strong>：最初の100万円（元金）にだけ利息がつく</li><li><strong>複利</strong>：利息にも利息がつく（増えた金額に、また3%がかかる）</li></ul></div>
+<table class="calc-table"><tr><td>単利：100万 × (1＋0.03×10) ＝</td><td>130万円</td></tr><tr class="highlight"><td>複利：100万 × 1.03<sup>10</sup> ＝</td><td>約134万円</td></tr></table>
+<p>10年後の金額は、単利なら130万円、複利なら約134万円（1,343,916円）になる。</p>
+<figure class="inline-figure"><img src="../images/columns/society-04-figure.webp" alt="100万円を年3%で借りたまま返さない場合の、単利と複利の増え方を比べた折れ線グラフ。10年後は単利130万円、複利約134万円、20年後は単利160万円、複利約181万円" loading="lazy" decoding="async"><figcaption>時間がたつほど、複利と単利の差は広がる</figcaption></figure>
+<p>10年では差が4万円ほどだが、20年たつと単利は160万円、複利は約181万円になる。ただし、実際の奨学金やローンは、返しながら元金が減っていく。この図は、「何も返さずに放っておいた場合」を計算したものだ。</p>
+<div class="try-box"><span class="try-label">やってみよう</span><p>電卓で、1000000 × 1.03 を10回くり返して、10年後の金額を確かめてみよう（電卓によっては「＝」を押し続けると同じ計算をくり返せる）。</p></div>
+<h2>毎月返すと、総額はいくらになる？</h2>
+<p>実際には、毎月一定の金額を返していくことが多い。借りた元金を <var>P</var>、年利率を <var>r</var>、返済の回数を <var>n</var> 回とし、<var>i</var> ＝ <var>r</var> ÷ 12 とおくと、毎月同じ額を返す方法（元利均等返済）の毎月の返済額は、次の式で計算できる。</p>
+<div class="eq">毎月の返済額 ＝ <span class="frac"><span class="n"><var>P</var> × <var>i</var></span><span class="d">1 － (1 ＋ <var>i</var>)<sup>－<var>n</var></sup></span></span></div>
+<p>例えば、月5万円を4年間借りて、返し始めるときの元金が240万円になったとしよう。これを15年（180回）で返す場合を、仮の利率で計算した。表の「総額」は返す合計、「利息」は総額から元金240万円を引いた金額だ。</p>
+<table class="calc-table wide"><tr class="head"><td>利率</td><td>毎月（円）</td><td>総額（円）</td><td>利息（円）</td></tr><tr><td>0%</td><td>13,333</td><td>2,400,000</td><td>0</td></tr><tr><td>1%</td><td>14,364</td><td>2,585,496</td><td>185,496</td></tr><tr><td>2%</td><td>15,444</td><td>2,779,958</td><td>379,958</td></tr><tr><td>3%</td><td>16,574</td><td>2,983,313</td><td>583,313</td></tr></table>
+<p>利率が0%なら、240万円を180回で割った13,333円ずつ返して終わる。利率が1%上がるごとに、返す総額は約19万〜20万円ずつ増える。</p>
+<p>返済期間も大切だ。利率1%で、同じ240万円を20年（240回）で返すと、毎月の返済額は11,037円に減るが、利息の合計は約25万円（248,991円）に増える。月々の負担を軽くすると、そのぶん利息が増える。</p>
+<div class="try-box"><span class="try-label">考えてみよう</span><p>返済額を軽くしたいとき、利率・返済期間・総額の3つは、それぞれどう変わるだろう。表を見ながら考えてみよう。</p></div>
+<h2>もう1つの借り方：リボ払い</h2>
+<p>クレジットカードのリボ払いは、毎月の支払額を一定にする仕組みだ。計算のために、年15%の利率と仮定して、10万円の買い物を毎月5,000円ずつ返す場合を考えよう。毎月の利息は「残りの金額 × 0.15 ÷ 12」で、返したお金のうち利息の分は元金を減らさない。</p>
+<p>計算すると、返し終わるまで24回（2年）かかり、利息の合計は約1万6千円（15,795円）になる。10万円の買い物に、約16%の利息が上乗せされた計算だ。利率は会社や契約によって違うので、契約するときは必ず確認しよう。</p>
+<h2>18歳からの「契約」</h2>
+<p>2022年4月1日から、成年年齢が18歳になった。18歳になると、親の同意がなくても、クレジットカードを作ったり、ローンを組んだりできる。一方で、未成年者が親の同意なしに結んだ契約を取り消せる「未成年者取消権」は、使えなくなる。</p>
+<p>お金を借りる契約では、利率・返済期間・返す総額を自分で確かめる力が必要になる。今回の計算は、そのための道具だ。</p>
+<h2>まとめ</h2>
+<div class="try-box"><span class="try-label">借りる前に確かめる3つのこと</span><ul><li>利率はいくつか（固定か、見直しか）</li><li>返す総額はいくらか（元金＋利息）</li><li>毎月の返済額と期間はどうなるか</li></ul></div>
+<p>この記事は、計算のしくみを紹介するもので、特定の借り方を勧めるものではない。進学や借りるお金のことで迷ったら、学校の先生や奨学金の窓口、契約のトラブルなら消費者ホットライン（188）に相談しよう。</p>
+<h2>参考資料</h2><ul class="source-list"><li><a href="https://www.jasso.go.jp/shogakukin/about/taiyo/taiyo_2shu/riritsu_santei.html" target="_blank" rel="noopener noreferrer">日本学生支援機構「第二種奨学金の利率の算定方法」</a></li><li><a href="https://www.mext.go.jp/content/20260928-mxt_daigakuc02-000052178_5-20.pdf" target="_blank" rel="noopener noreferrer">文部科学省「奨学金（給付型・貸与型）」の資料（JASSO「進学マネー・ハンドブック」より）</a></li><li><a href="https://www.pref.chiba.lg.jp/seikouan/shouhi/johou/seinenhikisage.html" target="_blank" rel="noopener noreferrer">千葉県「2022年4月1日から成年年齢引下げ」</a></li></ul>
+</div>
+<div class="series-nav"><a href="society-03.html">&larr; 前の回：「30%オフ」と「30%ポイント還元」、本当に同じ？</a><span></span></div>
+<div class="article-footer"><a class="back-link" href="../">&larr; 数学演習室に戻る</a></div>
+</article></body></html>
